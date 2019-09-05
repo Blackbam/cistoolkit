@@ -1,5 +1,5 @@
 {
-  "name": "Blackbam/cis",
+  "name": "Blackbam/cis-toolkit",
   "type": "library",
   "description": "Toolkit for a faster development process.",
   "keywords": ["templating","debugging","math","url"],
