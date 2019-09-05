@@ -1,0 +1,24 @@
+{
+  "name": "Blackbam/cis",
+  "type": "library",
+  "description": "Toolkit for a faster development process.",
+  "keywords": ["templating","debugging","math","url"],
+  "homepage": "https://www.blackbam.at/",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "David Stöckl",
+      "email": "admin@blackbam.at",
+      "homepage": "https://www.blackbam.at/",
+      "role": "Web developer"
+    }
+  ],
+  "require": {
+    "php": "^7.1"
+  },
+  "autoload": {
+    "psr-4" : {
+      "CisTools\\" : "src/"
+    }
+  }
+}

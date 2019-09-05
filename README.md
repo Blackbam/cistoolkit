@@ -1,2 +1,2 @@
-# cis
-A small set of useful functions I use in many of my projects.
+# CIS Toolkit
+A small toolkit of useful functions to be used in various projects.
