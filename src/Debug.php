@@ -12,7 +12,7 @@ class Debug {
      *
      * @param mixed $var: The variable to dump pretty
      */
-    function dump($var): void {
+    public static function dump($var): void {
         echo "<pre>";
         var_dump($var);
         echo "</pre>";
@@ -25,7 +25,7 @@ class Debug {
      * @param bool $echo: False to not echo the output
      * @return string
      */
-    function dumpClosure(\Closure $c, bool $echo = true): string {
+    public static function dumpClosure(\Closure $c, bool $echo = true): string {
         $str = 'function (';
         try {
             $r = new \ReflectionFunction($c);

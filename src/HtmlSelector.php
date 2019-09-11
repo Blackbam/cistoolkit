@@ -25,7 +25,7 @@ class HtmlSelector {
      * @param bool $multiple: If multi-select with array preselect.
      * @return string: The ready HTML.
      */
-    function fromArray(array $array,string $name,bool $empty=true,bool $use_assoc=false,bool $two_dim=false,string $id="",$preselect=null,bool $multiple=false): string {
+    public static function fromArray(array $array,string $name,bool $empty=true,bool $use_assoc=false,bool $two_dim=false,string $id="",$preselect=null,bool $multiple=false): string {
 
         // if multiple, make sure name is array
         if($multiple) {
