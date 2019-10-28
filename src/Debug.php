@@ -12,7 +12,7 @@ class Debug {
      *
      * @param mixed $var: The variable to dump pretty
      */
-    public static function dump($var): void {
+    public static function dump($var) {
         echo "<pre>";
         var_dump($var);
         echo "</pre>";
