@@ -161,7 +161,7 @@ class Url {
      * @param string $key: The key before the value.
      * @return string: If the value was found the value, null otherwise.
      */
-    public function getPermalinkParam(string $url,string $key) {
+    public static function getPermalinkParam(string $url,string $key) {
         $parsed = self::parseDeep($url);
         if(!empty($parsed["path"])) {
             $path = $parsed["path"];
