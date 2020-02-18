@@ -149,6 +149,33 @@ class Url {
         return "";
     }
 
+    /**
+     * Get a certain fragment of an URL which comes after another fragment.
+     *
+     * e.g. https://www.example.com/member/sample-guy/achievments/2017
+     *
+     * getPermalinkParam($url,"member") would return "sample-guy"
+     * getPermalinkParam($url,"achievements") would return "2017"
+     *
+     * @param string $url: The URL to parse
+     * @param string $key: The key before the value.
+     * @return string: If the value was found the value, null otherwise.
+     */
+    public function getPermalinkParam(string $url,string $key) {
+        $parsed = self::parseDeep($url);
+        if(!empty($parsed["path"])) {
+            $path = $parsed["path"];
+            reset($path);
+            while ($current = current($path) ) {
+                $next = next($path);
+                if($current === $key && false !== $next) {
+                    return $next;
+                }
+            }
+        }
+        return null;
+    }
+
 
     /*************** CURL helpers ******************/
 
