@@ -36,8 +36,15 @@ class Url {
     /**
      * @return The full request URL including protocol, host, port and query string
      */
+    public static function getHostUrl(): string {
+        return "http" . (($_SERVER['SERVER_PORT'] == 443) ? "s" : "") . "://" . $_SERVER['HTTP_HOST'];
+    }
+
+    /**
+     * @return The full request URL including protocol, host, port and query string
+     */
     public static function getCurrent(): string {
-        return "http" . (($_SERVER['SERVER_PORT'] == 443) ? "s" : "") . "://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+        return self::getHostUrl() . $_SERVER['REQUEST_URI'];
     }
 
     /**
