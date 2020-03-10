@@ -1,6 +1,6 @@
 {
   "name": "blackbam/cistoolkit",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "type": "library",
   "description": "Toolkit for a faster development process.",
   "keywords": ["templating","debugging","math","url"],
