@@ -198,10 +198,9 @@ class StringArtist {
      * @param $pattern
      * @param int $charlength
      * @param string $after
-     * @param bool $echo
-     * @return bool|string
+     * @return string
      */
-    public static function limitWords(string $pattern, int $charlength = 200, string $after = " [...]", bool $echo = true): string {
+    public static function limitWords(string $pattern, int $charlength = 200, string $after = " [...]"): string {
         $charlength++;
         $ready = "";
         if (strlen($pattern) > $charlength) {
@@ -217,12 +216,7 @@ class StringArtist {
         } else {
             $ready .= $pattern;
         }
-        if ($echo === true) {
-            echo $ready;
-            return "";
-        } else {
-            return $ready;
-        }
+        return $ready;
     }
 
     /**
