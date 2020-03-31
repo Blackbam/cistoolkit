@@ -33,10 +33,17 @@ class Url {
     }
 
     /**
-     * @return The full request URL including protocol, host, port and query string
+     * @return The host URL
      */
     public static function getHostUrl(): string {
         return "http" . (($_SERVER['SERVER_PORT'] == 443) ? "s" : "") . "://" . $_SERVER['HTTP_HOST'];
+    }
+
+    /**
+     * @return string: The canonical URL (full URL without query string)
+     */
+    public static function getCanonical(): string {
+        return strtok(self::getCurrent(), '?');
     }
 
     /**

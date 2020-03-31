@@ -1,3 +1,6 @@
+= 1.1.2 =
+ * extended url class
+
  = 1.1.1 =
  - Fixed unexpected echos in StringArtist and unecessary echo functionality in Image: You may have to update calls
  to those functions
