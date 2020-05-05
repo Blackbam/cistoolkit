@@ -135,7 +135,7 @@ class Url {
      * @param bool $urlencode : Shall all parameters (path & query) be encoded? (recommended, otherwise you can build invalid URLs)
      * @return bool|string: The URL or false if invalid parameters were passed.
      */
-    function buildDeep(array $parsed, $trailingslashit = false, $urlencode = true) {
+    public static function buildDeep(array $parsed, $trailingslashit = false, $urlencode = true) {
         if (!isset($parsed["host"]) || !isset($parsed["scheme"])) {
             return false;
         }
