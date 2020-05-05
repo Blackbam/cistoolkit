@@ -1,4 +1,5 @@
 <?php
+
 namespace CisTools;
 
 /**
@@ -93,10 +94,15 @@ class Url {
 
 
     /**
-     * Better URL parsing
+     * Better URL parsing: Splits an URL into all its parts
      *
-     * @param string $url
-     * @return array|false
+     * @param string $url : The URL to parse
+     * @return array|false: False if not parseable. Otherwise it returns an array containing:
+     * scheme (string)
+     * host (string)
+     * port (if available)
+     * path (array, if available)
+     * query (array, associative, if available)
      */
     public static function parseDeep(string $url) {
         $parsed = parse_url($url);
@@ -115,6 +121,59 @@ class Url {
         return $parsed;
     }
 
+    /**
+     * The exact opposite of parseDeep. Builds an URL from the single components passed as described below:
+     *
+     * @param $parsed : An array containging all parameters to build the URL from:
+     * scheme (mandatory, string)
+     * host (mandatory, string)
+     * port (optional, integer)
+     * path (optional, array)
+     * query (optional, associative array)
+     *
+     * @param bool $trailingslashit : Shall the URL have a trailing slash?
+     * @param bool $urlencode : Shall all parameters (path & query) be encoded? (recommended, otherwise you can build invalid URLs)
+     * @return bool|string: The URL or false if invalid parameters were passed.
+     */
+    function buildDeep(array $parsed, $trailingslashit = false, $urlencode = true) {
+        if (!isset($parsed["host"]) || !isset($parsed["scheme"])) {
+            return false;
+        }
+        $url = $parsed["scheme"] . "://" . $parsed["host"];
+
+        if (isset($parsed["port"]) && intval($parsed["port"]) > 0) {
+            $url .= ":" . intval($parsed["port"]);
+        }
+
+        if (isset($parsed["path"]) && !empty($parsed["path"])) {
+            if ($urlencode) {
+                $parsed["path"] = array_map("urlencode", $parsed["path"]);
+            }
+            $url .= "/" . implode("/", $parsed["path"]);
+        }
+
+        if ($trailingslashit) {
+            $url .= "/";
+        }
+
+        if (isset($parsed["query"]) && !empty($parsed["query"])) {
+            $f = true;
+            foreach ($parsed["query"] as $key => $value) {
+                if ($f == true) {
+                    $url .= "?";
+                    $f = false;
+                } else {
+                    $url .= "&";
+                }
+                if ($urlencode) {
+                    $url .= urlencode($key) . "=" . urlencode($value);
+                } else {
+                    $url .= $key . "=" . $value;
+                }
+            }
+        }
+        return $url;
+    }
 
     /**
      * Add a GET-Parameter (key value pair) to an already prepared URL (with or without existing query string).
@@ -170,18 +229,18 @@ class Url {
      * getPermalinkParam($url,"member") would return "sample-guy"
      * getPermalinkParam($url,"achievements") would return "2017"
      *
-     * @param string $url: The URL to parse
-     * @param string $key: The key before the value.
+     * @param string $url : The URL to parse
+     * @param string $key : The key before the value.
      * @return string: If the value was found the value, null otherwise.
      */
-    public static function getPermalinkParam(string $url,string $key) {
+    public static function getPermalinkParam(string $url, string $key) {
         $parsed = self::parseDeep($url);
-        if(!empty($parsed["path"])) {
+        if (!empty($parsed["path"])) {
             $path = $parsed["path"];
             reset($path);
-            while ($current = current($path) ) {
+            while ($current = current($path)) {
                 $next = next($path);
-                if($current === $key && false !== $next) {
+                if ($current === $key && false !== $next) {
                     return $next;
                 }
             }
