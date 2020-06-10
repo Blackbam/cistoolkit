@@ -8,8 +8,8 @@ class Sanitizer {
     /**
      * In case you are unsure if an array key/object property exists and you want to get a (possibly typesafe) defined result.
      *
-     * @param $var array/object: An array or object with the possible key/property
-     * @param $key array/string: The key. For a multidimensional associative array, you can pass an array.
+     * @param $var array|object: An array or object with the possible key/property
+     * @param $key array|string: The key. For a multidimensional associative array, you can pass an array.
      * @param $empty : If the key does not exist, this value is returned.
      * @param $primitive : The type of the given variable (-1 for ignoring this feature).
      *
@@ -84,5 +84,4 @@ class Sanitizer {
         }
         return $tcast($empty, $primitive);
     }
-
 }

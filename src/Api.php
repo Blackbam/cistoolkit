@@ -16,9 +16,9 @@ class Api {
      * @param string $delimiter: The optional delimiter parameter sets the field delimiter (one character only). Default is "," but e.g. MS Excel may require ";"
      * @param string $enclosure: The optional enclosure parameter sets the field enclosure (one character only).
      * @param string $escape_char: The optional escape_char parameter sets the escape character (at most one character). An empty string ("") disables the proprietary escape mechanism.
-     * @return string/false/null: The CSV as string, null in case of empty array was given or false in case of problems.
+     * @return string|false|null: The CSV as string, null in case of empty array was given or false in case of problems.
      */
-    public static function array2Csv(array &$array,$head=true,string $delimiter = ",", string $enclosure = '"', string $escape_char = "\\"): string {
+    public static function array2Csv(array &$array,$head=true,string $delimiter = ",", string $enclosure = '"', string $escape_char = "\\") {
         if (count($array) == 0) {
             return null;
         }

@@ -6,10 +6,10 @@ use CisTools\Enum\GoldenRatioMode;
 class Math {
     /**
      *
-     *
      * @param int $rel1_x
      * @param int $rel_1y
      * @param int $rel_2x
+     * @param bool $round
      * @return float: Result is related to variable 3, like variable 2 is related to variable 1.
      */
     public static function ruleOfThree(int $rel_1x, int $rel_1y, int $rel_2x, bool $round = true): float {
@@ -29,7 +29,7 @@ class Math {
      *
      * https://en.wikipedia.org/wiki/Golden_ratio
      *
-     * @param $length : The value to calculate the golden cut for.
+     * @param mixed $length : The value to calculate the golden cut for (will be converted to float).
      * @param GoldenRatioMode $mode :
      * OVERALL_GIVEN (0): The overall available length is given
      * LONGSIDE_GIVEN (1): The longer part is given.

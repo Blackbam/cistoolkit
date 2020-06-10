@@ -21,7 +21,7 @@ class Debug {
     /**
      * WARNING: This is not a perfect dump of a closure, it just should help you find it.
      *
-     * @param Closure $c: A variable holding a Closure
+     * @param \Closure $c: A variable holding a Closure
      * @param bool $echo: False to not echo the output
      * @return string
      */

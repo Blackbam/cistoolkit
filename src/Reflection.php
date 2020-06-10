@@ -16,7 +16,7 @@ class Reflection {
     /**
      * Simple class name sanitizer for backends. Does not allow hyphens in the beginning or non-ASCII characters.
      *
-     * @param $name
+     * @param string $name
      * @return string
      */
     public static function classNameSanitize(string $name): string {
@@ -29,7 +29,7 @@ class Reflection {
     /**
      * Like the class_name_sanitize, but for a string with multiple classes seperated by space.
      *
-     * @param $names
+     * @param string $names
      * @return string
      */
     public static function classNameSanitizeMulti(string $names): string {

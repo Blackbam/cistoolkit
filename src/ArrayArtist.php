@@ -14,9 +14,9 @@ class ArrayArtist {
      * Example: [["foo"=>"bar","foo"=>"cheese"]]
      * Result: ["bar","cheese"]
      *
-     * @param $array : The input array.
-     * @param $key : The key to flatupshift. Default is 0.
-     * @return $array: The result
+     * @param array $array : The input array.
+     * @param mixed $key : The key to flatupshift. Default is 0.
+     * @return array: The result array
      */
     public static function arrayFlatUpShift(array $array, $key = 0): array {
         $a = [];

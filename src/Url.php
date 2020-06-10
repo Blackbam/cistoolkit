@@ -14,7 +14,7 @@ class Url {
      * The root domains must be in a form like example.com, foo.org, what-ever.nz etc.
      *
      * @param $url string: The URL to be checked.
-     * @param $domains string/array: The domain or domains to be compared (e.g. example.com or an array ["example.com","example.org"]
+     * @param $domains string|array: The domain or domains to be compared (e.g. example.com or an array ["example.com","example.org"]
      * @return bool: True, if the domain to check is within the same domain.
      */
     public static function checkInRootDomain(string $url, $domains): bool {
@@ -34,21 +34,21 @@ class Url {
     }
 
     /**
-     * @return The host URL
+     * @return string: The current host URL
      */
     public static function getHostUrl(): string {
         return "http" . (($_SERVER['SERVER_PORT'] == 443) ? "s" : "") . "://" . $_SERVER['HTTP_HOST'];
     }
 
     /**
-     * @return string: The canonical URL (full URL without query string)
+     * @return string: The current canonical URL (full URL without query string)
      */
     public static function getCanonical(): string {
         return strtok(self::getCurrent(), '?');
     }
 
     /**
-     * @return The full request URL including protocol, host, port and query string
+     * @return string: The full request URL including protocol, host, port and query string
      */
     public static function getCurrent(): string {
         return self::getHostUrl() . $_SERVER['REQUEST_URI'];
@@ -59,7 +59,7 @@ class Url {
      *
      * Proper parsing of query strings allowing duplicate values (http://php.net/manual/en/function.parse-str.php#76792)
      *
-     * @param $str
+     * @param string $str
      * @return array
      */
     public static function parseStr(string $str): array {
@@ -97,7 +97,7 @@ class Url {
      * Better URL parsing: Splits an URL into all its parts
      *
      * @param string $url : The URL to parse
-     * @return array|false: False if not parseable. Otherwise it returns an array containing:
+     * @return array|bool: False if not parseable. Otherwise it returns an array containing:
      * scheme (string)
      * host (string)
      * port (if available)
@@ -124,7 +124,7 @@ class Url {
     /**
      * The exact opposite of parseDeep. Builds an URL from the single components passed as described below:
      *
-     * @param $parsed : An array containging all parameters to build the URL from:
+     * @param $parsed: An array containing all parameters to build the URL from:
      * scheme (mandatory, string)
      * host (mandatory, string)
      * port (optional, integer)
@@ -178,9 +178,9 @@ class Url {
     /**
      * Add a GET-Parameter (key value pair) to an already prepared URL (with or without existing query string).
      *
-     * @param $url : The URL to append the key value pair
-     * @param $key : The key
-     * @param $value : The value
+     * @param string $url : The URL to append the key value pair
+     * @param string $key : The key
+     * @param mixed $value : The value (should be a string)
      * @return string: The URL with the extended query string
      */
     public static function addParam(string $url, string $key, $value): string {
@@ -190,13 +190,15 @@ class Url {
     /**
      * Fast way to get the last fragment of an URL (the part between the latest two slashes).
      *
-     * @param $url : The full URL to analyze (with http(s)://).
+     * @param string $url: The full URL to analyze (with http(s)://).
      * @return string: The last fragment of the URL if it exists, empty string otherwise.
      */
     public static function lastFragment(string $url): string {
-        $noget = @rtrim(reset(explode("?", $url)), '/');
+        $parts = explode("?", $url);
+        $noget = rtrim(reset($parts), '/');
         if (substr_count($noget, "/") > 2) {
-            return @end(explode('/', $noget));
+            $analyze = explode('/', $noget);
+            return end($analyze);
         }
         return "";
     }
@@ -231,7 +233,7 @@ class Url {
      *
      * @param string $url : The URL to parse
      * @param string $key : The key before the value.
-     * @return string: If the value was found the value, null otherwise.
+     * @return string: If the value was found the value, empty string otherwise
      */
     public static function getPermalinkParam(string $url, string $key) {
         $parsed = self::parseDeep($url);
@@ -245,7 +247,7 @@ class Url {
                 }
             }
         }
-        return null;
+        return "";
     }
 
 

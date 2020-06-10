@@ -3,10 +3,13 @@ namespace CisTools;
 
 class StringArtist {
     /**
-     * @param int $length
-     * @return string
+     * Returns a randum alphanumeric string.
+     *
+     * @param int $length: The desired length.
+     * @param bool $with_numbers: If true, the string does only contain lowercase characters - no numbers.
+     * @return string: The alpha(numeric) string
      */
-    public static function getRandomAlnumString(int $length = 8,bool $with_numbers = false): string {
+    public static function getRandomAlnumString(int $length = 8, bool $with_numbers = false): string {
         $characters = "abcdefghijklmnopqrstuvwxyz";
         if($with_numbers) {
             $characters = "0123456789";
@@ -21,10 +24,10 @@ class StringArtist {
     }
 
     /**
-     * Returns a random URL-valid string.
+     * Returns a random URL-valid string (with any common possible characters mixed).
      *
-     * @param int $length
-     * @return string
+     * @param int $length: The desired length.
+     * @return string: The randum URL-valid string.
      */
     public static function getRandomUrlValidString(int $length = 8): string {
         $characters = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ$-_'.+!*(),";
@@ -40,9 +43,8 @@ class StringArtist {
     /**
      * Takes any text and creates a slug with only alnum, lowercase characters and minus from it.
      *
-     * @param $text
-     * @param $remove_leading_numbers
-     * @return mixed|string
+     * @param string $text: The text to slugify.
+     * @return string: The slugified string (empty string if something went wrong).
      */
     public static function slugify(string $text): string {
         // replace non letter or digits by -
@@ -70,7 +72,7 @@ class StringArtist {
     /**
      * Guarantees to return a valid hex color.
      *
-     * @param $color
+     * @param string $color: The hex color to sanitize.
      * @return string: A hex color, #ffffff on failure
      */
     public static function sanitizeHexColor(string $color): string {
@@ -91,7 +93,7 @@ class StringArtist {
      *
      * Can be used before saving as well as before setting as value for a date input.
      *
-     * @param $val : Any possible date accepted by strtotime
+     * @param $val: Any possible date accepted by strtotime
      * @return false|string|null: Date in the format YYYY-MM-DD
      */
     public static function sanitizeDateInput($val) {
@@ -105,17 +107,17 @@ class StringArtist {
     /**
      * Check if a string starts with ...
      *
-     * @param $haystack : The string to be checked
-     * @param $needle : The start string
-     * @return bool
+     * @param string $haystack : The string to be checked
+     * @param string $needle : The start string
+     * @return bool: True, if the string starts with ...
      */
     public static function startsWith(string $haystack, string $needle): bool {
         return (substr($haystack, 0, strlen($needle)) === $needle);
     }
 
     /**
-     * @param $haystack : The string to be checked
-     * @param $needle : The end string
+     * @param string $haystack: The string to be checked
+     * @param string $needle: The end string
      * @return bool
      */
     public static function endsWith(string $haystack, string $needle): bool {
@@ -126,7 +128,7 @@ class StringArtist {
     /**
      * Validates and sanitizes a string of comma seperated numbers.
      *
-     * @param $numstr : A string of comma seperated numbers to sanitize.
+     * @param string $numstr : A string of comma seperated numbers to sanitize.
      * @param bool $flat : Return a string of numbers again instead of an array
      * @return array|string: The sanitized result.
      */
@@ -185,19 +187,20 @@ class StringArtist {
 
     /**
      * Clean text from HTML
-     * @param $text
-     * @return string
+     *
+     * @param string $text: The HTML to be returned as text only.
+     * @return string: The clean text.
      */
     public static function cleanTextFromHtml(string $text): string {
         return trim(preg_replace('!\s+!', " ", str_replace(array("\n", "\r", "\t"), ' ', html_entity_decode(strip_shortcodes(strip_tags($text))))));
     }
 
     /**
-     * Shorten a String pattern to a maximum of characters without breaking words, by giving a String, maximum length and closing pattern if true.
+     * Shorten a string pattern to a maximum of characters without breaking words, by giving a String, maximum length and closing pattern if true.
      *
-     * @param $pattern
-     * @param int $charlength
-     * @param string $after
+     * @param string $pattern: The string pattern
+     * @param int $charlength: The maximum charlength as integer.
+     * @param string $after: If the string is cutted, this is added at the end.
      * @return string
      */
     public static function limitWords(string $pattern, int $charlength = 200, string $after = " [...]"): string {
@@ -224,7 +227,7 @@ class StringArtist {
      *
      * Note: For bigger amounts of CSS you might be better of with an advanced methodology.
      *
-     * @param $css : All CSS as (concetenated) string.
+     * @param string $css : All CSS as (concetenated) string.
      * @return string: The minified CSS.
      */
     public static function minifyCss(string $css): string {
@@ -239,7 +242,7 @@ class StringArtist {
     /**
      * Minify JS on the fly. Only for very small generated snippets. Basically only strips whitespaces.
      *
-     * @param $js : JS as string.
+     * @param string $js : JS as string.
      * @return string: The minified JS.
      */
     public static function minifyJs(string $js): string {
