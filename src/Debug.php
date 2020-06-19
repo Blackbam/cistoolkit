@@ -64,4 +64,28 @@ class Debug {
         }
         return $str;
     }
+
+
+    /**
+     * For custom error logging in case of troubles with log files.
+     *
+     * @param $output: Output passed by ob_start()
+     * @return string: The errors found (stops on error)
+     */
+    protected static function desperateErrorHandlerActual($output) {
+        $error = error_get_last();
+        $output = "";
+        foreach ($error as $info => $string)
+            $output .= "{$info}: {$string}\n";
+        return $output;
+    }
+
+    /**
+     * Call this in the very beginning of your script if you have no other chance to display errors.
+     * This problem might be caused by strange webhosts.
+     */
+    public static function desperateErrorHandler() {
+        ob_start([Debug::class,'desperateErrorHandlerActual']);
+    }
+
 }
