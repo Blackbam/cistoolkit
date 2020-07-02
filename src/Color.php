@@ -115,7 +115,7 @@ class Color {
 
     public function getCmyk(): array {
         $rgb = self::intToRgb($this->color);
-        self::rgbToCmyk($rgb[0], $rgb[1], $rgb[2]);
+        return self::rgbToCmyk($rgb[0], $rgb[1], $rgb[2]);
     }
 
     /*
