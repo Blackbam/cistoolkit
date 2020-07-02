@@ -1,6 +1,6 @@
 {
   "name": "blackbam/cistoolkit",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "type": "library",
   "description": "Toolkit for a faster development process.",
   "keywords": ["templating","debugging","math","url"],
@@ -15,7 +15,7 @@
     }
   ],
   "require": {
-    "php": "^7.1",
+    "php": "^7.4",
     "ext-curl": "*",
     "ext-iconv": "*",
     "ext-mbstring": "*"

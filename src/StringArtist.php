@@ -70,22 +70,10 @@ class StringArtist {
     }
 
     /**
-     * Guarantees to return a valid hex color.
-     *
-     * @param string $color: The hex color to sanitize.
-     * @return string: A hex color, #ffffff on failure
+     * @deprecated Use Color class
      */
-    public static function sanitizeHexColor(string $color): string {
-        if (substr($color, 0, 1) !== "#") {
-            $color = "#" . $color;
-        }
-
-        // 3 or 6 hex digits, or the empty string.
-        if (preg_match('|^#([A-Fa-f0-9]{3}){1,2}$|', $color)) {
-            return $color;
-        }
-
-        return "#ffffff";
+    public static function sanitizeHexColor(string $color, string $default = "#ffffff"): string {
+        return Color::colorSanitizeHexString($color,$default);
     }
 
     /**
@@ -221,6 +209,8 @@ class StringArtist {
         }
         return $ready;
     }
+
+    /******* Minification & Co ***********/
 
     /**
      * Minify CSS on the fly (e.g. dynamic CSS from user input).

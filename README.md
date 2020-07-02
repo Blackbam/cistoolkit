@@ -2,6 +2,7 @@
 A small toolkit of useful functions to be used in various projects.
 
  - String Toolkit
+ - Color Toolkit
  - Api Toolkit
  - Debug Toolkit
  - File Toolkit
