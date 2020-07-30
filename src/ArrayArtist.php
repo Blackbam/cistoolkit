@@ -30,4 +30,25 @@ class ArrayArtist {
         return $a;
     }
 
+    /**
+     * Check if all values within an array are increasing (e.g. -1,1,2,4,19,18 returns true, but 1,4,2 returns false).
+     *
+     * @param $array: Input array.
+     * @return bool: True if the array values are increasing.
+     */
+    public static function hasIncreasingValues(array $array): bool {
+
+        if(count($array) <= 1) {
+            return true;
+        }
+
+        $reversed = array_reverse($array);
+        $acFirst = array_pop($reversed);
+        if(end($reversed) <= $acFirst) {
+            return false;
+        } else {
+            return self::hasIncreasingValues(array_reverse($reversed));
+        }
+    }
+
 }
