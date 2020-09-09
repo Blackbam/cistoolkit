@@ -46,9 +46,8 @@ class ArrayArtist {
         $acFirst = array_pop($reversed);
         if(end($reversed) <= $acFirst) {
             return false;
-        } else {
-            return self::hasIncreasingValues(array_reverse($reversed));
         }
+        return self::hasIncreasingValues(array_reverse($reversed));
     }
 
 }
