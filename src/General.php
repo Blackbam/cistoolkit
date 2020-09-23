@@ -44,7 +44,7 @@ class General {
     /**
      * @deprecated Use Sanitizer class instead
      */
-    public static function resempty(&$var, $key, $empty = "", $primitive = -1) {
+    public static function resempty(&$var, $key, $empty = "", Primitive $primitive = null) {
         return Sanitizer::resempty($var,$key,$empty,$primitive);
     }
 

@@ -11,11 +11,11 @@ class Sanitizer {
      * @param $var array|object: An array or object with the possible key/property
      * @param $key array|string: The key. For a multidimensional associative array, you can pass an array.
      * @param $empty : If the key does not exist, this value is returned.
-     * @param $primitive : The type of the given variable (-1 for ignoring this feature).
+     * @param Primitive $primitive : The type of the given variable (-1 for ignoring this feature).
      *
      * @return mixed: The (sanitized) value at the position key or the given default value if nothing found.
      */
-    public static function resempty(&$var, $key, $empty = "", $primitive = -1) {
+    public static function resempty(&$var, $key, $empty = "",Primitive $primitive = null) {
 
         $tcast = function ($var, $primitive) {
             switch (true):
