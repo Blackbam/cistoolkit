@@ -66,4 +66,28 @@ class Math {
         }
         return ($rounded) ? array_map('intval', $result) : $result;
     }
+
+    /**
+     * @param int $int: The integer to be in a certain range.
+     * @param int $min: The minimum value
+     * @param int $max: The maximum value
+     * @return int: The integer which might has been set to min or max
+     */
+    public static function rangeInt(int $int, int $min, int $max) : int {
+        if($int < $min) return $min;
+        if($int > $max) return $max;
+        return $int;
+    }
+
+    /**
+     * @param float $float: The float to be in a certain range.
+     * @param float $min: The minimum value
+     * @param float $max: The maximum value
+     * @return float: The float which might has been set to min or max
+     */
+    public static function rangeFloat(float $float, float $min, float $max) : float {
+        if($float < $min) return $min;
+        if($float > $max) return $max;
+        return $float;
+    }
 }

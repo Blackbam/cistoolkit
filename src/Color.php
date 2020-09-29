@@ -21,6 +21,8 @@ namespace CisTools;
  */
 class Color {
 
+
+    const COLOR_MAX = 16777215; // 256^3 possible colors
     protected int $color = 0x0;
     protected float $alpha = 1.0;
 
@@ -34,8 +36,7 @@ class Color {
     */
 
     public function setByInt(int $color): void {
-        var_dump($color);
-        $this->color = self::range16777215($color);
+        $this->color = Math::rangeInt($color,0,self::COLOR_MAX);
         $this->alpha = 1.0;
     }
 
@@ -68,7 +69,7 @@ class Color {
     }
 
     public function setAlpha(float $alpha = 1.0): void {
-        $this->alpha = self::range01($alpha);
+        $this->alpha = Math::rangeFloat($alpha,0.0,1.0);
     }
 
 
@@ -124,11 +125,11 @@ class Color {
     */
 
     public static function rgbToInt(int $red, int $green, int $blue): int {
-        return (int)0xFFFF * self::range255($red) + 0xFF * self::range255($green) + self::range255($blue);
+        return (int)0xFFFF * Math::rangeInt($red,0,255) + 0xFF * Math::rangeInt($green,0,255) + Math::rangeInt($blue,0,255);
     }
 
     public static function intToRgb(int $color): array {
-        list($r, $g, $b) = sscanf(dechex($color), "%02x%02x%02x");
+        list($r, $g, $b) = sscanf(str_pad(dechex($color),6,"0",STR_PAD_LEFT), "%02x%02x%02x");
         return [$r, $g, $b];
     }
 
@@ -156,24 +157,17 @@ class Color {
     }
 
     public static function rgbToHsl(int $r, int $g, int $b): array {
-
         $r /= 255;
         $g /= 255;
         $b /= 255;
-
         $max = max($r, $g, $b);
         $min = min($r, $g, $b);
-
-        $h = null;
-        $s = null;
         $l = ($max + $min) / 2;
         $d = $max - $min;
-
         if ($d == 0) {
-            $h = $s = 0; // achromatic
+            $h = $s = 0;
         } else {
             $s = $d / (1 - abs(2 * $l - 1));
-
             switch ($max) {
                 case $r:
                     $h = 60 * fmod((($g - $b) / $d), 6);
@@ -181,46 +175,38 @@ class Color {
                         $h += 360;
                     }
                     break;
-
                 case $g:
                     $h = 60 * (($b - $r) / $d + 2);
                     break;
-
                 case $b:
                     $h = 60 * (($r - $g) / $d + 4);
                     break;
             }
         }
-
-        return array($h, $s, $l);
+        return [round($h, 0), round($s * 100, 0), round($l * 100, 0)];
     }
 
-    public static function hslToRgb($h, $s, $l) {
-        $r = null;
-        $g = null;
-        $b = null;
-
-        $c = (1 - abs(2 * $l - 1)) * $s;
+    public static function hslToRgb(int $h, int $s, int $l) : array {
+        $c = (1 - abs(2 * ($l / 100) - 1)) * $s / 100;
         $x = $c * (1 - abs(fmod(($h / 60), 2) - 1));
-        $m = $l - ($c / 2);
-
+        $m = ($l / 100) - ($c / 2);
         if ($h < 60) {
             $r = $c;
             $g = $x;
             $b = 0;
-        } else if ($h < 120) {
+        } elseif ($h < 120) {
             $r = $x;
             $g = $c;
             $b = 0;
-        } else if ($h < 180) {
+        } elseif ($h < 180) {
             $r = 0;
             $g = $c;
             $b = $x;
-        } else if ($h < 240) {
+        } elseif ($h < 240) {
             $r = 0;
             $g = $x;
             $b = $c;
-        } else if ($h < 300) {
+        } elseif ($h < 300) {
             $r = $x;
             $g = 0;
             $b = $c;
@@ -229,12 +215,7 @@ class Color {
             $g = 0;
             $b = $x;
         }
-
-        $r = ($r + $m) * 255;
-        $g = ($g + $m) * 255;
-        $b = ($b + $m) * 255;
-
-        return array(floor($r), floor($g), floor($b));
+        return [floor(($r + $m) * 255), floor(($g + $m) * 255), floor(($b + $m) * 255)];
     }
 
     function rgbToCmyk($r, $g, $b) {
@@ -398,54 +379,21 @@ class Color {
         return $default;
     }
 
-    /**
-     * Makes sure an integer is between 0 and 255
-     *
-     * @param int $int
-     * @return int
-     */
-    public static function range255(int $int): int {
-        if ($int < 0) $int = 0;
-        if ($int > 255) $int = 255;
-        return $int;
-    }
-
-    /**
-     * Make sure an integer is in the integer color range
-     *
-     * @param int $int
-     * @return int
-     */
-    public static function range16777215(int $int): int {
-        if ($int > 16777215) $int = 16777215;
-        if ($int < 0) $int = 0;
-        return $int;
-    }
-
-    /**
-     * Makes sure a float is between 0.0 and 1.0
-     *
-     * @param float $float
-     * @return float
-     */
-    public static function range01(float $float): float {
-        if ($float < 0.0) $float = 0.0;
-        if ($float > 1.0) $float = 1.0;
-        return $float;
-    }
-
     /*
     ╔═╗┌┬┐┌─┐┌┬┐┌─┐  ┬┌┐┌┌─┐┌─┐
     ╚═╗ │ ├─┤ │ ├┤   ││││├┤ │ │
     ╚═╝ ┴ ┴ ┴ ┴ └─┘  ┴┘└┘└  └─┘
     */
-    public function isDark(int $threshold = 127): bool {
-        $threshold = self::range255($threshold);
+    public function isDark(float $threshold = 127.0): bool {
+        $threshold = Math::rangeFloat($threshold,0.0,256.0);
 
+        $trel = $threshold * 100.0 / 256.0;
         $rgb = self::intToRgb($this->color);
         $hsl = self::rgbToHsl($rgb[0], $rgb[1], $rgb[2]);
-        if ($hsl[2] < $threshold) return true;
-        return false;
+        if ($hsl[2] > $trel) {
+            return false;
+        }
+        return true;
     }
 
     /*
