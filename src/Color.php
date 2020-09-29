@@ -80,10 +80,8 @@ class Color {
         return $this->color;
     }
 
-    public function getHexString($noHashtag = false): string {
-        $ht = "";
-        if (!$noHashtag) $ht = "#";
-        return $ht . dechex($this->color);
+    public function getHexString(): string {
+        return dechex($this->color);
     }
 
     public function getRgb(): array {
@@ -142,10 +140,10 @@ class Color {
     public static function colorHexToInt(string $hexCode): int {
         $hexCode = self::colorSanitizeHexString($hexCode);
 
-        if ($hexCode[0] == '#')
+        if ($hexCode[0] === '#')
             $hexCode = substr($hexCode, 1);
 
-        if (strlen($hexCode) == 3) {
+        if (strlen($hexCode) === 3) {
             $hexCode = $hexCode[0] . $hexCode[0] . $hexCode[1] . $hexCode[1] . $hexCode[2] . $hexCode[2];
         }
 
@@ -455,7 +453,7 @@ class Color {
     ╚  └─┘┴└─┴ ┴┴ ┴ ┴  ┴ └─┘┴└─└─┘
      */
     public function cssGetHex(): string {
-        return "#" . dechex($this->color);
+        return "#" . str_pad($this->getHexString(),6,"0",STR_PAD_LEFT);
     }
 
     public function cssGetRgba(): string {
