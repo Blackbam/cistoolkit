@@ -34,7 +34,8 @@ class Color {
     */
 
     public function setByInt(int $color): void {
-        $this->color = self::range16581375($color);
+        var_dump($color);
+        $this->color = self::range16777215($color);
         $this->alpha = 1.0;
     }
 
@@ -410,13 +411,13 @@ class Color {
     }
 
     /**
-     * Make sure an integer is in the full integer color range
+     * Make sure an integer is in the integer color range
      *
      * @param int $int
      * @return int
      */
-    public static function range16581375(int $int): int {
-        if ($int > 16581375) $int = 16581375;
+    public static function range16777215(int $int): int {
+        if ($int > 16777215) $int = 16777215;
         if ($int < 0) $int = 0;
         return $int;
     }
@@ -453,7 +454,7 @@ class Color {
     ╚  └─┘┴└─┴ ┴┴ ┴ ┴  ┴ └─┘┴└─└─┘
      */
     public function cssGetHex(): string {
-        return "#" . str_pad($this->getHexString(),6,"0",STR_PAD_LEFT);
+        return "#" . str_pad($this->getHexString(), 6, "0", STR_PAD_LEFT);
     }
 
     public function cssGetRgba(): string {
