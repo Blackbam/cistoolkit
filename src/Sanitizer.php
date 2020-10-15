@@ -84,4 +84,16 @@ class Sanitizer {
         }
         return $tcast($empty, $primitive);
     }
+
+    /**
+     * If the variable is empty return the default, return the variable otherwise.
+     *
+     * @param $var: Any variable
+     * @param $default: The default to use if the variable is empty
+     * @return mixed: The default value if false. True otherwise.
+     */
+    public static function defempty($var,$default) {
+        return (empty($var)) ? $default : $var;
+    }
+
 }
