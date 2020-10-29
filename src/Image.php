@@ -45,7 +45,7 @@ class Image {
      *
      * @param string $src : The source of the base image.
      * @param float $wh_relation : Width / Height relation. If you want an image of 200 width and 100 height pass 0.5. Pass false or Zero for auto height.
-     * @param integer|array $step: If an integer is passed, two steps above and two steps below for viewport. 2 Steps above for density based. If an array is passes the exact widths. Only updwards for density.
+     * @param integer|array $step : If an integer is passed, two steps above and two steps below for viewport. 2 Steps above for density based. If an array is passes the exact widths. Only updwards for density.
      * @param bool $device_pixel_mode : True for device pixel based selection, viewport based selection otherwise.
      * @param integer $q : Quality of timthumb image.
      * @param integer $zc : Zoom Crop mode of timthumb.
@@ -87,7 +87,7 @@ class Image {
      *
      * @param string $src : The source of the base image.
      * @param float $wh_relation : Width / Height relation. If you want an image of 200 width and 100 height pass 0.5. Pass false or Zero for auto height.
-     * @param integer|array $step: If an integer is passed, two steps above and two steps below for viewport. 2 Steps above for density based. If an array is passes the exact widths. Only updwards for density.
+     * @param integer|array $step : If an integer is passed, two steps above and two steps below for viewport. 2 Steps above for density based. If an array is passes the exact widths. Only updwards for density.
      * @param boolean $device_pixel_mode : True for device pixel based selection, viewport based selection otherwise.
      * @param integer $q : Quality of timthumb image.
      * @param integer $zc : Zoom Crop mode of timthumb.

@@ -36,7 +36,7 @@ class Color {
     */
 
     public function setByInt(int $color): void {
-        $this->color = Math::rangeInt($color,0,self::COLOR_MAX);
+        $this->color = Math::rangeInt($color, 0, self::COLOR_MAX);
         $this->alpha = 1.0;
     }
 
@@ -69,7 +69,7 @@ class Color {
     }
 
     public function setAlpha(float $alpha = 1.0): void {
-        $this->alpha = Math::rangeFloat($alpha,0.0,1.0);
+        $this->alpha = Math::rangeFloat($alpha, 0.0, 1.0);
     }
 
 
@@ -125,11 +125,11 @@ class Color {
     */
 
     public static function rgbToInt(int $red, int $green, int $blue): int {
-        return (int)0xFFFF * Math::rangeInt($red,0,255) + 0xFF * Math::rangeInt($green,0,255) + Math::rangeInt($blue,0,255);
+        return (int)0xFFFF * Math::rangeInt($red, 0, 255) + 0xFF * Math::rangeInt($green, 0, 255) + Math::rangeInt($blue, 0, 255);
     }
 
     public static function intToRgb(int $color): array {
-        list($r, $g, $b) = sscanf(str_pad(dechex($color),6,"0",STR_PAD_LEFT), "%02x%02x%02x");
+        list($r, $g, $b) = sscanf(str_pad(dechex($color), 6, "0", STR_PAD_LEFT), "%02x%02x%02x");
         return [$r, $g, $b];
     }
 
@@ -186,7 +186,7 @@ class Color {
         return [round($h, 0), round($s * 100, 0), round($l * 100, 0)];
     }
 
-    public static function hslToRgb(int $h, int $s, int $l) : array {
+    public static function hslToRgb(int $h, int $s, int $l): array {
         $c = (1 - abs(2 * ($l / 100) - 1)) * $s / 100;
         $x = $c * (1 - abs(fmod(($h / 60), 2) - 1));
         $m = ($l / 100) - ($c / 2);
@@ -385,7 +385,7 @@ class Color {
     ╚═╝ ┴ ┴ ┴ ┴ └─┘  ┴┘└┘└  └─┘
     */
     public function isDark(float $threshold = 127.0): bool {
-        $threshold = Math::rangeFloat($threshold,0.0,256.0);
+        $threshold = Math::rangeFloat($threshold, 0.0, 256.0);
 
         $trel = $threshold * 100.0 / 256.0;
         $rgb = self::intToRgb($this->color);

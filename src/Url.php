@@ -124,7 +124,7 @@ class Url {
     /**
      * The exact opposite of parseDeep. Builds an URL from the single components passed as described below:
      *
-     * @param $parsed: An array containing all parameters to build the URL from:
+     * @param $parsed : An array containing all parameters to build the URL from:
      * scheme (mandatory, string)
      * host (mandatory, string)
      * port (optional, integer)
@@ -190,7 +190,7 @@ class Url {
     /**
      * Fast way to get the last fragment of an URL (the part between the latest two slashes).
      *
-     * @param string $url: The full URL to analyze (with http(s)://).
+     * @param string $url : The full URL to analyze (with http(s)://).
      * @return string: The last fragment of the URL if it exists, empty string otherwise.
      */
     public static function lastFragment(string $url): string {

@@ -1,4 +1,5 @@
 <?php
+
 namespace CisTools;
 
 use CisTools\Enum\Primitive;
@@ -15,7 +16,7 @@ class Sanitizer {
      *
      * @return mixed: The (sanitized) value at the position key or the given default value if nothing found.
      */
-    public static function resempty(&$var, $key, $empty = "",Primitive $primitive = null) {
+    public static function resempty(&$var, $key, $empty = "", Primitive $primitive = null) {
 
         $tcast = function ($var, $primitive) {
             switch (true):
@@ -88,11 +89,11 @@ class Sanitizer {
     /**
      * If the variable is empty return the default, return the variable otherwise.
      *
-     * @param $var: Any variable
-     * @param $default: The default to use if the variable is empty
+     * @param $var : Any variable
+     * @param $default : The default to use if the variable is empty
      * @return mixed: The default value if false. True otherwise.
      */
-    public static function defempty($var,$default) {
+    public static function defempty($var, $default) {
         return (empty($var)) ? $default : $var;
     }
 

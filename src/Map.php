@@ -1,4 +1,5 @@
 <?php
+
 namespace CisTools;
 
 /**
@@ -20,8 +21,8 @@ class Map {
      * apply(['intval','sqrt'],$a);
      * var_dump($a); // float(1.4...)
      *
-     * @param array|string $callback: An array of Callback functions which accept one parameter or a single callback as string.
-     * @param $var: The variable to apply them to.
+     * @param array|string $callback : An array of Callback functions which accept one parameter or a single callback as string.
+     * @param $var : The variable to apply them to.
      */
     public static function apply($callback, &$var) {
         if (is_array($callback)) {

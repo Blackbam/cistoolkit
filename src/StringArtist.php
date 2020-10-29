@@ -1,17 +1,18 @@
 <?php
+
 namespace CisTools;
 
 class StringArtist {
     /**
      * Returns a randum alphanumeric string.
      *
-     * @param int $length: The desired length.
-     * @param bool $with_numbers: If true, the string does only contain lowercase characters - no numbers.
+     * @param int $length : The desired length.
+     * @param bool $with_numbers : If true, the string does only contain lowercase characters - no numbers.
      * @return string: The alpha(numeric) string
      */
     public static function getRandomAlnumString(int $length = 8, bool $with_numbers = false): string {
         $characters = "abcdefghijklmnopqrstuvwxyz";
-        if($with_numbers) {
+        if ($with_numbers) {
             $characters = "0123456789";
         }
         $string = '';
@@ -26,7 +27,7 @@ class StringArtist {
     /**
      * Returns a random URL-valid string (with any common possible characters mixed).
      *
-     * @param int $length: The desired length.
+     * @param int $length : The desired length.
      * @return string: The randum URL-valid string.
      */
     public static function getRandomUrlValidString(int $length = 8): string {
@@ -43,7 +44,7 @@ class StringArtist {
     /**
      * Takes any text and creates a slug with only alnum, lowercase characters and minus from it.
      *
-     * @param string $text: The text to slugify.
+     * @param string $text : The text to slugify.
      * @return string: The slugified string (empty string if something went wrong).
      */
     public static function slugify(string $text): string {
@@ -73,7 +74,7 @@ class StringArtist {
      * @deprecated Use Color class
      */
     public static function sanitizeHexColor(string $color, string $default = "#ffffff"): string {
-        return Color::colorSanitizeHexString($color,$default);
+        return Color::colorSanitizeHexString($color, $default);
     }
 
     /**
@@ -81,7 +82,7 @@ class StringArtist {
      *
      * Can be used before saving as well as before setting as value for a date input.
      *
-     * @param $val: Any possible date accepted by strtotime
+     * @param $val : Any possible date accepted by strtotime
      * @return false|string|null: Date in the format YYYY-MM-DD
      */
     public static function sanitizeDateInput($val) {
@@ -104,8 +105,8 @@ class StringArtist {
     }
 
     /**
-     * @param string $haystack: The string to be checked
-     * @param string $needle: The end string
+     * @param string $haystack : The string to be checked
+     * @param string $needle : The end string
      * @return bool
      */
     public static function endsWith(string $haystack, string $needle): bool {
@@ -166,7 +167,7 @@ class StringArtist {
      *
      * @param string $color : Hex color (only 7 chars, prefixed with #).
      */
-    public static function validateHexColor($color): bool  {
+    public static function validateHexColor($color): bool {
         if (preg_match('/^#[a-f0-9]{6}$/i', $color)) {
             return true;
         }
@@ -176,7 +177,7 @@ class StringArtist {
     /**
      * Clean text from HTML
      *
-     * @param string $text: The HTML to be returned as text only.
+     * @param string $text : The HTML to be returned as text only.
      * @return string: The clean text.
      */
     public static function cleanTextFromHtml(string $text): string {
@@ -186,9 +187,9 @@ class StringArtist {
     /**
      * Shorten a string pattern to a maximum of characters without breaking words, by giving a String, maximum length and closing pattern if true.
      *
-     * @param string $pattern: The string pattern
-     * @param int $charlength: The maximum charlength as integer.
-     * @param string $after: If the string is cutted, this is added at the end.
+     * @param string $pattern : The string pattern
+     * @param int $charlength : The maximum charlength as integer.
+     * @param string $after : If the string is cutted, this is added at the end.
      * @return string
      */
     public static function limitWords(string $pattern, int $charlength = 200, string $after = " [...]"): string {

@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace CisTools\Enum;
 
@@ -35,8 +35,8 @@ abstract class BasicEnum {
     }
 
     /**
-     * @param string $name: Class constant name
-     * @param bool $strict: Take casing into account?
+     * @param string $name : Class constant name
+     * @param bool $strict : Take casing into account?
      * @return bool
      * @throws \ReflectionException
      */
@@ -52,7 +52,7 @@ abstract class BasicEnum {
     }
 
     /**
-     * @param $value: Value to check
+     * @param $value : Value to check
      * @param bool $strict
      * @return bool
      * @throws \ReflectionException
@@ -71,26 +71,26 @@ abstract class BasicEnum {
     }
 
     /**
-     * @param string $key: The  name of the class constant
-     * @param bool $strict: Take casing into account
+     * @param string $key : The  name of the class constant
+     * @param bool $strict : Take casing into account
      * @return mixed|null: The constants actual value, but NULL if it does not exist
      * @throws \ReflectionException
      */
     public static function getValue(string $key, bool $strict = false) {
         $constants = self::getConstants();
 
-        foreach($constants as $cname => $cvalue) {
-            if(!$strict) {
-                if(strtolower($key) === strtolower($cname)) {
+        foreach ($constants as $cname => $cvalue) {
+            if (!$strict) {
+                if (strtolower($key) === strtolower($cname)) {
                     return $cvalue;
                 }
             } else {
-                if($key === $cname) {
+                if ($key === $cname) {
                     return $cvalue;
                 }
             }
         }
-        if(array_key_exists($key,$constants)) {
+        if (array_key_exists($key, $constants)) {
             return $constants[$key];
         }
         return null;

@@ -1,4 +1,5 @@
 <?php
+
 namespace CisTools;
 
 /**
@@ -10,7 +11,7 @@ class Debug {
     /**
      * For pretty dumping of variables to an HTML output
      *
-     * @param mixed $var: The variable to dump pretty
+     * @param mixed $var : The variable to dump pretty
      */
     public static function dump($var) {
         echo "<pre>";
@@ -21,45 +22,45 @@ class Debug {
     /**
      * WARNING: This is not a perfect dump of a closure, it just should help you find it.
      *
-     * @param \Closure $c: A variable holding a Closure
-     * @param bool $echo: False to not echo the output
+     * @param \Closure $c : A variable holding a Closure
+     * @param bool $echo : False to not echo the output
      * @return string
      */
     public static function dumpClosure(\Closure $c, bool $echo = true): string {
         $str = 'function (';
         try {
             $r = new \ReflectionFunction($c);
-        } catch(\ReflectionException $exception) {
+        } catch (\ReflectionException $exception) {
             // do nothing
         }
         $params = array();
-        foreach($r->getParameters() as $p) {
+        foreach ($r->getParameters() as $p) {
             $s = '';
-            if($p->isArray()) {
+            if ($p->isArray()) {
                 $s .= 'array ';
-            } else if($p->getClass()) {
+            } else if ($p->getClass()) {
                 $s .= $p->getClass()->name . ' ';
             }
-            if($p->isPassedByReference()){
+            if ($p->isPassedByReference()) {
                 $s .= '&';
             }
             $s .= '$' . $p->name;
-            if($p->isOptional()) {
+            if ($p->isOptional()) {
                 try {
-                $s .= ' = ' . var_export($p->getDefaultValue(), true);
-                } catch(\ReflectionException $exception){
+                    $s .= ' = ' . var_export($p->getDefaultValue(), true);
+                } catch (\ReflectionException $exception) {
                     // do nothing
                 }
             }
-            $params []= $s;
+            $params [] = $s;
         }
         $str .= implode(', ', $params);
         $str .= '){' . PHP_EOL;
         $lines = file($r->getFileName());
-        for($l = $r->getStartLine(); $l < $r->getEndLine(); $l++) {
+        for ($l = $r->getStartLine(); $l < $r->getEndLine(); $l++) {
             $str .= $lines[$l];
         }
-        if($echo) {
+        if ($echo) {
             echo $str;
         }
         return $str;
@@ -69,7 +70,7 @@ class Debug {
     /**
      * For custom error logging in case of troubles with log files.
      *
-     * @param $output: Output passed by ob_start()
+     * @param $output : Output passed by ob_start()
      * @return string: The errors found (stops on error)
      */
     protected static function desperateErrorHandlerActual($output) {
@@ -85,7 +86,7 @@ class Debug {
      * This problem might be caused by strange webhosts.
      */
     public static function desperateErrorHandler() {
-        ob_start([Debug::class,'desperateErrorHandlerActual']);
+        ob_start([Debug::class, 'desperateErrorHandlerActual']);
     }
 
 }

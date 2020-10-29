@@ -1,4 +1,5 @@
 <?php
+
 namespace CisTools\Enum;
 
 abstract class GoldenRatioMode extends BasicEnum {

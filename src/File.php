@@ -1,4 +1,5 @@
 <?php
+
 namespace CisTools;
 
 /**
@@ -10,7 +11,7 @@ class File {
     /**
      * This function should be used for generating good CHECKSUMS for all types of files.
      *
-     * @param string $filepath: The path to the file
+     * @param string $filepath : The path to the file
      * @return string: Lowercase hexits hash
      */
     public static function ripemd320File(string $filepath): string {
@@ -28,14 +29,14 @@ class File {
      *
      * For knowing if the original name is valid just compare the result.
      *
-     * @param string $filename: The filename to filter
-     * @param bool $strict: If false, all characters allowed in a file system are also allowed in the name (e.g. hyphens).
-     * @param bool $beautify: If this is true a beautiful filename is created.
+     * @param string $filename : The filename to filter
+     * @param bool $strict : If false, all characters allowed in a file system are also allowed in the name (e.g. hyphens).
+     * @param bool $beautify : If this is true a beautiful filename is created.
      * @return string: The filtered filename.
      */
-    public static function filterFilename(string $filename,bool $strict = true, bool $beautify = false) : string {
+    public static function filterFilename(string $filename, bool $strict = true, bool $beautify = false): string {
 
-        if(!$strict) {
+        if (!$strict) {
             // remove illegal file system characters https://en.wikipedia.org/wiki/Filename#Reserved_characters_and_words
             $filename = str_replace(array_merge(
                 array_map('chr', range(0, 31)),
@@ -43,7 +44,7 @@ class File {
             ), '', $filename);
             // maximise filename length to 255 bytes http://serverfault.com/a/9548/44086
             $ext = pathinfo($filename, PATHINFO_EXTENSION);
-            $filename= mb_strcut(pathinfo($filename, PATHINFO_FILENAME), 0, 255 - ($ext ? strlen($ext) + 1 : 0), mb_detect_encoding($filename)) . ($ext ? '.' . $ext : '');
+            $filename = mb_strcut(pathinfo($filename, PATHINFO_FILENAME), 0, 255 - ($ext ? strlen($ext) + 1 : 0), mb_detect_encoding($filename)) . ($ext ? '.' . $ext : '');
             return $filename;
         } else {
             // sanitize filename
