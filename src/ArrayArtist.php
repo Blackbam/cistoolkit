@@ -75,4 +75,22 @@ class ArrayArtist {
         return self::hasIncreasingValues(array_reverse($reversed));
     }
 
+    /**
+     * Add to a path within a dynamic array no matter if the path already exists or not.
+     *
+     * @param array $out
+     * @param array $pathKeys
+     * @param $val: Whatever value
+     * @return void
+     */
+    public static function autoVivifyDynamicKeyPath(array &$out, array $pathKeys, $val): void  {
+        $cursor = & $out;
+        foreach ($pathKeys as $key) {
+            if (!isset($cursor[$key]) || !is_array($cursor[$key])) {
+                $cursor[$key] = array();
+            }
+            $cursor = &$cursor[$key];
+        }
+        $cursor = $val;
+    }
 }
