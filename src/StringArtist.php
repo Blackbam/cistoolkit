@@ -3,6 +3,7 @@
 namespace CisTools;
 
 class StringArtist {
+
     /**
      * Returns a randum alphanumeric string.
      *
@@ -209,6 +210,21 @@ class StringArtist {
             $ready .= $pattern;
         }
         return $ready;
+    }
+
+    /**
+     * Split a string at a certain position and get both parts.
+     *
+     * @param string $string: The string to split
+     * @param int $num: The position to split at
+     * @return array: $array[0] is the first part of the splitted string, $array[1] the second
+     */
+    public static function splitAt(string $string, int $num): array {
+        $num = Math::rangeInt($num,1);
+        $length = strlen($string);
+        $output[0] = substr($string, 0, $num);
+        $output[1] = substr($string, $num, $length );
+        return $output;
     }
 
     /******* Minification & Co ***********/
