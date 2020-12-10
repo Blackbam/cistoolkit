@@ -72,6 +72,23 @@ class StringArtist {
     }
 
     /**
+     * Takes a string and turns it into a "code-friendly" value
+     * E.g "I am aweseome" will become "IAmAwesome"
+     *
+     * @param string $text Input text
+     * @param bool $capitalizeFirstLetter (optional) if set to `false` the first letter will be lower case
+     * @return string: A nice class name or method name (if not empty after sanitation)
+     */
+    public function textToCodeName(string $text, bool $capitalizeFirstLetter = false): string
+    {
+        $text = ltrim(iconv('utf-8', 'us-ascii//TRANSLIT', preg_replace("/\s+/", "", ucwords(trim(preg_replace('/[^a-z0-9]+/i', ' ', $text))))),'0..9');
+        if ($capitalizeFirstLetter) {
+            return lcfirst($text);
+        }
+        return ucfirst($text);
+    }
+
+    /**
      * @deprecated Use Color class
      */
     public static function sanitizeHexColor(string $color, string $default = "#ffffff"): string {
