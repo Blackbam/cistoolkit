@@ -83,9 +83,9 @@ class StringArtist {
     {
         $text = ltrim(iconv('utf-8', 'us-ascii//TRANSLIT', preg_replace("/\s+/", "", ucwords(trim(preg_replace('/[^a-z0-9]+/i', ' ', $text))))),'0..9');
         if ($capitalizeFirstLetter) {
-            return lcfirst($text);
+            return ucfirst($text);
         }
-        return ucfirst($text);
+        return lcfirst($text);
     }
 
     /**
