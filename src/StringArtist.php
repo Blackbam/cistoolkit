@@ -182,10 +182,11 @@ class StringArtist {
     }
 
     /**
-     *
+     * Check for a valid CSS Hex color
      * @param string $color : Hex color (only 7 chars, prefixed with #).
+     * @return bool: True if the color is valid and prefixed with one #
      */
-    public static function validateHexColor($color): bool {
+    public static function validateHexColor(string $color): bool {
         if (preg_match('/^#[a-f0-9]{6}$/i', $color)) {
             return true;
         }
@@ -199,7 +200,7 @@ class StringArtist {
      * @return string: The clean text.
      */
     public static function cleanTextFromHtml(string $text): string {
-        return trim(preg_replace('!\s+!', " ", str_replace(array("\n", "\r", "\t"), ' ', html_entity_decode(strip_shortcodes(strip_tags($text))))));
+        return trim(preg_replace('!\s+!', " ", str_replace(array("\n", "\r", "\t"), ' ', html_entity_decode(strip_tags($text)))));
     }
 
     /**

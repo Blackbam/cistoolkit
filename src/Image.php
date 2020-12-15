@@ -185,8 +185,8 @@ class Image {
      * @param string $src : URL to the original image
      * @param float $wh_relation :  Width / Height relation. If you want an image of 200 width and 100 height pass 0.5.
      * @param string $steps : An array of all widths which should be made
-     * @param type $q : Quality according to timthumb documentation.
-     * @param type $zc : Zoom Crop according to timthumb documentation.
+     * @param int $q : Quality according to timthumb documentation.
+     * @param int $zc : Zoom Crop according to timthumb documentation.
      * @param string $imgsrvParamAdd : A get string to add to each link request to the image server.
      * @return array: An array of URLs with width as keys, ascending by width.
      */
@@ -208,7 +208,7 @@ class Image {
             if (floatval($wh_relation) > 0.0) {
                 $height = (1 / floatval($wh_relation) * $step);
             }
-            $urls[$step] = $this->generateUrl($src, $step, $height, $q, false, $zc) . $imgsrvParamAdd;
+            $urls[$step] = $this->generateUrl($src, $step, $height, $q, $zc) . $imgsrvParamAdd;
         }
 
         return $urls;

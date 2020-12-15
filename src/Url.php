@@ -257,7 +257,7 @@ class Url {
      * Performs a curl_exec with debug output to a specified file.
      *
      * @param &$curlhandle : The curlhandle resource which was created by curl_init(); to be passed by reference
-     * @param null $log_location : Log location folder. If empty the wp-content directory will be used.
+     * @param string $log_folder_path : The path to log to
      * @param string $log_file_name : The name of the logfile to be written.
      *
      * @return mixed: The result of the curl request.
@@ -275,7 +275,7 @@ class Url {
      * NOTE: You have to close the file handle which is returned. The use of curlExecDebug is recommended for most situations.
      *
      * @param &$curlhandle : The curlhandle resource which was created by curl_init(); to be passed by reference
-     * @param null $log_location : Log location folder. If empty the wp-content directory will be used.
+     * @param string $log_folder_path : The path to log to
      * @param string $log_file_name : The name of the logfile to be written.
      *
      * @return mixed: The log file resource.
@@ -284,7 +284,7 @@ class Url {
 
         if (!is_resource($curlhandle)) {
             trigger_error("Incorrect call to the curlAddDebug function: Expected curl handle.", E_USER_WARNING);
-            return;
+            return false;
         }
 
         $fp = fopen($log_folder_path . DIRECTORY_SEPARATOR . $log_file_name, 'w');
