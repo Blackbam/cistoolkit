@@ -82,6 +82,15 @@ class IterableArtist {
     }
 
     /**
+     * Merge an arbitrary amount of arrays together and eliminiate duplicates.
+     * @param array ...$arrays
+     * @return array
+     */
+    public static function fusion(array ...$arrays): array {
+        return array_unique(array_merge(...$arrays), SORT_REGULAR);
+    }
+
+    /**
      * Add to a path within a dynamic array no matter if the path already exists or not.
      *
      * @param array $out
