@@ -1,17 +1,4 @@
-= 1.1.7 =
-Implemented Color class
+= V 0.7.6 =
 
-= 1.1.6 =
-Added file function
-
-= 1.1.5 =
-Minor type & documentation fixes.
-
-= 1.1.2 =
- * extended url class
-
-= 1.1.1 =
-- Fixed unexpected echos in StringArtist and unecessary echo functionality in Image: You may have to update calls
-to those functions
-
-* Initial release
+- fixed bug in Sanitizer
+- Added "getClassShortName"

@@ -41,4 +41,13 @@ class Reflection {
         return implode(" ", $classes);
     }
 
+    /**
+     * Get a class name without the class path.
+     *
+     * @param object $object: The object to get the class short name for
+     * @return string: The class shortname
+     */
+    public static function getClassShortName(object $object): string {
+        return basename(str_replace('\\', '/', get_class($object)));
+    }
 }
