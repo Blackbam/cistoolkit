@@ -79,9 +79,8 @@ class StringArtist {
      * @param bool $capitalizeFirstLetter (optional) if set to `false` the first letter will be lower case
      * @return string: A nice class name or method name (if not empty after sanitation)
      */
-    public function textToCodeName(string $text, bool $capitalizeFirstLetter = false): string
-    {
-        $text = ltrim(iconv('utf-8', 'us-ascii//TRANSLIT', preg_replace("/\s+/", "", ucwords(trim(preg_replace('/[^a-z0-9]+/i', ' ', $text))))),'0..9');
+    public function textToCodeName(string $text, bool $capitalizeFirstLetter = false): string {
+        $text = ltrim(iconv('utf-8', 'us-ascii//TRANSLIT', preg_replace("/\s+/", "", ucwords(trim(preg_replace('/[^a-z0-9]+/i', ' ', $text))))), '0..9');
         if ($capitalizeFirstLetter) {
             return ucfirst($text);
         }
@@ -89,6 +88,9 @@ class StringArtist {
     }
 
     /**
+     * @param string $color
+     * @param string $default
+     * @return string
      * @deprecated Use Color class
      */
     public static function sanitizeHexColor(string $color, string $default = "#ffffff"): string {
@@ -119,7 +121,7 @@ class StringArtist {
      * @return bool: True, if the string starts with ...
      */
     public static function startsWith(string $haystack, string $needle): bool {
-        return (substr($haystack, 0, strlen($needle)) === $needle);
+        return (strpos($haystack, $needle) === 0);
     }
 
     /**
@@ -129,7 +131,7 @@ class StringArtist {
      */
     public static function endsWith(string $haystack, string $needle): bool {
         $length = strlen($needle);
-        return ($length != 0) ? (substr($haystack, -$length) === $needle) : true;
+        return ($length !== 0) ? (substr($haystack, -$length) === $needle) : true;
     }
 
     /**
@@ -166,7 +168,7 @@ class StringArtist {
      */
     public static function urlToHtmlAnchors(string $text, bool $label_strip_params = false, bool $label_strip_protocol = true): string {
 
-        $webAddressToHTML = function ($url) use ($label_strip_params, $label_strip_protocol) {
+        $webAddressToHTML = static function ($url) use ($label_strip_params, $label_strip_protocol) {
             $label = $url;
             if ($label_strip_params) {
                 $label = rtrim(preg_replace('/\?.*/', '', $label), "/");
@@ -233,15 +235,15 @@ class StringArtist {
     /**
      * Split a string at a certain position and get both parts.
      *
-     * @param string $string: The string to split
-     * @param int $num: The position to split at
+     * @param string $string : The string to split
+     * @param int $num : The position to split at
      * @return array: $array[0] is the first part of the splitted string, $array[1] the second
      */
     public static function splitAt(string $string, int $num): array {
-        $num = Math::rangeInt($num,1);
+        $num = Math::rangeInt($num, 1);
         $length = strlen($string);
         $output[0] = substr($string, 0, $num);
-        $output[1] = substr($string, $num, $length );
+        $output[1] = substr($string, $num, $length);
         return $output;
     }
 

@@ -3,12 +3,12 @@
 namespace CisTools\Enum;
 
 /**
- * Constats representing the PHP primitive types.
+ * Constants representing the PHP primitive types.
  */
 abstract class Primitive extends BasicEnum {
-    const NONE = -1;
-    const STR = 0;
-    const INT = 1;
-    const BOOL = 2;
-    const FLOAT = 3;
+    public const NONE = -1;
+    public const STR = 0;
+    public const INT = 1;
+    public const BOOL = 2;
+    public const FLOAT = 3;
 }

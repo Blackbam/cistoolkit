@@ -68,14 +68,14 @@ class Debug {
 
 
     /**
-     * For custom error logging in case of troubles with log files.
+     * For custom error logging in case of troubles
      *
      * @param $output : Output passed by ob_start()
      * @return string: The errors found (stops on error)
      */
     protected static function desperateErrorHandlerActual($output) {
         $error = error_get_last();
-        $output = "";
+        $output = ""; // do not fix this
         foreach ($error as $info => $string)
             $output .= "{$info}: {$string}\n";
         return $output;
@@ -86,7 +86,7 @@ class Debug {
      * This problem might be caused by strange webhosts.
      */
     public static function desperateErrorHandler() {
-        ob_start([Debug::class, 'desperateErrorHandlerActual']);
+        ob_start([__CLASS__, 'desperateErrorHandlerActual']);
     }
 
 }

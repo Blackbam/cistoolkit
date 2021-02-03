@@ -31,7 +31,7 @@ class HtmlSelector {
         // if multiple, make sure name is array
         if ($multiple) {
             if (!(substr($name, -2) === "[]")) {
-                $name = $name . "[]";
+                $name .= "[]";
             }
 
             if (!is_array($preselect)) {
@@ -43,43 +43,43 @@ class HtmlSelector {
             }
         }
 
-        $res = "<select name='" . $name . "' " . (($id != "") ? "id='" . $id . "'" : "") . " " . (($multiple != "") ? "multiple='" . $multiple . "'" : "") . ">";
+        $res = '<select name="' . $name . '" ' . (($id !== "") ? 'id="' . $id . '"' : '') . '' . ($multiple ? 'multiple="multiple"' : '') . '>';
         if ($empty === true) {
             $res .= '<option></option>';
         }
         foreach ($array as $key => $value) {
-            $prstr = "";
+            $selected = "";
 
-            if ($use_assoc == false && $two_dim == false) {
+            if ($use_assoc === false && $two_dim === false) {
                 if ($multiple) {
                     if (in_array($value, $preselect)) {
-                        $prstr = 'selected="selected"';
+                        $selected = 'selected="selected"';
                     }
                 } else if ($preselect == $value) {
-                    $prstr = 'selected="selected"';
+                    $selected = 'selected="selected"';
                 }
-                $res .= '<option ' . $prstr . '>' . $value . '</option>';
+                $res .= '<option ' . $selected . '>' . $value . '</option>';
             } else if ($use_assoc == true && $two_dim == false) {
 
                 if ($multiple) {
                     if (in_array($key, $preselect)) {
-                        $prstr = 'selected="selected"';
+                        $selected = 'selected="selected"';
                     }
                 } else if ($preselect == $key) {
-                    $prstr = 'selected="selected"';
+                    $selected = 'selected="selected"';
                 }
-                $res .= '<option value="' . $key . '" ' . $prstr . '>' . $value . '</option>';
-            } else if ($use_assoc == false && $two_dim == true) {
+                $res .= '<option value="' . $key . '" ' . $selected . '>' . $value . '</option>';
+            } else if ($use_assoc === false && $two_dim === true) {
                 $res .= '<optgroup label="' . $key . '">';
                 foreach ($value as $op) {
                     if ($multiple) {
                         if (in_array($op, $preselect)) {
-                            $prstr = 'selected="selected"';
+                            $selected = 'selected="selected"';
                         }
                     } else if ($preselect == $op) {
-                        $prstr = 'selected="selected"';
+                        $selected = 'selected="selected"';
                     }
-                    $res .= '<option ' . $prstr . '>' . $op . '</option>';
+                    $res .= '<option ' . $selected . '>' . $op . '</option>';
                 }
                 $res .= '</optgroup>';
             } else if ($use_assoc == true && $two_dim == true) {
@@ -87,17 +87,16 @@ class HtmlSelector {
                 foreach ($value as $inner_key => $inner_value) {
                     if ($multiple) {
                         if (in_array($inner_key, $preselect)) {
-                            $prstr = 'selected="selected"';
+                            $selected = 'selected="selected"';
                         }
                     } else if ($preselect == $inner_key) {
-                        $prstr = 'selected="selected"';
+                        $selected = 'selected="selected"';
                     }
-                    $res .= '<option value="' . $inner_key . '" ' . $prstr . '>' . $inner_value . '</option>';
+                    $res .= '<option value="' . $inner_key . '" ' . $selected . '>' . $inner_value . '</option>';
                 }
                 $res .= '</optgroup>';
             }
         }
         return $res . "</select>";
     }
-
 }

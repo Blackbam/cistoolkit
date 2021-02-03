@@ -7,7 +7,7 @@ use CisTools\Enum\GoldenRatioMode;
 class Math {
     /**
      *
-     * @param int $rel1_x
+     * @param int $rel_1x
      * @param int $rel_1y
      * @param int $rel_2x
      * @param bool $round
@@ -17,7 +17,7 @@ class Math {
         if ($round) {
             return round($rel_1y * $rel_2x / $rel_1x);
         }
-        return floatval($rel_1y) * floatval($rel_2x) / floatval($rel_1x);
+        return (float)$rel_1y * (float)$rel_2x / (float)$rel_1x;
     }
 
 

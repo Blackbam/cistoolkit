@@ -10,7 +10,7 @@ namespace CisTools\Enum;
  * A PHP enum class (https://stackoverflow.com/questions/254514/php-and-enumerations).
  */
 abstract class BasicEnum {
-    private static $constCacheArray = NULL;
+    private static ?array $constCacheArray = null;
 
     /**
      * BasicEnum constructor: Enums should not be constructed.
@@ -23,10 +23,10 @@ abstract class BasicEnum {
      * @throws \ReflectionException
      */
     public static function getConstants(): array {
-        if (self::$constCacheArray == NULL) {
+        if (self::$constCacheArray === null) {
             self::$constCacheArray = [];
         }
-        $calledClass = get_called_class();
+        $calledClass = static::class;
         if (!array_key_exists($calledClass, self::$constCacheArray)) {
             $reflect = new \ReflectionClass($calledClass);
             self::$constCacheArray[$calledClass] = $reflect->getConstants();
@@ -48,7 +48,7 @@ abstract class BasicEnum {
         }
 
         $keys = array_map('strtolower', array_keys($constants));
-        return in_array(strtolower($name), $keys);
+        return in_array(strtolower($name), $keys, true);
     }
 
     /**

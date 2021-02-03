@@ -135,14 +135,14 @@ class Url {
      * @param bool $urlencode : Shall all parameters (path & query) be encoded? (recommended, otherwise you can build invalid URLs)
      * @return bool|string: The URL or false if invalid parameters were passed.
      */
-    public static function buildDeep(array $parsed, $trailingslashit = false, $urlencode = true) {
-        if (!isset($parsed["host"]) || !isset($parsed["scheme"])) {
+    public static function buildDeep(array $parsed, bool $trailingslashit = false, $urlencode = true) {
+        if (!isset($parsed["host"], $parsed["scheme"])) {
             return false;
         }
         $url = $parsed["scheme"] . "://" . $parsed["host"];
 
-        if (isset($parsed["port"]) && intval($parsed["port"]) > 0) {
-            $url .= ":" . intval($parsed["port"]);
+        if (isset($parsed["port"]) && (int)$parsed["port"] > 0) {
+            $url .= ":" . (int)$parsed["port"];
         }
 
         if (isset($parsed["path"]) && !empty($parsed["path"])) {
@@ -159,7 +159,7 @@ class Url {
         if (isset($parsed["query"]) && !empty($parsed["query"])) {
             $f = true;
             foreach ($parsed["query"] as $key => $value) {
-                if ($f == true) {
+                if ($f === true) {
                     $url .= "?";
                     $f = false;
                 } else {
@@ -235,7 +235,7 @@ class Url {
      * @param string $key : The key before the value.
      * @return string: If the value was found the value, empty string otherwise
      */
-    public static function getPermalinkParam(string $url, string $key) {
+    public static function getPermalinkParam(string $url, string $key): string {
         $parsed = self::parseDeep($url);
         if (!empty($parsed["path"])) {
             $path = $parsed["path"];

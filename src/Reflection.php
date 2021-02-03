@@ -44,7 +44,7 @@ class Reflection {
     /**
      * Get a class name without the class path.
      *
-     * @param object $object: The object to get the class short name for
+     * @param object $object : The object to get the class short name for
      * @return string: The class shortname
      */
     public static function getClassShortName(object $object): string {

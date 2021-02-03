@@ -47,23 +47,23 @@ class Color {
 
     public function setByRgba(int $red, int $green, int $blue, float $alpha = 1.0): void {
         $this->color = self::rgbToInt($red, $green, $blue);
-        self::setAlpha($alpha);
+        $this->setAlpha($alpha);
     }
 
     public function setByHsla($hue, $saturation, $lightness, float $alpha = 1.0): void {
         $rgb = self::hslToRgb($hue, $saturation, $lightness);
         $this->color = self::rgbToInt($rgb[0], $rgb[1], $rgb[2]);
-        self::setAlpha($alpha);
+        $this->setAlpha($alpha);
     }
 
     public function setByHsv($hue, $saturation, $brightness): void {
-        $rgb = self::hsvToRgb($hue, $saturation, $brightness);
+        $rgb = $this->hsvToRgb($hue, $saturation, $brightness);
         $this->color = self::rgbToInt($rgb[0], $rgb[1], $rgb[2]);
         $this->alpha = 1.0;
     }
 
     public function setByCmyk($cyan, $magenta, $yellow, $key): void {
-        $rgb = self::cmykToRgb($cyan, $magenta, $yellow, $key);
+        $rgb = $this->cmykToRgb($cyan, $magenta, $yellow, $key);
         $this->color = self::rgbToInt($rgb[0], $rgb[1], $rgb[2]);
         $this->alpha = 1.0;
     }
@@ -92,7 +92,7 @@ class Color {
 
     public function getRgba(): array {
         $rgb = self::intToRgb($this->color);
-        array_push($rgb, $this->alpha);
+        $rgb[] = $this->alpha;
         return $rgb;
     }
 
@@ -104,18 +104,18 @@ class Color {
     public function getHsla(): array {
         $rgb = self::intToRgb($this->color);
         $hsl = self::rgbToHsl($rgb[0], $rgb[1], $rgb[2]);
-        array_push($hsl, $this->alpha);
+        $hsl[] = $this->alpha;
         return $hsl;
     }
 
     public function getHsv(): array {
         $rgb = self::intToRgb($this->color);
-        return self::rgbToHsv($rgb[0], $rgb[1], $rgb[2]);
+        return $this->rgbToHsv($rgb[0], $rgb[1], $rgb[2]);
     }
 
     public function getCmyk(): array {
         $rgb = self::intToRgb($this->color);
-        return self::rgbToCmyk($rgb[0], $rgb[1], $rgb[2]);
+        return $this->rgbToCmyk($rgb[0], $rgb[1], $rgb[2]);
     }
 
     /*
@@ -125,11 +125,11 @@ class Color {
     */
 
     public static function rgbToInt(int $red, int $green, int $blue): int {
-        return (int)0xFFFF * Math::rangeInt($red, 0, 255) + 0xFF * Math::rangeInt($green, 0, 255) + Math::rangeInt($blue, 0, 255);
+        return 0xFFFF * Math::rangeInt($red, 0, 255) + 0xFF * Math::rangeInt($green, 0, 255) + Math::rangeInt($blue, 0, 255);
     }
 
     public static function intToRgb(int $color): array {
-        list($r, $g, $b) = sscanf(str_pad(dechex($color), 6, "0", STR_PAD_LEFT), "%02x%02x%02x");
+        [$r, $g, $b] = sscanf(str_pad(dechex($color), 6, "0", STR_PAD_LEFT), "%02x%02x%02x");
         return [$r, $g, $b];
     }
 
@@ -164,7 +164,7 @@ class Color {
         $min = min($r, $g, $b);
         $l = ($max + $min) / 2;
         $d = $max - $min;
-        if ($d == 0) {
+        if ($d === 0) {
             $h = $s = 0;
         } else {
             $s = $d / (1 - abs(2 * $l - 1));
@@ -218,25 +218,24 @@ class Color {
         return [floor(($r + $m) * 255), floor(($g + $m) * 255), floor(($b + $m) * 255)];
     }
 
-    function rgbToCmyk($r, $g, $b) {
+    function rgbToCmyk($r, $g, $b): array {
         $c = (255 - $r) / 255.0 * 100;
         $m = (255 - $g) / 255.0 * 100;
         $y = (255 - $b) / 255.0 * 100;
 
-        $b = min(array($c, $m, $y));
-        $c = $c - $b;
-        $m = $m - $b;
-        $y = $y - $b;
+        $b = min([$c, $m, $y]);
+        $c -= $b;
+        $m -= $b;
+        $y -= $b;
 
-        $cmyk = array('c' => $c, 'm' => $m, 'y' => $y, 'k' => $b);
-        return $cmyk;
+        return ['c' => $c, 'm' => $m, 'y' => $y, 'k' => $b];
     }
 
     function cmykToRgb($c, $m, $y, $k) {
-        $c = $c / 100;
-        $m = $m / 100;
-        $y = $y / 100;
-        $k = $k / 100;
+        $c /= 100;
+        $m /= 100;
+        $y /= 100;
+        $k /= 100;
 
         $r = 1 - ($c * (1 - $k)) - $k;
         $g = 1 - ($m * (1 - $k)) - $k;
@@ -304,7 +303,7 @@ class Color {
      * @param int $v : The value
      * @return array: The RGB representation
      */
-    function hsvToRgb($h, $s, $v) {
+    function hsvToRgb($h, $s, $v): array {
         $r = null;
         $g = null;
         $b = null;
@@ -367,7 +366,7 @@ class Color {
      * @return string: A hex color prefixed with hashtag (e.g. #ffffff)
      */
     public static function colorSanitizeHexString(string $color, string $default = "#ffffff"): string {
-        if (substr($color, 0, 1) !== "#") {
+        if ($color && $color[0] !== "#") {
             $color = "#" . $color;
         }
 
@@ -390,10 +389,7 @@ class Color {
         $trel = $threshold * 100.0 / 256.0;
         $rgb = self::intToRgb($this->color);
         $hsl = self::rgbToHsl($rgb[0], $rgb[1], $rgb[2]);
-        if ($hsl[2] > $trel) {
-            return false;
-        }
-        return true;
+        return !($hsl[2] > $trel);
     }
 
     /*

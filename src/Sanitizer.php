@@ -18,19 +18,19 @@ class Sanitizer {
      */
     public static function resempty(&$var, $key, $empty = "", $primitive = -1) {
 
-        $tcast = function ($var, $primitive) {
+        $tcast = static function ($var, $primitive) {
             switch (true):
                 case $primitive === Primitive::STR:
-                    $var = strval($var);
+                    $var = (string)$var;
                     break;
                 case $primitive === Primitive::INT:
-                    $var = intval($var);
+                    $var = (int)$var;
                     break;
                 case $primitive === Primitive::BOOL:
-                    $var = boolval($var);
+                    $var = (bool)$var;
                     break;
                 case $primitive === Primitive::FLOAT:
-                    $var = floatval($var);
+                    $var = (float)$var;
                     break;
             endswitch;
             return $var;

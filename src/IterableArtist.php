@@ -26,12 +26,12 @@ class IterableArtist {
         $a = [];
         foreach ($iterable as $item) {
             if (is_array($item)) {
-                array_push($a, $item[$key]);
+                $a[] = $item[$key];
             } else if (is_object($item)) {
                 if ($callbackMethod) {
-                    array_push($a, $item->$callbackMethod(...$callbackArguments));
+                    $a[] = $item->$callbackMethod(...$callbackArguments);
                 } else {
-                    array_push($a, $item->$key);
+                    $a[] = $item->$key;
                 }
             }
         }
@@ -49,9 +49,9 @@ class IterableArtist {
      * @return array: The flattened result.
      */
     public static function flatten(array $array, int $maxDepth = -1): array {
-        $result = array();
+        $result = [];
         foreach ($array as $key => $value) {
-            if (is_array($value) && $maxDepth != 0) {
+            if (is_array($value) && $maxDepth !== 0) {
                 $result = array_merge($result, self::flatten($value, ($maxDepth > 0) ? $maxDepth - 1 : -1));
             } else {
                 $result[$key] = $value;
