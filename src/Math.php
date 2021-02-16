@@ -4,7 +4,8 @@ namespace CisTools;
 
 use CisTools\Enum\GoldenRatioMode;
 
-class Math {
+class Math
+{
     /**
      *
      * @param int $rel_1x
@@ -13,7 +14,8 @@ class Math {
      * @param bool $round
      * @return float: Result is related to variable 3, like variable 2 is related to variable 1.
      */
-    public static function ruleOfThree(int $rel_1x, int $rel_1y, int $rel_2x, bool $round = true): float {
+    public static function ruleOfThree(int $rel_1x, int $rel_1y, int $rel_2x, bool $round = true): float
+    {
         if ($round) {
             return round($rel_1y * $rel_2x / $rel_1x);
         }
@@ -39,7 +41,12 @@ class Math {
      * @param int $max_decimal_places : Round the result to a certain amount of decimal places? Default -1 (no).
      * @return array: A tuple containg the length of the longer side first, and the shorter side second.
      */
-    public static function goldenRatio($length, GoldenRatioMode $mode, bool $rounded = false, int $max_decimal_places = -1) {
+    public static function goldenRatio(
+        $length,
+        GoldenRatioMode $mode,
+        bool $rounded = false,
+        int $max_decimal_places = -1
+    ) {
         $length = floatval($length);
         $ratio = (1 + sqrt(5)) / 2;
         $max_decimal_places = intval($max_decimal_places);
@@ -61,9 +68,12 @@ class Math {
         endswitch;
 
         if ($max_decimal_places >= 0) {
-            return array_map(function ($a) use ($max_decimal_places) {
-                return round($a, $max_decimal_places);
-            }, $result);
+            return array_map(
+                function ($a) use ($max_decimal_places) {
+                    return round($a, $max_decimal_places);
+                },
+                $result
+            );
         }
         return ($rounded) ? array_map('intval', $result) : $result;
     }
@@ -74,9 +84,14 @@ class Math {
      * @param int $max : The maximum value
      * @return int: The integer which might has been set to min or max
      */
-    public static function rangeInt(int $int, int $min = PHP_INT_MIN, int $max = PHP_INT_MAX): int {
-        if ($int < $min) return $min;
-        if ($int > $max) return $max;
+    public static function rangeInt(int $int, int $min = PHP_INT_MIN, int $max = PHP_INT_MAX): int
+    {
+        if ($int < $min) {
+            return $min;
+        }
+        if ($int > $max) {
+            return $max;
+        }
         return $int;
     }
 
@@ -86,9 +101,14 @@ class Math {
      * @param float $max : The maximum value
      * @return float: The float which might has been set to min or max
      */
-    public static function rangeFloat(float $float, float $min = PHP_FLOAT_MIN, float $max = PHP_FLOAT_MAX): float {
-        if ($float < $min) return $min;
-        if ($float > $max) return $max;
+    public static function rangeFloat(float $float, float $min = PHP_FLOAT_MIN, float $max = PHP_FLOAT_MAX): float
+    {
+        if ($float < $min) {
+            return $min;
+        }
+        if ($float > $max) {
+            return $max;
+        }
         return $float;
     }
 }

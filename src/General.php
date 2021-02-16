@@ -4,16 +4,19 @@ namespace CisTools;
 
 use CisTools\Enum\GoldenRatioMode;
 use CisTools\Enum\Primitive;
+use Closure;
 
 /**
  * @deprecated Was originally for functions without a concrete class
  */
-class General {
+class General
+{
 
     /**
      * @deprecated Use Map instead
      */
-    public static function apply($callback, &$var) {
+    public static function apply($callback, &$var)
+    {
         return Map::apply($callback, $var);
     }
 
@@ -21,7 +24,8 @@ class General {
     /**
      * @deprecated Use Map instead
      */
-    public static function recApply($input, callable $func, int $times) {
+    public static function recApply($input, callable $func, int $times)
+    {
         return Map::recApply($input, $func, $times);
     }
 
@@ -29,7 +33,8 @@ class General {
     /**
      * @deprecated Will be removed. Use Math class instead.
      */
-    public static function ruleOfThree(int $rel_1x, int $rel_1y, int $rel_2x, bool $round = true): float {
+    public static function ruleOfThree(int $rel_1x, int $rel_1y, int $rel_2x, bool $round = true): float
+    {
         return Math::ruleOfThree($rel_1x, $rel_1y, $rel_2x, $round);
     }
 
@@ -37,7 +42,12 @@ class General {
     /**
      * @deprecated Will be removed. Use Math class instead.
      */
-    public static function goldenRatio($length, GoldenRatioMode $mode, bool $rounded = false, int $max_decimal_places = -1) {
+    public static function goldenRatio(
+        $length,
+        GoldenRatioMode $mode,
+        bool $rounded = false,
+        int $max_decimal_places = -1
+    ) {
         return Math::goldenRatio($length, $mode, $rounded, $max_decimal_places);
     }
 
@@ -45,7 +55,8 @@ class General {
     /**
      * @deprecated Use Sanitizer class instead
      */
-    public static function resempty(&$var, $key, $empty = "", Primitive $primitive = null) {
+    public static function resempty(&$var, $key, $empty = "", Primitive $primitive = null)
+    {
         return Sanitizer::resempty($var, $key, $empty, $primitive);
     }
 
@@ -53,7 +64,8 @@ class General {
     /**
      * @deprecated Use Reflection class instead
      */
-    public static function classNameSanitize(string $name): string {
+    public static function classNameSanitize(string $name): string
+    {
         return Reflection::classNameSanitize($name);
     }
 
@@ -61,28 +73,32 @@ class General {
     /**
      * @deprecated Use Reflection class instead
      */
-    public static function classNameSanitizeMulti(string $names): string {
+    public static function classNameSanitizeMulti(string $names): string
+    {
         return Reflection::classNameSanitizeMulti($names);
     }
 
     /**
      * @deprecated Use File class instead
      */
-    public static function ripemd320File(string $filepath) {
-        File::ripemd320File($filepath);
+    public static function ripemd320File(string $filepath)
+    {
+        return File::ripemd320File($filepath);
     }
 
     /**
      * @deprecated Use ArrayArtist class instead
      */
-    public static function arrayFlatUpShift(array $array, $key = 0): array {
-        return ArrayArtist::arrayFlatUpShift($array, $key);
+    public static function arrayFlatUpShift(array $array, $key = 0): array
+    {
+        return IterableArtist::flatUpShift($array, $key);
     }
 
     /**
      * @deprecated Use Reflection instead
      */
-    public static function isClosure($t): bool {
-        return is_object($t) && ($t instanceof \Closure);
+    public static function isClosure($t): bool
+    {
+        return is_object($t) && ($t instanceof Closure);
     }
 }

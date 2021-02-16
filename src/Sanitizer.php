@@ -4,7 +4,8 @@ namespace CisTools;
 
 use CisTools\Enum\Primitive;
 
-class Sanitizer {
+class Sanitizer
+{
 
     /**
      * In case you are unsure if an array key/object property exists and you want to get a (possibly typesafe) defined result.
@@ -16,8 +17,8 @@ class Sanitizer {
      *
      * @return mixed: The (sanitized) value at the position key or the given default value if nothing found.
      */
-    public static function resempty(&$var, $key, $empty = "", $primitive = -1) {
-
+    public static function resempty(&$var, $key, $empty = "", $primitive = -1)
+    {
         $tcast = static function ($var, $primitive) {
             switch (true):
                 case $primitive === Primitive::STR:
@@ -60,27 +61,29 @@ class Sanitizer {
             if (property_exists($var, $key)) {
                 return $tcast($var->$key, $primitive);
             }
-        } else if (is_array($var)) {
-            if (is_array($key)) {
-                $tpar = $var;
-                $dimensions = count($key);
+        } else {
+            if (is_array($var)) {
+                if (is_array($key)) {
+                    $tpar = $var;
+                    $dimensions = count($key);
 
-                for ($i = 0; $i < $dimensions; $i++) {
-                    if (array_key_exists($key[$i], $tpar)) {
-                        if ($i === $dimensions - 1) {
-                            return $tcast($tpar[$key[$i]], $primitive);
+                    for ($i = 0; $i < $dimensions; $i++) {
+                        if (array_key_exists($key[$i], $tpar)) {
+                            if ($i === $dimensions - 1) {
+                                return $tcast($tpar[$key[$i]], $primitive);
+                            } else {
+                                $tpar = $tpar[$key[$i]];
+                            }
                         } else {
-                            $tpar = $tpar[$key[$i]];
+                            return $tcast($empty, $primitive);
                         }
-                    } else {
-                        return $tcast($empty, $primitive);
                     }
+                    return $tcast($empty, $primitive);
                 }
-                return $tcast($empty, $primitive);
-            }
 
-            if (array_key_exists($key, $var)) {
-                return $tcast($var[$key], $primitive);
+                if (array_key_exists($key, $var)) {
+                    return $tcast($var[$key], $primitive);
+                }
             }
         }
         return $tcast($empty, $primitive);
@@ -93,7 +96,8 @@ class Sanitizer {
      * @param $default : The default to use if the variable is empty
      * @return mixed: The default value if false. True otherwise.
      */
-    public static function defempty($var, $default) {
+    public static function defempty($var, $default)
+    {
         return (empty($var)) ? $default : $var;
     }
 

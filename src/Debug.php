@@ -2,18 +2,24 @@
 
 namespace CisTools;
 
+use Closure;
+use ReflectionException;
+use ReflectionFunction;
+
 /**
  * Class Debug: Debugging helpers
  * @package CisTools
  */
-class Debug {
+class Debug
+{
 
     /**
      * For pretty dumping of variables to an HTML output
      *
      * @param mixed $var : The variable to dump pretty
      */
-    public static function dump($var) {
+    public static function dump($var)
+    {
         echo "<pre>";
         var_dump($var);
         echo "</pre>";
@@ -22,15 +28,16 @@ class Debug {
     /**
      * WARNING: This is not a perfect dump of a closure, it just should help you find it.
      *
-     * @param \Closure $c : A variable holding a Closure
+     * @param Closure $c : A variable holding a Closure
      * @param bool $echo : False to not echo the output
      * @return string
      */
-    public static function dumpClosure(\Closure $c, bool $echo = true): string {
+    public static function dumpClosure(Closure $c, bool $echo = true): string
+    {
         $str = 'function (';
         try {
-            $r = new \ReflectionFunction($c);
-        } catch (\ReflectionException $exception) {
+            $r = new ReflectionFunction($c);
+        } catch (ReflectionException $exception) {
             // do nothing
         }
         $params = array();
@@ -38,8 +45,10 @@ class Debug {
             $s = '';
             if ($p->isArray()) {
                 $s .= 'array ';
-            } else if ($p->getClass()) {
-                $s .= $p->getClass()->name . ' ';
+            } else {
+                if ($p->getClass()) {
+                    $s .= $p->getClass()->name . ' ';
+                }
             }
             if ($p->isPassedByReference()) {
                 $s .= '&';
@@ -48,7 +57,7 @@ class Debug {
             if ($p->isOptional()) {
                 try {
                     $s .= ' = ' . var_export($p->getDefaultValue(), true);
-                } catch (\ReflectionException $exception) {
+                } catch (ReflectionException $exception) {
                     // do nothing
                 }
             }
@@ -66,6 +75,14 @@ class Debug {
         return $str;
     }
 
+    /**
+     * Call this in the very beginning of your script if you have no other chance to display errors.
+     * This problem might be caused by strange webhosts.
+     */
+    public static function desperateErrorHandler()
+    {
+        ob_start([__CLASS__, 'desperateErrorHandlerActual']);
+    }
 
     /**
      * For custom error logging in case of troubles
@@ -73,20 +90,14 @@ class Debug {
      * @param $output : Output passed by ob_start()
      * @return string: The errors found (stops on error)
      */
-    protected static function desperateErrorHandlerActual($output) {
+    protected static function desperateErrorHandlerActual($output)
+    {
         $error = error_get_last();
         $output = ""; // do not fix this
-        foreach ($error as $info => $string)
+        foreach ($error as $info => $string) {
             $output .= "{$info}: {$string}\n";
+        }
         return $output;
-    }
-
-    /**
-     * Call this in the very beginning of your script if you have no other chance to display errors.
-     * This problem might be caused by strange webhosts.
-     */
-    public static function desperateErrorHandler() {
-        ob_start([__CLASS__, 'desperateErrorHandlerActual']);
     }
 
 }

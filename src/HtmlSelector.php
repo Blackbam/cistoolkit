@@ -59,7 +59,7 @@ class HtmlSelector {
                     $selected = 'selected="selected"';
                 }
                 $res .= '<option ' . $selected . '>' . $value . '</option>';
-            } else if ($use_assoc == true && $two_dim == false) {
+            } else if ($use_assoc === true && $two_dim === false) {
 
                 if ($multiple) {
                     if (in_array($key, $preselect)) {
@@ -82,14 +82,14 @@ class HtmlSelector {
                     $res .= '<option ' . $selected . '>' . $op . '</option>';
                 }
                 $res .= '</optgroup>';
-            } else if ($use_assoc == true && $two_dim == true) {
+            } else if ($use_assoc === true && $two_dim === true) {
                 $res .= '<optgroup label="' . $key . '">';
                 foreach ($value as $inner_key => $inner_value) {
                     if ($multiple) {
                         if (in_array($inner_key, $preselect)) {
                             $selected = 'selected="selected"';
                         }
-                    } else if ($preselect == $inner_key) {
+                    } else if ($preselect === $inner_key) {
                         $selected = 'selected="selected"';
                     }
                     $res .= '<option value="' . $inner_key . '" ' . $selected . '>' . $inner_value . '</option>';

@@ -261,9 +261,12 @@ class StringArtist {
         // Remove comments
         $css = preg_replace('!/\*[^*]*\*+([^/][^*]*\*+)*/!', '', $css);
         // Remove space after colons
-        $css = str_replace(': ', ':', $css);
         // Remove whitespace
-        return str_replace(array("\r\n", "\r", "\n", "\t", '  ', '    ', '    '), '', $css);
+        return str_replace(
+            array(': ', "\r\n", "\r", "\n", "\t", '  ', '    ', '    '),
+            array(':', '', '', '', '', '', '', ''),
+            $css
+        );
     }
 
     /**
