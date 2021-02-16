@@ -7,7 +7,8 @@ namespace CisTools;
  *
  * @package CisTools
  */
-class IterableArtist {
+class IterableArtist
+{
 
     /**
      * Flatten an array of arrays or objects by one level if only needing a certain key value from a sub array/sub object.
@@ -22,16 +23,23 @@ class IterableArtist {
      * @param mixed ...$callbackArguments : Any arguments for the callback function.
      * @return array: The result array
      */
-    public static function flatUpShift(iterable $iterable, $key = 0, string $callbackMethod = "", ...$callbackArguments): array {
+    public static function flatUpShift(
+        iterable $iterable,
+        $key = 0,
+        string $callbackMethod = "",
+        ...$callbackArguments
+    ): array {
         $a = [];
         foreach ($iterable as $item) {
             if (is_array($item)) {
                 $a[] = $item[$key];
-            } else if (is_object($item)) {
-                if ($callbackMethod) {
-                    $a[] = $item->$callbackMethod(...$callbackArguments);
-                } else {
-                    $a[] = $item->$key;
+            } else {
+                if (is_object($item)) {
+                    if ($callbackMethod) {
+                        $a[] = $item->$callbackMethod(...$callbackArguments);
+                    } else {
+                        $a[] = $item->$key;
+                    }
                 }
             }
         }
@@ -48,7 +56,8 @@ class IterableArtist {
      * flatten it completely, a positive number e.g. two means that only the first two dimensions are flattened.
      * @return array: The flattened result.
      */
-    public static function flatten(array $array, int $maxDepth = -1): array {
+    public static function flatten(array $array, int $maxDepth = -1): array
+    {
         $result = [];
         foreach ($array as $key => $value) {
             if (is_array($value) && $maxDepth !== 0) {
@@ -67,8 +76,8 @@ class IterableArtist {
      * @param $array : Input array.
      * @return bool: True if the array values are increasing.
      */
-    public static function hasIncreasingValues(array $array): bool {
-
+    public static function hasIncreasingValues(array $array): bool
+    {
         if (count($array) <= 1) {
             return true;
         }
@@ -86,7 +95,8 @@ class IterableArtist {
      * @param array ...$arrays
      * @return array
      */
-    public static function fusion(array ...$arrays): array {
+    public static function fusion(array ...$arrays): array
+    {
         return array_unique(array_merge(...$arrays), SORT_REGULAR);
     }
 
@@ -98,7 +108,8 @@ class IterableArtist {
      * @param $val : Whatever value
      * @return void
      */
-    public static function autoVivifyDynamicKeyPath(array &$out, array $pathKeys, $val): void {
+    public static function autoVivifyDynamicKeyPath(array &$out, array $pathKeys, $val): void
+    {
         $cursor = &$out;
         foreach ($pathKeys as $key) {
             if (!isset($cursor[$key]) || !is_array($cursor[$key])) {

@@ -11,7 +11,8 @@ namespace CisTools;
  * Author URL: http://www.blackbam.at/
  * Created: 17.07.2017
  */
-class HtmlSelector {
+class HtmlSelector
+{
 
     /**
      * Returns a ready HTML selector for a given PHP array.
@@ -26,8 +27,16 @@ class HtmlSelector {
      * @param bool $multiple : If multi-select with array preselect.
      * @return string: The ready HTML.
      */
-    public static function fromArray(array $array, string $name, bool $empty = true, bool $use_assoc = false, bool $two_dim = false, string $id = "", $preselect = null, bool $multiple = false): string {
-
+    public static function fromArray(
+        array $array,
+        string $name,
+        bool $empty = true,
+        bool $use_assoc = false,
+        bool $two_dim = false,
+        string $id = "",
+        $preselect = null,
+        bool $multiple = false
+    ): string {
         // if multiple, make sure name is array
         if ($multiple) {
             if (!(substr($name, -2) === "[]")) {
@@ -55,46 +64,59 @@ class HtmlSelector {
                     if (in_array($value, $preselect)) {
                         $selected = 'selected="selected"';
                     }
-                } else if ($preselect == $value) {
-                    $selected = 'selected="selected"';
+                } else {
+                    if ($preselect == $value) {
+                        $selected = 'selected="selected"';
+                    }
                 }
                 $res .= '<option ' . $selected . '>' . $value . '</option>';
-            } else if ($use_assoc === true && $two_dim === false) {
-
-                if ($multiple) {
-                    if (in_array($key, $preselect)) {
-                        $selected = 'selected="selected"';
-                    }
-                } else if ($preselect == $key) {
-                    $selected = 'selected="selected"';
-                }
-                $res .= '<option value="' . $key . '" ' . $selected . '>' . $value . '</option>';
-            } else if ($use_assoc === false && $two_dim === true) {
-                $res .= '<optgroup label="' . $key . '">';
-                foreach ($value as $op) {
+            } else {
+                if ($use_assoc === true && $two_dim === false) {
                     if ($multiple) {
-                        if (in_array($op, $preselect)) {
+                        if (in_array($key, $preselect)) {
                             $selected = 'selected="selected"';
                         }
-                    } else if ($preselect == $op) {
-                        $selected = 'selected="selected"';
-                    }
-                    $res .= '<option ' . $selected . '>' . $op . '</option>';
-                }
-                $res .= '</optgroup>';
-            } else if ($use_assoc === true && $two_dim === true) {
-                $res .= '<optgroup label="' . $key . '">';
-                foreach ($value as $inner_key => $inner_value) {
-                    if ($multiple) {
-                        if (in_array($inner_key, $preselect)) {
+                    } else {
+                        if ($preselect == $key) {
                             $selected = 'selected="selected"';
                         }
-                    } else if ($preselect === $inner_key) {
-                        $selected = 'selected="selected"';
                     }
-                    $res .= '<option value="' . $inner_key . '" ' . $selected . '>' . $inner_value . '</option>';
+                    $res .= '<option value="' . $key . '" ' . $selected . '>' . $value . '</option>';
+                } else {
+                    if ($use_assoc === false && $two_dim === true) {
+                        $res .= '<optgroup label="' . $key . '">';
+                        foreach ($value as $op) {
+                            if ($multiple) {
+                                if (in_array($op, $preselect)) {
+                                    $selected = 'selected="selected"';
+                                }
+                            } else {
+                                if ($preselect == $op) {
+                                    $selected = 'selected="selected"';
+                                }
+                            }
+                            $res .= '<option ' . $selected . '>' . $op . '</option>';
+                        }
+                        $res .= '</optgroup>';
+                    } else {
+                        if ($use_assoc === true && $two_dim === true) {
+                            $res .= '<optgroup label="' . $key . '">';
+                            foreach ($value as $inner_key => $inner_value) {
+                                if ($multiple) {
+                                    if (in_array($inner_key, $preselect)) {
+                                        $selected = 'selected="selected"';
+                                    }
+                                } else {
+                                    if ($preselect === $inner_key) {
+                                        $selected = 'selected="selected"';
+                                    }
+                                }
+                                $res .= '<option value="' . $inner_key . '" ' . $selected . '>' . $inner_value . '</option>';
+                            }
+                            $res .= '</optgroup>';
+                        }
+                    }
                 }
-                $res .= '</optgroup>';
             }
         }
         return $res . "</select>";
