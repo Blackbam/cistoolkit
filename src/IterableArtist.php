@@ -101,6 +101,15 @@ class IterableArtist
     }
 
     /**
+     * @param array $array
+     * @return array
+     */
+    public static function getDuplicates(array $array): array
+    {
+        return array_unique( array_diff_assoc( $array, array_unique( $array ) ) );
+    }
+
+    /**
      * Add to a path within a dynamic array no matter if the path already exists or not.
      *
      * @param array $out
