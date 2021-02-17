@@ -65,7 +65,7 @@ class Color
      */
     public static function colorHexToInt(string $hexCode): int
     {
-        $hexCode = substr(trim($hexCode), self::colorSanitizeHexString($hexCode));
+        $hexCode = substr(self::colorSanitizeHexString($hexCode),1);
 
         if (strlen($hexCode) === 3) {
             $hexCode = $hexCode[0] . $hexCode[0] . $hexCode[1] . $hexCode[1] . $hexCode[2] . $hexCode[2];
@@ -129,16 +129,23 @@ class Color
      */
     public static function colorSanitizeHexString(string $color, string $default = "#ffffff"): string
     {
+        $color = trim($color);
+        $regex = '|^#([A-Fa-f0-9]{3}){1,2}$|';
+
         if ($color && $color[0] !== "#") {
             $color = "#" . $color;
         }
 
         // 3 or 6 hex digits, or the empty string.
-        if (preg_match('|^#([A-Fa-f0-9]{3}){1,2}$|', $color)) {
+        if (preg_match($regex, $color)) {
             return $color;
         }
 
-        return $default;
+        if(preg_match($regex, $default)) {
+            return $default;
+        }
+
+        return '#ffffff';
     }
 
     /**

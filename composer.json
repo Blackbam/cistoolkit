@@ -1,7 +1,7 @@
 {
   "name": "blackbam/cistoolkit",
   "type": "library",
-  "description": "Toolkit for a faster development process.",
+  "description": "A generic toolkit containing a lot of very useful PHP classes",
   "keywords": ["templating","debugging","math","url"],
   "homepage": "https://www.blackbam.at/",
   "license": "MIT",

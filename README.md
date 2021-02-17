@@ -1,12 +1,12 @@
 # CIS Toolkit
-A small toolkit of useful functions to be used in various projects.
+A generic toolkit containing a lot of very useful PHP classes:
 
  - String Toolkit
  - Color Toolkit
  - Api Toolkit
  - Debug Toolkit
  - File Toolkit
- - HTMLSelector Toolkit (for creation of selectors)
+ - HTML Selector Toolkit (for creation of selectors)
  - Image Toolkit
  - Map Toolkit (for mapping functions)
  - Math Toolkit (for Math operations)
@@ -14,5 +14,3 @@ A small toolkit of useful functions to be used in various projects.
  - Sanitizer Toolkit (for variable sanitation)
  - StringArtist Toolkit (for operations on strings)
  - Url Toolkit
- 
-This library might be constantly extended.
