@@ -554,12 +554,24 @@ class Color
     */
 
     /**
-     * @param bool $rgba
+     * @deprecated
+     */
+    public function cssGetHex(bool $withAlpha = false): string
+    {
+       return $this->getHexRgba($withAlpha);
+    }
+
+    /**
+     * @param bool $withAlpha
      * @return string
      */
-    public function cssGetHex(bool $rgba = false): string
+    public function getHexRgba(bool $withAlpha = false): string
     {
-        return "#" . str_pad($this->getHexString($rgba), 6, "0", STR_PAD_LEFT);
+        $out = "#" . str_pad($this->getHexString(), 6, "0", STR_PAD_LEFT);
+        if($withAlpha) {
+            $out .= str_pad($this->getHexAlpha(),2,"0",STR_PAD_LEFT);
+        }
+        return $out;
     }
 
     /*
@@ -569,12 +581,11 @@ class Color
      */
 
     /**
-     * @param bool $rgba
      * @return string
      */
-    public function getHexString(bool $rgba = false): string
+    public function getHexString(): string
     {
-        return dechex($this->color) . (($rgba) ? $this->getHexAlpha() : "");
+        return dechex($this->color);
     }
 
     /**
