@@ -75,6 +75,57 @@ class Debug
         return $str;
     }
 
+
+    /**
+     * jTraceEx() - provide a Java style exception trace
+     * @param \Throwable $throwable
+     * @param array|null $seen - array passed to recursive calls to accumulate trace lines already seen
+     *                     leave as NULL when calling this function
+     * @return string with one entry per trace line
+     */
+    public static function jTraceEx(\Throwable $throwable, ?array $seen=null): string {
+        $starter = $seen ? 'Caused by: ' : '';
+        $result = [];
+        if (!$seen) {
+            $seen = [];
+        }
+        $trace  = $throwable->getTrace();
+        $prev   = $throwable->getPrevious();
+        $result[] = sprintf('%s%s: %s', $starter, get_class($throwable), $throwable->getMessage());
+        $file = $throwable->getFile();
+        $line = $throwable->getLine();
+        while (true) {
+            $current = "$file:$line";
+            if (is_array($seen) && in_array($current, $seen, true)) {
+                $result[] = sprintf(' ... %d more', count($trace)+1);
+                break;
+            }
+            $result[] = sprintf(' at %s%s%s(%s%s%s)',
+                                count($trace) && array_key_exists('class', $trace[0]) ? str_replace('\\', '.', $trace[0]['class']) : '',
+                                count($trace) && array_key_exists('class', $trace[0]) && array_key_exists('function', $trace[0]) ? '.' : '',
+                                count($trace) && array_key_exists('function', $trace[0]) ? str_replace('\\', '.', $trace[0]['function']) : '(main)',
+                                $line === null ? $file : basename($file),
+                                $line === null ? '' : ':',
+                                $line ?? ''
+            );
+            if (is_array($seen)) {
+                $seen[] = "$file:$line";
+            }
+            if (!count($trace)) {
+                break;
+            }
+            $file = array_key_exists('file', $trace[0]) ? $trace[0]['file'] : 'Unknown Source';
+            $line = array_key_exists('file', $trace[0]) && array_key_exists('line', $trace[0]) && $trace[0]['line'] ? $trace[0]['line'] : null;
+            array_shift($trace);
+        }
+        $result = implode("\n", $result);
+        if ($prev) {
+            $result .= "\n" . self::jTraceEx($prev, $seen);
+        }
+
+        return $result;
+    }
+
     /**
      * Call this in the very beginning of your script if you have no other chance to display errors.
      * This problem might be caused by strange webhosts.
