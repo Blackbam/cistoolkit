@@ -1,17 +1,20 @@
 <?php
+
 namespace CisTools;
 
 
 class Html
 {
+    public const ATTRIBUTE_NAME_MATCHER = "/[\s\x{0000}\x{0020}\x{0022}\x{0027}\x{003E}\x{002F}\x{003D}\x{200B}-\x{200D}\x{FDD0}-\x{FDEF}\x{FEFF}[:cntrl:]]+/u";
 
     /**
      * Checks if a given string is a valid HTML attribute.
      * @param string $attributeName
      * @return bool: True if the given attribute name is a valid HTML attribute name.
      */
-    public static function isAttributeNameValid(string $attributeName): bool {
-        return $attributeName === self::sanitizeAttributeName($attributeName);
+    public static function isAttributeNameValid(string $attributeName): bool
+    {
+        return (bool)preg_match(self::ATTRIBUTE_NAME_MATCHER, $attributeName);
     }
 
     /**
@@ -19,8 +22,9 @@ class Html
      * @param string $attributeName
      * @return string
      */
-    public static function sanitizeAttributeName(string $attributeName): string {
-        return preg_replace("/^[A-Za-z]+[\w\-\:\.]*$/",'',$attributeName);
+    public static function sanitizeAttributeName(string $attributeName): string
+    {
+        return preg_replace(self::ATTRIBUTE_NAME_MATCHER, '', $attributeName);
     }
 
 }

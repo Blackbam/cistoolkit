@@ -30,7 +30,7 @@ class HtmlForm
 
         $name = "select";
         if (array_key_exists("name", $attributes)) {
-            $name = htmlspecialchars($attributes["name"],ENT_COMPAT|ENT_HTML5);
+            $name = htmlspecialchars($attributes["name"], ENT_COMPAT | ENT_HTML5);
         }
 
         // if multiple, make sure name is array
@@ -42,9 +42,15 @@ class HtmlForm
         $readyAttributes = [];
         foreach ($attributes as $attKey => $attValue) {
             if (Html::isAttributeNameValid($attKey)) {
-                $readyAttributes[Html::sanitizeAttributeName($attKey)] = htmlspecialchars($attValue,ENT_COMPAT|ENT_HTML5);
+                $readyAttributes[Html::sanitizeAttributeName($attKey)] = htmlspecialchars(
+                    $attValue,
+                    ENT_COMPAT | ENT_HTML5
+                );
             } elseif (Html::isAttributeNameValid($attValue)) {
-                $readyAttributes[Html::sanitizeAttributeName($attValue)] = htmlspecialchars($attValue,ENT_COMPAT|ENT_HTML5);
+                $readyAttributes[Html::sanitizeAttributeName($attValue)] = htmlspecialchars(
+                    $attValue,
+                    ENT_COMPAT | ENT_HTML5
+                );
             }
         }
 
@@ -62,11 +68,14 @@ class HtmlForm
             $out = "";
             foreach ($options as $option => $optionValue) {
                 $key = ($valuesAreOptionKeys) ? $option : $optionValue;
-                $out .= '<option value="' . htmlspecialchars($key,ENT_COMPAT|ENT_HTML5) . '" ' . (in_array(
+                $out .= '<option value="' . htmlspecialchars($key, ENT_COMPAT | ENT_HTML5) . '" ' . (in_array(
                         $key,
                         $preSelect,
                         true
-                    ) ? 'selected="selected"' : '') . '>' . htmlspecialchars($optionValue,ENT_NOQUOTES|ENT_HTML5) . '</option>';
+                    ) ? 'selected="selected"' : '') . '>' . htmlspecialchars(
+                        $optionValue,
+                        ENT_NOQUOTES | ENT_HTML5
+                    ) . '</option>';
             }
             return $out;
         };
@@ -75,7 +84,7 @@ class HtmlForm
             $out .= $genOpt($array);
         } else {
             foreach ($array as $optgroupLabel => $optgroupOptions) {
-                $out .= '<optgroup label="' . htmlspecialchars($optgroupLabel,ENT_COMPAT|ENT_HTML5) . '">' . $genOpt(
+                $out .= '<optgroup label="' . htmlspecialchars($optgroupLabel, ENT_COMPAT | ENT_HTML5) . '">' . $genOpt(
                         $optgroupOptions
                     ) . '</optgroup>';
             }
