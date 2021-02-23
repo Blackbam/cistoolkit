@@ -143,5 +143,4 @@ class IterableArtist
         }
         $cursor = $val;
     }
-
 }
