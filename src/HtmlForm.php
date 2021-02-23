@@ -41,12 +41,12 @@ class HtmlForm
         // prepare all attributes
         $readyAttributes = [];
         foreach ($attributes as $attKey => $attValue) {
-            if (Html::isAttributeNameValid($attKey)) {
+            if (!is_numeric($attKey)) {
                 $readyAttributes[Html::sanitizeAttributeName($attKey)] = htmlspecialchars(
                     $attValue,
                     ENT_COMPAT | ENT_HTML5
                 );
-            } elseif (Html::isAttributeNameValid($attValue)) {
+            } else {
                 $readyAttributes[Html::sanitizeAttributeName($attValue)] = htmlspecialchars(
                     $attValue,
                     ENT_COMPAT | ENT_HTML5
