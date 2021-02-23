@@ -14,7 +14,7 @@ class HtmlForm
      * @param boolean $valuesAreOptionKeys (optional, default false): Select true, if the option VALUES should be the array KEYs.
      * @return string: The ready HTML.
      */
-    public static function inputSelectFromArray(
+    public static function selectFromArray(
         array $array,
         array $attributes = [],
         array $preSelect = [],
