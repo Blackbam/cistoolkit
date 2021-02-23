@@ -101,12 +101,27 @@ class IterableArtist
     }
 
     /**
+     * Count array dimensions
+     * @param array $array
+     * @return int: The dimensions of an array
+     */
+    public static function countDim(array $array): int
+    {
+        if (is_array(reset($array))) {
+            $result = self::countDim(reset($array)) + 1;
+        } else {
+            $result = 1;
+        }
+        return $result;
+    }
+
+    /**
      * @param array $array
      * @return array
      */
     public static function getDuplicates(array $array): array
     {
-        return array_unique( array_diff_assoc( $array, array_unique( $array ) ) );
+        return array_unique(array_diff_assoc($array, array_unique($array)));
     }
 
     /**

@@ -76,17 +76,6 @@ class StringArtist
     }
 
     /**
-     * @param string $color
-     * @param string $default
-     * @return string
-     * @deprecated Use Color class
-     */
-    public static function sanitizeHexColor(string $color, string $default = "#ffffff"): string
-    {
-        return Color::colorSanitizeHexString($color, $default);
-    }
-
-    /**
      * Date inputs work different across browsers in different languages. This sanitizes the input to standard date.
      *
      * Can be used before saving as well as before setting as value for a date input.
@@ -188,16 +177,13 @@ class StringArtist
     }
 
     /**
-     * Check for a valid CSS Hex color
-     * @param string $color : Hex color (only 7 chars, prefixed with #).
-     * @return bool: True if the color is valid and prefixed with one #
+     * Removes all possible whitespace from a string (also special UTF-8 characters e.g. zero-width non-breaking space).
+     *
+     * @param string $string
+     * @return string: The string without any whitespace.
      */
-    public static function validateHexColor(string $color): bool
-    {
-        if (preg_match('/^#[a-f0-9]{6}$/i', $color)) {
-            return true;
-        }
-        return false;
+    public static function removeAllWhitespace(string $string): string {
+        return preg_replace('/[\x{200B}-\x{200D}\x{FEFF}]/u', '', $string);
     }
 
     /**

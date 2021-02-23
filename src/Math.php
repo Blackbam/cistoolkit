@@ -32,7 +32,7 @@ class Math
      *
      * https://en.wikipedia.org/wiki/Golden_ratio
      *
-     * @param mixed $length : The value to calculate the golden cut for (will be converted to float).
+     * @param float $length : The value to calculate the golden cut for (will be converted to float).
      * @param GoldenRatioMode $mode :
      * OVERALL_GIVEN (0): The overall available length is given
      * LONGSIDE_GIVEN (1): The longer part is given.
@@ -42,14 +42,12 @@ class Math
      * @return array: A tuple containg the length of the longer side first, and the shorter side second.
      */
     public static function goldenRatio(
-        $length,
+        float $length,
         GoldenRatioMode $mode,
         bool $rounded = false,
         int $max_decimal_places = -1
     ) {
-        $length = floatval($length);
         $ratio = (1 + sqrt(5)) / 2;
-        $max_decimal_places = intval($max_decimal_places);
         switch ($mode):
             case GoldenRatioMode::LONGSIDE_GIVEN:
             {
