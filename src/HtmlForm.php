@@ -13,6 +13,7 @@ class HtmlForm
      * @param boolean $addEmptyOption (optional, default true): If there should be the possibility to select nothing.
      * @param boolean $valuesAreOptionKeys (optional, default false): Select true, if the option VALUES should be the array KEYs.
      * @return string: The ready HTML.
+     * @throws Exception\NonSanitizeableException
      */
     public static function selectFromArray(
         array $array,
@@ -41,6 +42,7 @@ class HtmlForm
         // prepare all attributes
         $readyAttributes = [];
         foreach ($attributes as $attKey => $attValue) {
+
             if (!is_numeric($attKey)) {
                 $readyAttributes[Html::sanitizeAttributeName($attKey)] = htmlspecialchars(
                     $attValue,

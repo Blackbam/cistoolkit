@@ -2,6 +2,7 @@
 
 namespace CisTools;
 
+use CisTools\Exception\NonSanitizeableException;
 use Closure;
 
 class Reflection
@@ -23,6 +24,7 @@ class Reflection
      *
      * @param string $names
      * @return string
+     * @throws NonSanitizeableException
      */
     public static function classNameSanitizeMulti(string $names): string
     {
@@ -38,12 +40,17 @@ class Reflection
      *
      * @param string $name
      * @return string
+     * @throws NonSanitizeableException
      */
     public static function classNameSanitize(string $name): string
     {
         $name = strtolower($name); // we dislike uppercase classes
         $name = preg_replace('/[^-_a-zA-Z0-9]+/', '', $name);
-        return ltrim(ltrim($name, "-"), '0..9');
+        $name = ltrim(ltrim($name, "-"), '0..9');
+        if(!$name) {
+            throw new NonSanitizeableException("Unable to sanitize class name.");
+        }
+        return $name;
     }
 
     /**

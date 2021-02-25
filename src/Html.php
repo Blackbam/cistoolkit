@@ -2,6 +2,7 @@
 
 namespace CisTools;
 
+use CisTools\Exception\NonSanitizeableException;
 
 class Html
 {
@@ -21,10 +22,14 @@ class Html
      * Sanitizes a string to be a valid HTML5 attribute name.
      * @param string $attributeName
      * @return string
+     * @throws NonSanitizeableException
      */
     public static function sanitizeAttributeName(string $attributeName): string
     {
-        return preg_replace(self::ATTRIBUTE_NAME_MATCHER, '', $attributeName);
+        $sanitizedAttributeName = preg_replace(self::ATTRIBUTE_NAME_MATCHER, '', $attributeName);
+        if(!$sanitizedAttributeName) {
+            throw new NonSanitizeableException("Failed to sanitize attribute name");
+        }
+        return $sanitizedAttributeName;
     }
-
 }

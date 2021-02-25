@@ -80,16 +80,16 @@ class StringArtist
      *
      * Can be used before saving as well as before setting as value for a date input.
      *
-     * @param $val : Any possible date accepted by strtotime
+     * @param $val : Any possible date accepted by strtotime()
      * @return false|string|null: Date in the format YYYY-MM-DD
      */
     public static function sanitizeDateInput($val)
     {
-        $tstamp = strtotime($val);
-        if ($tstamp < 100) {
+        $timestamp = strtotime($val);
+        if ($timestamp < 100) {
             return null;
         }
-        return date("Y-m-d", $tstamp);
+        return date("Y-m-d", $timestamp);
     }
 
     /**
@@ -133,7 +133,7 @@ class StringArtist
         $result = array_unique(
             array_filter(
                 array_map('intval', $raw),
-                function ($a) {
+                static function ($a) {
                     return $a > 0;
                 }
             )

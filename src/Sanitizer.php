@@ -47,10 +47,10 @@ class Sanitizer
                         if ($i === $dimensions - 1) {
                             $obj_key = $key[$i];
                             return $tcast($tpclass->$obj_key, $primitive);
-                        } else {
-                            $obj_key = $key[$i];
-                            $tpclass = $tpclass->$obj_key;
                         }
+
+                        $obj_key = $key[$i];
+                        $tpclass = $tpclass->$obj_key;
                     } else {
                         return $tcast($empty, $primitive);
                     }
@@ -71,9 +71,9 @@ class Sanitizer
                         if (array_key_exists($key[$i], $tpar)) {
                             if ($i === $dimensions - 1) {
                                 return $tcast($tpar[$key[$i]], $primitive);
-                            } else {
-                                $tpar = $tpar[$key[$i]];
                             }
+
+                            $tpar = $tpar[$key[$i]];
                         } else {
                             return $tcast($empty, $primitive);
                         }
