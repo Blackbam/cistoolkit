@@ -31,9 +31,9 @@ class Url
         $domain = implode('.', array_slice(explode('.', parse_url($url, PHP_URL_HOST)), -2));
         if (in_array($domain, $domains)) {
             return true;
-        } else {
-            return false;
         }
+
+        return false;
     }
 
     /**
@@ -57,7 +57,7 @@ class Url
      */
     public static function getHostUrl(): string
     {
-        return "http" . (($_SERVER['SERVER_PORT'] == 443) ? "s" : "") . "://" . $_SERVER['HTTP_HOST'];
+        return "http" . (($_SERVER['SERVER_PORT'] === 443) ? "s" : "") . "://" . $_SERVER['HTTP_HOST'];
     }
 
     /**
@@ -126,6 +126,21 @@ class Url
     public static function addParam(string $url, string $key, $value): string
     {
         return $url . ((strpos($url, '?') !== false) ? "&" : "?") . urlencode($key) . "=" . urlencode($value);
+    }
+
+    /**
+     * Update or add a GET-Parameter (key value pair) to an already prepared URL (with or without existing query string).
+     *
+     * @param string $url
+     * @param string $key
+     * @param $value
+     * @return string
+     */
+    public static function updateParam(string $url, string $key, $value): string
+    {
+        $parsed = self::parseDeep($url);
+        $parsed["query"][urlencode($key)] = urlencode($value);
+        return self::buildDeep($parsed);
     }
 
     /**
