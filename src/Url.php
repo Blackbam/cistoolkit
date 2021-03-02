@@ -57,7 +57,17 @@ class Url
      */
     public static function getHostUrl(): string
     {
-        return "http" . (($_SERVER['SERVER_PORT'] === 443) ? "s" : "") . "://" . $_SERVER['HTTP_HOST'];
+        return "http" . (self::isSecure() ? "s":"") . "://" . $_SERVER['HTTP_HOST'];
+    }
+
+    /**
+     * Check if http is secure
+     *
+     * @return bool: True if https
+     */
+    public static function isSecure(): bool
+    {
+        return (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] === 443;
     }
 
     /**
