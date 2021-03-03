@@ -107,35 +107,9 @@ class Url
         }
 
         if (isset($parsed["query"]) && !empty($parsed["query"])) {
-            $f = true;
-            foreach ($parsed["query"] as $key => $value) {
-                if ($f === true) {
-                    $url .= "?";
-                    $f = false;
-                } else {
-                    $url .= "&";
-                }
-                if ($urlencode) {
-                    $url .= urlencode($key) . "=" . urlencode($value);
-                } else {
-                    $url .= $key . "=" . $value;
-                }
-            }
+            $url .= "?" . http_build_query($parsed["query"], null, '&', PHP_QUERY_RFC3986);
         }
         return $url;
-    }
-
-    /**
-     * Add a GET-Parameter (key value pair) to an already prepared URL (with or without existing query string).
-     *
-     * @param string $url : The URL to append the key value pair
-     * @param string $key : The key
-     * @param mixed $value : The value (should be a string)
-     * @return string: The URL with the extended query string
-     */
-    public static function addParam(string $url, string $key, $value): string
-    {
-        return $url . ((strpos($url, '?') !== false) ? "&" : "?") . urlencode($key) . "=" . urlencode($value);
     }
 
     /**
@@ -255,50 +229,11 @@ class Url
         }
 
         if (isset($parsed["query"])) {
-            $parsed["query"] = self::parseStr($parsed["query"]);
+            parse_str($parsed["query"],$parsed['query']);
         } else {
             $parsed["query"] = [];
         }
         return $parsed;
-    }
-
-    /**
-     * Similar to parse_str. Does not need a second parameter - the result array is generated.
-     *
-     * Proper parsing of query strings allowing duplicate values (http://php.net/manual/en/function.parse-str.php#76792)
-     *
-     * @param string $str
-     * @return array
-     */
-    public static function parseStr(string $str): array
-    {
-        # result array
-        $arr = [];
-
-        # split on outer delimiter
-        $pairs = explode('&', $str);
-
-        # loop through each pair
-        foreach ($pairs as $i) {
-            # split into name and value (array_pad to prevent notice)
-            list($name, $value) = array_pad(explode('=', $i, 2), 2, null);
-
-            # if name already exists
-            if (isset($arr[$name])) {
-                # stick multiple values into an array
-                if (is_array($arr[$name])) {
-                    $arr[$name][] = $value;
-                } else {
-                    $arr[$name] = [$arr[$name], $value];
-                }
-            } # otherwise, simply stick it in a scalar
-            else {
-                $arr[$name] = $value;
-            }
-        }
-
-        # return result array
-        return $arr;
     }
 
 
@@ -307,19 +242,19 @@ class Url
     /**
      * Performs a curl_exec with debug output to a specified file.
      *
-     * @param &$curlhandle : The curlhandle resource which was created by curl_init(); to be passed by reference
+     * @param &$curlHandle : The curl handle resource which was created by curl_init(); to be passed by reference
      * @param string $log_folder_path : The path to log to
      * @param string $log_file_name : The name of the logfile to be written.
      *
      * @return mixed: The result of the curl request.
      */
     public static function curlExecDebug(
-        &$curlhandle,
+        &$curlHandle,
         string $log_folder_path,
         string $log_file_name = "cis-curl-errorlog.txt"
     ) {
-        $fp = self::curlAddDebug($curlhandle, $log_folder_path, $log_file_name);
-        $result = curl_exec($curlhandle);
+        $fp = self::curlAddDebug($curlHandle, $log_folder_path, $log_file_name);
+        $result = curl_exec($curlHandle);
         fclose($fp);
         return $result;
     }
@@ -329,26 +264,25 @@ class Url
      *
      * NOTE: You have to close the file handle which is returned. The use of curlExecDebug is recommended for most situations.
      *
-     * @param &$curlhandle : The curlhandle resource which was created by curl_init(); to be passed by reference
+     * @param $curlHandle : The curlHandle resource which was created by curl_init(); to be passed by reference
      * @param string $log_folder_path : The path to log to
      * @param string $log_file_name : The name of the logfile to be written.
      *
      * @return mixed: The log file resource.
      */
     public static function curlAddDebug(
-        &$curlhandle,
+        $curlHandle,
         string $log_folder_path,
         string $log_file_name = "cis-curl-errorlog.txt"
     ) {
-        if (!is_resource($curlhandle)) {
+        if (!is_resource($curlHandle)) {
             trigger_error("Incorrect call to the curlAddDebug function: Expected curl handle.", E_USER_WARNING);
             return false;
         }
 
-        $fp = fopen($log_folder_path . DIRECTORY_SEPARATOR . $log_file_name, 'w');
-        curl_setopt($curlhandle, CURLOPT_VERBOSE, 1);
-        curl_setopt($curlhandle, CURLOPT_STDERR, $fp);
-
+        $fp = fopen($log_folder_path . DIRECTORY_SEPARATOR . $log_file_name, 'wb');
+        curl_setopt($curlHandle, CURLOPT_VERBOSE, 1);
+        curl_setopt($curlHandle, CURLOPT_STDERR, $fp);
         return $fp;
     }
 
