@@ -3,10 +3,31 @@
 namespace CisTools;
 
 use CisTools\Exception\NonSanitizeableException;
-use Closure;
+use ReflectionFunctionAbstract;
 
 class Reflection
 {
+
+    /**
+     * Get a reflection function object for a callable.
+     * @param callable $callable
+     * @return ReflectionFunctionAbstract
+     * @throws \ReflectionException
+     */
+    public static function reflectionOf(callable $callable): ReflectionFunctionAbstract
+    {
+        if ($callable instanceof \Closure) {
+            return new \ReflectionFunction($callable);
+        }
+        if (is_string($callable)) {
+            $pcs = explode('::', $callable);
+            return count($pcs) > 1 ? new \ReflectionMethod($pcs[0], $pcs[1]) : new \ReflectionFunction($callable);
+        }
+        if (!is_array($callable)) {
+            $callable = [$callable, '__invoke'];
+        }
+        return new \ReflectionMethod($callable[0], $callable[1]);
+    }
 
     /**
      * Check if a variable is an anonymous function.
@@ -16,7 +37,7 @@ class Reflection
      */
     public static function isClosure($t): bool
     {
-        return is_object($t) && ($t instanceof Closure);
+        return is_object($t) && ($t instanceof \Closure);
     }
 
     /**
@@ -47,7 +68,7 @@ class Reflection
         $name = strtolower($name); // we dislike uppercase classes
         $name = preg_replace('/[^-_a-zA-Z0-9]+/', '', $name);
         $name = ltrim(ltrim($name, "-"), '0..9');
-        if(!$name) {
+        if (!$name) {
             throw new NonSanitizeableException("Unable to sanitize class name.");
         }
         return $name;

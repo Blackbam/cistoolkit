@@ -182,7 +182,8 @@ class StringArtist
      * @param string $string
      * @return string: The string without any whitespace.
      */
-    public static function removeAllWhitespace(string $string): string {
+    public static function removeAllWhitespace(string $string): string
+    {
         return preg_replace('/[\x{200B}-\x{200D}\x{FEFF}]/u', '', $string);
     }
 

@@ -27,7 +27,7 @@ class Html
     public static function sanitizeAttributeName(string $attributeName): string
     {
         $sanitizedAttributeName = preg_replace(self::ATTRIBUTE_NAME_MATCHER, '', $attributeName);
-        if(!$sanitizedAttributeName) {
+        if (!$sanitizedAttributeName) {
             throw new NonSanitizeableException("Attribute name had no salvageable characters");
         }
         return $sanitizedAttributeName;

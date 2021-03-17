@@ -1,4 +1,5 @@
 <?php
+
 namespace CisTools\Exception;
 
 /**
@@ -12,7 +13,6 @@ class NonSanitizeableException extends \Exception
     public function __construct($message, $code = 0, \Exception $previous = null)
     {
         $message = "Non-sanitizeable value: " . $message;
-
         parent::__construct($message, $code, $previous);
     }
 

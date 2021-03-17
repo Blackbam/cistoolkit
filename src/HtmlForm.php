@@ -42,7 +42,6 @@ class HtmlForm
         // prepare all attributes
         $readyAttributes = [];
         foreach ($attributes as $attKey => $attValue) {
-
             if (!is_numeric($attKey)) {
                 $readyAttributes[Html::sanitizeAttributeName($attKey)] = htmlspecialchars(
                     $attValue,

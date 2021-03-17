@@ -57,7 +57,7 @@ class Url
      */
     public static function getHostUrl(): string
     {
-        return "http" . (self::isSecure() ? "s":"") . "://" . $_SERVER['HTTP_HOST'];
+        return "http" . (self::isSecure() ? "s" : "") . "://" . $_SERVER['HTTP_HOST'];
     }
 
     /**
@@ -123,7 +123,7 @@ class Url
     public static function updateParam(string $url, string $key, $value): string
     {
         $parsed = self::parseDeep($url);
-        $parsed["query"][urlencode($key)] = urlencode($value);
+        $parsed["query"][$key] = $value;
         return self::buildDeep($parsed);
     }
 
@@ -229,7 +229,7 @@ class Url
         }
 
         if (isset($parsed["query"])) {
-            parse_str($parsed["query"],$parsed['query']);
+            parse_str($parsed["query"], $parsed['query']);
         } else {
             $parsed["query"] = [];
         }
