@@ -33,13 +33,11 @@ class IterableArtist
         foreach ($iterable as $item) {
             if (is_array($item)) {
                 $a[] = $item[$key];
-            } else {
-                if (is_object($item)) {
-                    if ($callbackMethod) {
-                        $a[] = $item->$callbackMethod(...$callbackArguments);
-                    } else {
-                        $a[] = $item->$key;
-                    }
+            } elseif (is_object($item)) {
+                if ($callbackMethod) {
+                    $a[] = $item->$callbackMethod(...$callbackArguments);
+                } else {
+                    $a[] = $item->$key;
                 }
             }
         }
@@ -61,7 +59,7 @@ class IterableArtist
         $result = [];
         foreach ($array as $key => $value) {
             if (is_array($value) && $maxDepth !== 0) {
-                $result = array_merge($result, self::flatten($value, ($maxDepth > 0) ? $maxDepth - 1 : -1));
+                $result = array_merge(...[$result, self::flatten($value, ($maxDepth > 0) ? $maxDepth - 1 : -1)]);
             } else {
                 $result[$key] = $value;
             }
