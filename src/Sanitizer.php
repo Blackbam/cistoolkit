@@ -61,29 +61,27 @@ class Sanitizer
             if (property_exists($var, $key)) {
                 return $tcast($var->$key, $primitive);
             }
-        } else {
-            if (is_array($var)) {
-                if (is_array($key)) {
-                    $tpar = $var;
-                    $dimensions = count($key);
+        } elseif (is_array($var)) {
+            if (is_array($key)) {
+                $tpar = $var;
+                $dimensions = count($key);
 
-                    for ($i = 0; $i < $dimensions; $i++) {
-                        if (array_key_exists($key[$i], $tpar)) {
-                            if ($i === $dimensions - 1) {
-                                return $tcast($tpar[$key[$i]], $primitive);
-                            }
-
-                            $tpar = $tpar[$key[$i]];
-                        } else {
-                            return $tcast($empty, $primitive);
+                for ($i = 0; $i < $dimensions; $i++) {
+                    if (array_key_exists($key[$i], $tpar)) {
+                        if ($i === $dimensions - 1) {
+                            return $tcast($tpar[$key[$i]], $primitive);
                         }
-                    }
-                    return $tcast($empty, $primitive);
-                }
 
-                if (array_key_exists($key, $var)) {
-                    return $tcast($var[$key], $primitive);
+                        $tpar = $tpar[$key[$i]];
+                    } else {
+                        return $tcast($empty, $primitive);
+                    }
                 }
+                return $tcast($empty, $primitive);
+            }
+
+            if (array_key_exists($key, $var)) {
+                return $tcast($var[$key], $primitive);
             }
         }
         return $tcast($empty, $primitive);
