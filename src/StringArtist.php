@@ -2,6 +2,9 @@
 
 namespace CisTools;
 
+use Exception;
+use JetBrains\PhpStorm\Pure;
+
 class StringArtist
 {
 
@@ -11,6 +14,7 @@ class StringArtist
      * @param int $length : The desired length.
      * @param bool $with_numbers : If true, the string does only contain lowercase characters - no numbers.
      * @return string: The alpha(numeric) string
+     * @throws Exception
      */
     public static function getRandomAlnumString(int $length = 8, bool $with_numbers = false): string
     {
@@ -21,7 +25,7 @@ class StringArtist
         $string = '';
 
         for ($i = 0; $i < $length; $i++) {
-            $string .= $characters[mt_rand(0, strlen($characters) - 1)];
+            $string .= $characters[random_int(0, strlen($characters) - 1)];
         }
 
         return $string;
@@ -32,6 +36,7 @@ class StringArtist
      *
      * @param int $length : The desired length.
      * @return string: The randum URL-valid string.
+     * @throws Exception
      */
     public static function getRandomUrlValidString(int $length = 8): string
     {
@@ -39,7 +44,7 @@ class StringArtist
         $string = '';
 
         for ($i = 0; $i < $length; $i++) {
-            $string .= $characters[mt_rand(0, strlen($characters) - 1)];
+            $string .= $characters[random_int(0, strlen($characters) - 1)];
         }
 
         return $string;
@@ -83,7 +88,8 @@ class StringArtist
      * @param $val : Any possible date accepted by strtotime()
      * @return false|string|null: Date in the format YYYY-MM-DD
      */
-    public static function sanitizeDateInput($val)
+    #[Pure]
+    public static function sanitizeDateInput($val): bool|string|null
     {
         $timestamp = strtotime($val);
         if ($timestamp < 100) {
@@ -93,26 +99,19 @@ class StringArtist
     }
 
     /**
-     * Check if a string starts with ...
-     *
-     * @param string $haystack : The string to be checked
-     * @param string $needle : The start string
-     * @return bool: True, if the string starts with ...
+     * @deprecated Use str_starts_with
      */
     public static function startsWith(string $haystack, string $needle): bool
     {
-        return (strpos($haystack, $needle) === 0);
+        return str_starts_with($haystack,$needle);
     }
 
     /**
-     * @param string $haystack : The string to be checked
-     * @param string $needle : The end string
-     * @return bool
+     * @deprecated Use str_ends_with
      */
     public static function endsWith(string $haystack, string $needle): bool
     {
-        $length = strlen($needle);
-        return ($length !== 0) ? (substr($haystack, -$length) === $needle) : true;
+        return str_ends_with($haystack,$needle);
     }
 
     /**
@@ -122,10 +121,10 @@ class StringArtist
      * @param bool $flat : Return a string of numbers again instead of an array
      * @return array|string: The sanitized result.
      */
-    public static function numstrArr(string $numstr, bool $flat = false)
+    public static function numstrArr(string $numstr, bool $flat = false): array|string
     {
         $sanitized = preg_replace("/[^0-9,]/", "", $numstr);
-        if (strpos($sanitized, ',') !== false) {
+        if (str_contains($sanitized, ',')) {
             $raw = explode(',', $sanitized);
         } else {
             $raw = [$sanitized];
@@ -235,6 +234,7 @@ class StringArtist
      * @param int $num : The position to split at
      * @return array: $array[0] is the first part of the splitted string, $array[1] the second
      */
+    #[Pure]
     public static function splitAt(string $string, int $num): array
     {
         $num = Math::rangeInt($num, 1);

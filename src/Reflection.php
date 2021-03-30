@@ -3,7 +3,12 @@
 namespace CisTools;
 
 use CisTools\Exception\NonSanitizeableException;
+use Closure;
+use JetBrains\PhpStorm\Pure;
+use ReflectionException;
+use ReflectionFunction;
 use ReflectionFunctionAbstract;
+use ReflectionMethod;
 
 class Reflection
 {
@@ -12,21 +17,21 @@ class Reflection
      * Get a reflection function object for a callable.
      * @param callable $callable
      * @return ReflectionFunctionAbstract
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     public static function reflectionOf(callable $callable): ReflectionFunctionAbstract
     {
-        if ($callable instanceof \Closure) {
-            return new \ReflectionFunction($callable);
+        if ($callable instanceof Closure) {
+            return new ReflectionFunction($callable);
         }
         if (is_string($callable)) {
             $pcs = explode('::', $callable);
-            return count($pcs) > 1 ? new \ReflectionMethod($pcs[0], $pcs[1]) : new \ReflectionFunction($callable);
+            return count($pcs) > 1 ? new ReflectionMethod($pcs[0], $pcs[1]) : new ReflectionFunction($callable);
         }
         if (!is_array($callable)) {
             $callable = [$callable, '__invoke'];
         }
-        return new \ReflectionMethod($callable[0], $callable[1]);
+        return new ReflectionMethod($callable[0], $callable[1]);
     }
 
     /**
@@ -35,9 +40,10 @@ class Reflection
      * @param mixed $t : Variable to test
      * @return bool: True if the passed variable is an anonymous function
      */
-    public static function isClosure($t): bool
+    #[Pure]
+    public static function isClosure(mixed $t): bool
     {
-        return is_object($t) && ($t instanceof \Closure);
+        return is_object($t) && ($t instanceof Closure);
     }
 
     /**

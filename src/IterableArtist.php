@@ -2,6 +2,8 @@
 
 namespace CisTools;
 
+use JetBrains\PhpStorm\Pure;
+
 /**
  * Class IterableArtist: For advanced operations on arrays and other iterables.
  *
@@ -92,6 +94,7 @@ class IterableArtist
      * @param array ...$arrays
      * @return array
      */
+    #[Pure]
     public static function fusion(array ...$arrays): array
     {
         return array_unique(array_merge(...$arrays), SORT_REGULAR);
@@ -116,6 +119,7 @@ class IterableArtist
      * @param array $array
      * @return array
      */
+    #[Pure]
     public static function getDuplicates(array $array): array
     {
         return array_unique(array_diff_assoc($array, array_unique($array)));

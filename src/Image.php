@@ -2,7 +2,8 @@
 
 namespace CisTools;
 
-use Exception;
+use http\Exception\InvalidArgumentException;
+use JetBrains\PhpStorm\Pure;
 
 /**
  * Class Image: Intended to work with e.g. the Gregwar Image library
@@ -13,10 +14,14 @@ class Image
 
     protected string $imageserverUrl;
 
+    /**
+     * Image constructor.
+     * @param string $imageserverUrl
+     */
     public function __construct(string $imageserverUrl)
     {
         if (!filter_var($imageserverUrl, FILTER_VALIDATE_URL)) {
-            throw new Exception("Invalid Imageserver URL given to class constructor.");
+            throw new InvalidArgumentException("Invalid Imageserver URL given to class constructor.");
         }
         $this->imageserverUrl = $imageserverUrl;
     }
@@ -98,7 +103,7 @@ class Image
      * @param string $imgsrvParamAdd : A get string to add to each link request to the image server.
      * @return string|array
      */
-    function generateSrcsetValue(
+    public function generateSrcsetValue(
         string $src,
         int $wh_relation = -1,
         $step = 2048,
@@ -108,7 +113,7 @@ class Image
         int $zc = 1,
         bool $with_urls = false,
         string $imgsrvParamAdd = ""
-    ) {
+    ): array|string {
         $steps = array();
 
         if (is_array($step)) {
@@ -172,7 +177,7 @@ class Image
      * @param string $imgsrvParamAdd : A get string to add to each link request to the image server.
      * @return array: An array of URLs with width as keys, ascending by width.
      */
-    function generateSrcsetUrls(
+    public function generateSrcsetUrls(
         string $src,
         int $wh_relation = -1,
         array $steps = [512, 1024, 2048, 3072, 4096],
@@ -182,7 +187,7 @@ class Image
     ): array {
         $steps = array_filter(
             array_map('intval', $steps),
-            function ($a) {
+            static function ($a) {
                 return $a > 1 && $a < PHP_INT_MAX;
             }
         );
@@ -217,6 +222,7 @@ class Image
      * @param integer $zc : Timthumb zoom crop (0-3)
      * @return string: The URL
      */
+    #[Pure]
     public function generateUrl(string $src, int $w = -1, int $h = -1, int $q = 80, int $zc = 1): string
     {
         $src = trim($src);

@@ -2,15 +2,23 @@
 
 namespace CisTools\Exception;
 
+use Exception;
+use JetBrains\PhpStorm\Pure;
+
 /**
  * Class NotImplementedException
  * @package Brainformance\ClassificationStoreApiBundle\Exception
  * @description To be used for not yet implemented functionality
  */
-class NonSanitizeableException extends \Exception
+class NonSanitizeableException extends Exception
 {
 
-    public function __construct($message, $code = 0, \Exception $previous = null)
+    /**
+     * NonSanitizeableException constructor.
+     * @inheritdoc
+     */
+    #[Pure]
+    public function __construct($message, $code = 0, Exception $previous = null)
     {
         $message = "Non-sanitizeable value: " . $message;
         parent::__construct($message, $code, $previous);

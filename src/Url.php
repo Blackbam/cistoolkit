@@ -2,6 +2,8 @@
 
 namespace CisTools;
 
+use JetBrains\PhpStorm\Pure;
+
 /**
  * Class Url: For URL processing and remote requests
  * @package CisTools
@@ -18,7 +20,7 @@ class Url
      * @param $domains string|array: The domain or domains to be compared (e.g. example.com or an array ["example.com","example.org"]
      * @return bool: True, if the domain to check is within the same domain.
      */
-    public static function checkInRootDomain(string $url, $domains): bool
+    public static function checkInRootDomain(string $url, array|string $domains): bool
     {
         if (!is_array($domains)) {
             $domains = [$domains];
@@ -29,7 +31,7 @@ class Url
         }
 
         $domain = implode('.', array_slice(explode('.', parse_url($url, PHP_URL_HOST)), -2));
-        if (in_array($domain, $domains)) {
+        if (in_array($domain, $domains, true)) {
             return true;
         }
 
@@ -47,6 +49,7 @@ class Url
     /**
      * @return string: The full request URL including protocol, host, port and query string
      */
+    #[Pure]
     public static function getCurrent(): string
     {
         return self::getHostUrl() . $_SERVER['REQUEST_URI'];
@@ -55,6 +58,7 @@ class Url
     /**
      * @return string: The current host URL
      */
+    #[Pure]
     public static function getHostUrl(): string
     {
         return "http" . (self::isSecure() ? "s" : "") . "://" . $_SERVER['HTTP_HOST'];
@@ -84,7 +88,7 @@ class Url
      * @param bool $urlencode : Shall all parameters (path & query) be encoded? (recommended, otherwise you can build invalid URLs)
      * @return bool|string: The URL or false if invalid parameters were passed.
      */
-    public static function buildDeep(array $parsed, bool $trailingslashit = false, $urlencode = true)
+    public static function buildDeep(array $parsed, bool $trailingslashit = false, $urlencode = true): bool|string
     {
         if (!isset($parsed["host"], $parsed["scheme"])) {
             return false;
@@ -246,13 +250,13 @@ class Url
      * @param string $log_folder_path : The path to log to
      * @param string $log_file_name : The name of the logfile to be written.
      *
-     * @return mixed: The result of the curl request.
+     * @return bool|string: The result of the curl request.
      */
     public static function curlExecDebug(
-        &$curlHandle,
+        $curlHandle,
         string $log_folder_path,
         string $log_file_name = "cis-curl-errorlog.txt"
-    ) {
+    ): bool|string {
         $fp = self::curlAddDebug($curlHandle, $log_folder_path, $log_file_name);
         $result = curl_exec($curlHandle);
         fclose($fp);

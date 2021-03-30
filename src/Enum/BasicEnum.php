@@ -83,10 +83,10 @@ abstract class BasicEnum
     /**
      * @param string $key : The  name of the class constant
      * @param bool $strict : Take casing into account
-     * @return mixed|null: The constants actual value, but NULL if it does not exist
+     * @return mixed: The constants actual value, but NULL if it does not exist
      * @throws ReflectionException
      */
-    public static function getValue(string $key, bool $strict = false)
+    public static function getValue(string $key, bool $strict = false): mixed
     {
         $constants = self::getConstants();
 
@@ -95,15 +95,10 @@ abstract class BasicEnum
                 if (strtolower($key) === strtolower($cname)) {
                     return $cvalue;
                 }
-            } else {
-                if ($key === $cname) {
-                    return $cvalue;
-                }
+            } elseif ($key === $cname) {
+                return $cvalue;
             }
         }
-        if (array_key_exists($key, $constants)) {
-            return $constants[$key];
-        }
-        return null;
+        return $constants[$key] ?? null;
     }
 }

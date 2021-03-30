@@ -26,7 +26,7 @@ class Map
      * @param $var : The variable to apply them to.
      * @return mixed
      */
-    public static function apply($callback, &$var)
+    public static function apply(array|string $callback, mixed &$var): mixed
     {
         if (is_array($callback)) {
             foreach ($callback as $c) {
@@ -47,7 +47,7 @@ class Map
      * @param int $times : How often the function should be called. -1 for deep call (unknown number of calls required). CAUTION: If output always changes this results in an endless loop.
      * @return mixed
      */
-    public static function recApply($input, callable $func, int $times)
+    public static function recApply($input, callable $func, int $times): mixed
     {
         if ($times > 1) {
             return self::recapply($func($input), $func, $times - 1);

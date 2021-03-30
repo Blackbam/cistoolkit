@@ -17,24 +17,20 @@ class Sanitizer
      *
      * @return mixed: The (sanitized) value at the position key or the given default value if nothing found.
      */
-    public static function resempty(&$var, $key, $empty = "", $primitive = -1)
-    {
-        $tcast = static function ($var, $primitive) {
-            switch (true):
-                case $primitive === Primitive::STR:
-                    $var = (string)$var;
-                    break;
-                case $primitive === Primitive::INT:
-                    $var = (int)$var;
-                    break;
-                case $primitive === Primitive::BOOL:
-                    $var = (bool)$var;
-                    break;
-                case $primitive === Primitive::FLOAT:
-                    $var = (float)$var;
-                    break;
-            endswitch;
-            return $var;
+    public static function resempty(
+        array|object $var,
+        array|string $key,
+        mixed $empty = "",
+        int $primitive = -1
+    ): mixed {
+        $tcast = static function (mixed $var, int $primitive): mixed {
+            return match (true) {
+                $primitive === Primitive::STR => (string)$var,
+                $primitive === Primitive::INT => (int)$var,
+                $primitive === Primitive::BOOL => (bool)$var,
+                $primitive === Primitive::FLOAT => (float)$var,
+                default => $var
+            };
         };
 
 
@@ -90,11 +86,11 @@ class Sanitizer
     /**
      * If the variable is empty return the default, return the variable otherwise.
      *
-     * @param $var : Any variable
-     * @param $default : The default to use if the variable is empty
+     * @param mixed $var : Any variable
+     * @param mixed $default : The default to use if the variable is empty
      * @return mixed: The default value if false. True otherwise.
      */
-    public static function defempty($var, $default)
+    public static function defempty(mixed $var, mixed $default): mixed
     {
         return (empty($var)) ? $default : $var;
     }

@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace CisTools;
 
+use JetBrains\PhpStorm\ArrayShape;
+use JetBrains\PhpStorm\Pure;
+
 /**
  * Class Color
  * @package CisTools
@@ -240,7 +243,7 @@ class Color
     /**
      * @return string
      */
-    public function getHexString(): string
+    #[Pure] public function getHexString(): string
     {
         return dechex($this->color);
     }
@@ -248,7 +251,7 @@ class Color
     /**
      * @return string
      */
-    public function getHexAlpha(): string
+    #[Pure] public function getHexAlpha(): string
     {
         return dechex((int)($this->alpha * 100));
     }
@@ -266,7 +269,7 @@ class Color
      * @param bool $withAlpha
      * @return string
      */
-    public function getHexRgba(bool $withAlpha = false): string
+    #[Pure] public function getHexRgba(bool $withAlpha = false): string
     {
         $out = "#" . str_pad($this->getHexString(), 6, "0", STR_PAD_LEFT);
         if ($withAlpha) {
@@ -288,7 +291,7 @@ class Color
      * @param int $blue
      * @return int
      */
-    public static function rgbToInt(int $red, int $green, int $blue): int
+    #[Pure] public static function rgbToInt(int $red, int $green, int $blue): int
     {
         return 0xFFFF * Math::rangeInt($red, 0, 255) + 0xFF * Math::rangeInt($green, 0, 255) + Math::rangeInt(
                 $blue,
@@ -333,8 +336,10 @@ class Color
      * @param string $hexCode : Hexadecimal color code with alpha
      * @return array: A tuple with color int and alpha float
      */
-    public static function colorHexRgbaToIntWithAlpha(string $hexCode): array
-    {
+    #[ArrayShape(['color' => "int", 'alpha' => "float"])]
+    public static function colorHexRgbaToIntWithAlpha(
+        string $hexCode
+    ): array {
         $hexCode = ltrim(trim($hexCode), "#");
         $length = strlen($hexCode);
 
@@ -361,8 +366,10 @@ class Color
      * @param string $hexCode
      * @return float
      */
-    public static function hexToAlpha(string $hexCode): float
-    {
+    #[Pure]
+    public static function hexToAlpha(
+        string $hexCode
+    ): float {
         $hexCode = ltrim(trim($hexCode), "#");
         if (strlen($hexCode) === 1) {
             $hexCode .= $hexCode;
@@ -476,8 +483,13 @@ class Color
      * @param $k
      * @return array
      */
-    public static function cmykToRgb($c, $m, $y, $k): array
-    {
+    #[Pure]
+    public static function cmykToRgb(
+        $c,
+        $m,
+        $y,
+        $k
+    ): array {
         $c /= 100;
         $m /= 100;
         $y /= 100;
@@ -509,9 +521,8 @@ class Color
         $min = min($r, $g, $b);
         $l = ($max + $min) / 2;
         $d = $max - $min;
-        if ($d === 0) {
-            $h = $s = 0;
-        } else {
+        $h = $s = 0;
+        if ($d !== 0) {
             $s = $d / (1 - abs(2 * $l - 1));
             switch ($max) {
                 case $r:
@@ -542,8 +553,12 @@ class Color
      * @param int $b : The blue color value
      * @return  array: The HSV representation
      */
-    public static function rgbToHsv(int $r, int $g, int $b): array
-    {
+    #[Pure]
+    public static function rgbToHsv(
+        int $r,
+        int $g,
+        int $b
+    ): array {
         $r /= 255;
         $g /= 255;
         $b /= 255;
@@ -551,7 +566,7 @@ class Color
         $max = max($r, $g, $b);
         $min = min($r, $g, $b);
 
-        $h = $s = $v = $max;
+        $v = $max;
 
         $d = $max - $min;
         $s = ($max === 0) ? 0 : $d / $max;
@@ -559,17 +574,11 @@ class Color
         if ($max === $min) {
             $h = 0; // achromatic
         } else {
-            switch ($max) {
-                case $r:
-                    $h = ($g - $b) / $d + ($g < $b ? 6 : 0);
-                    break;
-                case $g:
-                    $h = ($b - $r) / $d + 2;
-                    break;
-                case $b:
-                    $h = ($r - $g) / $d + 4;
-                    break;
-            }
+            $h = match ($max) {
+                $r => ($g - $b) / $d + ($g < $b ? 6 : 0),
+                $g => ($b - $r) / $d + 2,
+                $b => ($r - $g) / $d + 4,
+            };
             $h /= 6;
         }
 
@@ -577,12 +586,13 @@ class Color
     }
 
     /**
-     * @param $r
-     * @param $g
-     * @param $b
+     * @param float|int $r
+     * @param float|int $g
+     * @param float|int $b
      * @return array
      */
-    public static function rgbToCmyk($r, $g, $b): array
+    #[ArrayShape(['c' => "float|int", 'm' => "float|int", 'y' => "float|int", 'k' => "float|int"])]
+    public static function rgbToCmyk(int|float $r,int|float $g,int|float $b): array
     {
         $c = (255 - $r) / 255.0 * 100;
         $m = (255 - $g) / 255.0 * 100;

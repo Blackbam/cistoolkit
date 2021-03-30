@@ -3,6 +3,7 @@
 namespace CisTools;
 
 use CisTools\Enum\GoldenRatioMode;
+use JetBrains\PhpStorm\Pure;
 
 class Math
 {
@@ -14,6 +15,7 @@ class Math
      * @param bool $round
      * @return float: Result is related to variable 3, like variable 2 is related to variable 1.
      */
+    #[Pure]
     public static function ruleOfThree(int $rel_1x, int $rel_1y, int $rel_2x, bool $round = true): float
     {
         if ($round) {
@@ -46,7 +48,7 @@ class Math
         GoldenRatioMode $mode,
         bool $rounded = false,
         int $max_decimal_places = -1
-    ) {
+    ): array {
         $ratio = (1 + sqrt(5)) / 2;
         switch ($mode):
             case GoldenRatioMode::LONGSIDE_GIVEN:
@@ -67,7 +69,7 @@ class Math
 
         if ($max_decimal_places >= 0) {
             return array_map(
-                function ($a) use ($max_decimal_places) {
+                static function ($a) use ($max_decimal_places) {
                     return round($a, $max_decimal_places);
                 },
                 $result

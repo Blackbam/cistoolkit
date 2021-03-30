@@ -5,6 +5,7 @@ namespace CisTools;
 use Closure;
 use ReflectionException;
 use ReflectionFunction;
+use Throwable;
 
 /**
  * Class Debug: Debugging helpers
@@ -18,7 +19,7 @@ class Debug
      *
      * @param mixed $var : The variable to dump pretty
      */
-    public static function dump($var)
+    public static function dump(mixed $var): void
     {
         echo "<pre>";
         var_dump($var);
@@ -37,18 +38,16 @@ class Debug
         $str = 'function (';
         try {
             $r = new ReflectionFunction($c);
-        } catch (ReflectionException $exception) {
-            // do nothing
+        } catch (ReflectionException) {
+            return "function ()";
         }
         $params = array();
         foreach ($r->getParameters() as $p) {
             $s = '';
             if ($p->isArray()) {
                 $s .= 'array ';
-            } else {
-                if ($p->getClass()) {
-                    $s .= $p->getClass()->name . ' ';
-                }
+            } elseif ($p->getClass()) {
+                $s .= $p->getClass()->name . ' ';
             }
             if ($p->isPassedByReference()) {
                 $s .= '&';
@@ -57,7 +56,7 @@ class Debug
             if ($p->isOptional()) {
                 try {
                     $s .= ' = ' . var_export($p->getDefaultValue(), true);
-                } catch (ReflectionException $exception) {
+                } catch (ReflectionException) {
                     // do nothing
                 }
             }
@@ -78,12 +77,12 @@ class Debug
 
     /**
      * jTraceEx() - provide a Java style exception trace
-     * @param \Throwable $throwable
+     * @param Throwable $throwable
      * @param array|null $seen - array passed to recursive calls to accumulate trace lines already seen
      *                     leave as NULL when calling this function
      * @return string with one entry per trace line
      */
-    public static function jTraceEx(\Throwable $throwable, ?array $seen = null): string
+    public static function jTraceEx(Throwable $throwable, ?array $seen = null): string
     {
         $starter = $seen ? 'Caused by: ' : '';
         $result = [];
