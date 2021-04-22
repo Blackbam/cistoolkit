@@ -41,4 +41,20 @@ class Api
         fclose($df);
         return ob_get_clean();
     }
+
+
+    /**
+     * @param string $csvHeadline: The first line (columns) of the CSV as a string
+     * @return string
+     */
+    public static function csvDetectDelimiter(string $csvHeadline): string {
+
+            $delimiters = [";" => 0, "," => 0, "\t" => 0, "|" => 0];
+
+            foreach ($delimiters as $delimiter => &$count) {
+                $count = count(str_getcsv($csvHeadline, $delimiter));
+            }
+
+            return array_search(max($delimiters), $delimiters, true);
+    }
 }
