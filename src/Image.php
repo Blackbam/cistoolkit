@@ -2,7 +2,7 @@
 
 namespace CisTools;
 
-use Exception;
+use CisTools\Exception\InvalidParameterException;
 use JetBrains\PhpStorm\Pure;
 
 /**
@@ -21,7 +21,7 @@ class Image
     public function __construct(string $imageserverUrl)
     {
         if (!filter_var($imageserverUrl, FILTER_VALIDATE_URL)) {
-            throw new Exception("Invalid Imageserver URL given to class constructor.");
+            throw new InvalidParameterException("Invalid Imageserver URL given to class constructor.");
         }
         $this->imageserverUrl = $imageserverUrl;
     }

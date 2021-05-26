@@ -27,7 +27,7 @@ class Api
         string $enclosure = '"',
         string $escape_char = "\\"
     ): string {
-        if (count($array) === 0) {
+        if (empty($array)) {
             return "";
         }
         ob_start();

@@ -6,10 +6,10 @@ use Exception;
 use JetBrains\PhpStorm\Pure;
 
 /**
- * Class NotImplementedException
- * @description To be used for not yet implemented functionality
+ * Class InvalidParameterException
+ * @description Usually thrown in constructors of classes which can not be used without valid constructor parameters
  */
-class NonSanitizeableException extends Exception
+class InvalidParameterException extends Exception
 {
 
     /**
@@ -19,7 +19,7 @@ class NonSanitizeableException extends Exception
     #[Pure]
     public function __construct($message, $code = 0, Exception $previous = null)
     {
-        $message = "Non-sanitizeable value: " . $message;
+        $message = "Invalid parmeter: " . $message;
         parent::__construct($message, $code, $previous);
     }
 

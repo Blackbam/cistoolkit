@@ -35,7 +35,7 @@ class HtmlForm
         }
 
         // if multiple, make sure name is array
-        if ($multiple && !(substr($name, -2) === "[]")) {
+        if ($multiple && (substr($name, -2) !== "[]")) {
             $name .= "[]";
         }
 
