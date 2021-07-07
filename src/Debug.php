@@ -15,7 +15,133 @@ class Debug
 {
 
     /**
-     * For pretty dumping of variables to an HTML output
+     * @var array
+     */
+    private static array $_objects;
+
+    /**
+     * @var string
+     */
+    private static string $_output;
+
+    /**
+     * @var int
+     */
+    private static int $_depth;
+
+    /**
+     * Converts a variable into a string representation.
+     * This method achieves the similar functionality as var_dump and print_r
+     * but is more robust when handling complex objects such as PRADO controls.
+     *
+     * Original source: https://github.com/pradosoft/prado/blob/master/framework/Util/TVarDumper.php
+     * 
+     * @param mixed $var variable to be dumped
+     * @param int $depth maximum depth that the dumper should go into the variable. Defaults to 10.
+     * @param bool $highlight wether to highlight th resulting string
+     * @return string the string representation of the variable
+     */
+    public static function dumpComplex(mixed $var, int $depth = 10, bool $highlight = false): string
+    {
+        self::$_output = '';
+        self::$_objects = [];
+        self::$_depth = $depth;
+        self::dumpComplexInternal($var, 0);
+        if ($highlight) {
+            $result = highlight_string("<?php\n" . self::$_output, true);
+            return preg_replace('/&lt;\\?php<br \\/>/', '', $result, 1);
+        }
+
+        return self::$_output;
+    }
+
+    /**
+     * @param mixed $var
+     * @param int $level
+     */
+    private static function dumpComplexInternal(mixed $var, int $level): void
+    {
+        switch (gettype($var)) {
+            case 'boolean':
+            {
+                self::$_output .= $var ? 'true' : 'false';
+                break;
+            }
+            case 'integer':
+            case 'double':
+            {
+                self::$_output .= "$var";
+                break;
+            }
+            case 'string':
+            {
+                self::$_output .= "'$var'";
+                break;
+            }
+            case 'resource':
+            {
+                self::$_output .= '{resource}';
+                break;
+            }
+            case 'NULL':
+            {
+                self::$_output .= "null";
+                break;
+            }
+            case 'unknown type':
+            {
+                self::$_output .= '{unknown}';
+                break;
+            }
+            case 'array':
+            {
+                if (self::$_depth <= $level) {
+                    self::$_output .= 'array(...)';
+                } elseif (empty($var)) {
+                    self::$_output .= 'array()';
+                } else {
+                    $keys = array_keys($var);
+                    $spaces = str_repeat(' ', $level * 4);
+                    self::$_output .= "array\n" . $spaces . '(';
+                    foreach ($keys as $key) {
+                        self::$_output .= "\n" . $spaces . "    [$key] => ";
+                        self::dumpComplexInternal($var[$key], $level + 1);
+                    }
+                    self::$_output .= "\n" . $spaces . ')';
+                }
+                break;
+            }
+            case 'object':
+            {
+                if (($id = array_search($var, self::$_objects, true)) !== false) {
+                    self::$_output .= get_class($var) . '#' . ($id + 1) . '(...)';
+                } elseif (self::$_depth <= $level) {
+                    self::$_output .= get_class($var) . '(...)';
+                } else {
+                    $id = array_push(self::$_objects, $var);
+                    $className = get_class($var);
+                    $members = (array)$var;
+                    $keys = array_keys($members);
+                    $spaces = str_repeat(' ', $level * 4);
+                    self::$_output .= "$className#$id\n" . $spaces . '(';
+                    foreach ($keys as $key) {
+                        $keyDisplay = strtr(trim($key), ["\0" => ':']);
+                        self::$_output .= "\n" . $spaces . "    [$keyDisplay] => ";
+                        self::dumpComplexInternal($members[$key], $level + 1);
+                    }
+                    self::$_output .= "\n" . $spaces . ')';
+                }
+                break;
+            }
+            default:
+            {
+                self::$_output .= '### UNKNOWN TYPE: ' . gettype($var) . '###';
+            }
+        }
+    }
+
+    /**
+     * Pretty dump in HTML documents
      *
      * @param mixed $var : The variable to dump pretty
      */
