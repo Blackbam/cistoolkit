@@ -2,6 +2,15 @@
 
 namespace CisTools;
 
+use CisTools\Attribute\Author;
+use CisTools\Attribute\ClassInfo;
+
+/**
+ * Class HtmlForm
+ * @package CisTools
+ */
+#[ClassInfo(summary: "HTML form related helpers")]
+#[Author(name: "David Stöckl", url: "https://www.blackbam.at")]
 class HtmlForm
 {
     /**

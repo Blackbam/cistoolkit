@@ -2,8 +2,16 @@
 
 namespace CisTools;
 
+use CisTools\Attribute\Author;
+use CisTools\Attribute\ClassInfo;
 use CisTools\Exception\NonSanitizeableException;
 
+/**
+ * Class Html
+ * @package CisTools
+ */
+#[ClassInfo(summary: "HTML related helpers")]
+#[Author(name: "David Stöckl", url: "https://www.blackbam.at")]
 class Html
 {
     public const ATTRIBUTE_NAME_MATCHER = "/[\s\p{Cc}\x{0000}\x{0022}\x{0027}\x{003E}\x{002F}\x{003D}\x{200B}-\x{200D}\x{FDD0}-\x{FDEF}\x{FEFF}]+/u";

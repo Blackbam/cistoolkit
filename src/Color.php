@@ -4,25 +4,28 @@ declare(strict_types=1);
 
 namespace CisTools;
 
+use CisTools\Attribute\Author;
+use CisTools\Attribute\ClassInfo;
 use JetBrains\PhpStorm\ArrayShape;
 use JetBrains\PhpStorm\Pure;
 
 /**
  * Class Color
  * @package CisTools
- * @author David Stöckl <admin@blackbam.at>
  * @todo Test some functions (especially hsl/hsla/hsb/hsv and add the correct required input types). This class is in beta.
- *
- * Representations supported:
- * - Int is the integer representation
- * - Hex is the hexadecimal string
- * - RGB is an array of [red,green,blue]
- * - RGBA is an array of [red,green,blue,alpha]
- * - HSL is an array of [hue,saturation,lightness]
- * - HSLA is an array of [hue,saturation,lightness,alpha]
- * - HSB/HSV is an array of [hue,saturation,brightness]
- * - CMYK is an array of [cyan,magenta,yellow,key]
  */
+#[ClassInfo(summary: "Holds a color and at the same time can transform it to any possible form of representation.", description: "
+Representations supported:
+- Int is the integer representation
+- Hex is the hexadecimal string
+- RGB is an array of [red,green,blue]
+- RGBA is an array of [red,green,blue,alpha]
+- HSL is an array of [hue,saturation,lightness]
+- HSLA is an array of [hue,saturation,lightness,alpha]
+- HSB/HSV is an array of [hue,saturation,brightness]
+- CMYK is an array of [cyan,magenta,yellow,key]
+")]
+#[Author(name: "David Stöckl", url: "https://www.blackbam.at")]
 class Color
 {
     public const COLOR_MAX = 16777215; // 256^3 possible colors
@@ -51,14 +54,6 @@ class Color
     }
 
     /**
-     * @param float $alpha
-     */
-    public function setAlpha(float $alpha = 1.0): void
-    {
-        $this->alpha = Math::rangeFloat($alpha, 0.0, 1.0);
-    }
-
-    /**
      * @param string $color
      */
     public function setHexString(string $color): void
@@ -66,269 +61,6 @@ class Color
         $colorAlphaTuple = self::colorHexRgbaToIntWithAlpha($color);
         $this->color = $colorAlphaTuple['color'];
         $this->alpha = $colorAlphaTuple['alpha'];
-    }
-
-    /**
-     * @param int $red
-     * @param int $green
-     * @param int $blue
-     * @param float $alpha
-     */
-    public function setRgba(int $red, int $green, int $blue, float $alpha = 1.0): void
-    {
-        $this->color = self::rgbToInt($red, $green, $blue);
-        $this->setAlpha($alpha);
-    }
-
-    /**
-     * @param $hue
-     * @param $saturation
-     * @param $lightness
-     * @param float $alpha
-     */
-    public function setHsla($hue, $saturation, $lightness, float $alpha = 1.0): void
-    {
-        $rgb = self::hslToRgb($hue, $saturation, $lightness);
-        $this->color = self::rgbToInt($rgb[0], $rgb[1], $rgb[2]);
-        $this->setAlpha($alpha);
-    }
-
-    /**
-     * @param $hue
-     * @param $saturation
-     * @param $brightness
-     */
-    public function setHsv($hue, $saturation, $brightness): void
-    {
-        $rgb = self::hsvToRgb($hue, $saturation, $brightness);
-        $this->color = self::rgbToInt($rgb[0], $rgb[1], $rgb[2]);
-        $this->alpha = 1.0;
-    }
-
-    /**
-     * @param $cyan
-     * @param $magenta
-     * @param $yellow
-     * @param $key
-     */
-    public function setCmyk($cyan, $magenta, $yellow, $key): void
-    {
-        $rgb = self::cmykToRgb($cyan, $magenta, $yellow, $key);
-        $this->color = self::rgbToInt($rgb[0], $rgb[1], $rgb[2]);
-        $this->alpha = 1.0;
-    }
-
-    /**
-     * @param int $red
-     */
-    public function setR(int $red): void
-    {
-        $rgb = $this->getRgb();
-        $this->color = self::rgbToInt(Math::rangeInt($red, 0, 255), $rgb[1], $rgb[2]);
-    }
-
-    /**
-     * @param int $green
-     */
-    public function setG(int $green): void
-    {
-        $rgb = $this->getRgb();
-        $this->color = self::rgbToInt($rgb[0], Math::rangeInt($green, 0, 255), $rgb[2]);
-    }
-
-    /**
-     * @param int $blue
-     */
-    public function setB(int $blue): void
-    {
-        $rgb = $this->getRgb();
-        $this->color = self::rgbToInt($rgb[0], $rgb[1], Math::rangeInt($blue, 0, 255));
-    }
-
-
-    /*
-    ╔═╗┌─┐┌┬┐┌┬┐┌─┐┬─┐┌─┐
-    ║ ╦├┤  │  │ ├┤ ├┬┘└─┐
-    ╚═╝└─┘ ┴  ┴ └─┘┴└─└─┘
-    */
-
-    /**
-     * @return int
-     */
-    public function getInt(): int
-    {
-        return $this->color;
-    }
-
-    /**
-     * @return array
-     */
-    public function getRgb(): array
-    {
-        return self::intToRgb($this->color);
-    }
-
-    /**
-     * @return int
-     */
-    public function getR(): int
-    {
-        return $this->getRgb()[0];
-    }
-
-    /**
-     * @return int
-     */
-    public function getG(): int
-    {
-        return $this->getRgb()[1];
-    }
-
-    /**
-     * @return int
-     */
-    public function getB(): int
-    {
-        return $this->getRgb()[2];
-    }
-
-    /**
-     * @return array
-     */
-    public function getCmyk(): array
-    {
-        $rgb = self::intToRgb($this->color);
-        return self::rgbToCmyk($rgb[0], $rgb[1], $rgb[2]);
-    }
-
-    /**
-     * @return array
-     */
-    public function getRgba(): array
-    {
-        $rgb = self::intToRgb($this->color);
-        $rgb[] = $this->alpha;
-        return $rgb;
-    }
-
-    /**
-     * @return array
-     */
-    public function getHsl(): array
-    {
-        $rgb = self::intToRgb($this->color);
-        return self::rgbToHsl($rgb[0], $rgb[1], $rgb[2]);
-    }
-
-    /**
-     * @return array
-     */
-    public function getHsla(): array
-    {
-        $rgb = self::intToRgb($this->color);
-        $hsl = self::rgbToHsl($rgb[0], $rgb[1], $rgb[2]);
-        $hsl[] = $this->alpha;
-        return $hsl;
-    }
-
-    /**
-     * @return array
-     */
-    public function getHsv(): array
-    {
-        $rgb = self::intToRgb($this->color);
-        return self::rgbToHsv($rgb[0], $rgb[1], $rgb[2]);
-    }
-
-    /**
-     * @return string
-     */
-    #[Pure] public function getHexString(): string
-    {
-        return dechex($this->color);
-    }
-
-    /**
-     * @return string
-     */
-    #[Pure] public function getHexAlpha(): string
-    {
-        return dechex((int)($this->alpha * 100));
-    }
-
-    /**
-     * @return string
-     */
-    public function getCssRgba(): string
-    {
-        $rgb = self::intToRgb($this->color);
-        return "rgba(" . $rgb[0] . "," . $rgb[1] . "," . $rgb[2] . "," . $this->alpha . ")";
-    }
-
-    /**
-     * @param bool $withAlpha
-     * @return string
-     */
-    #[Pure] public function getHexRgba(bool $withAlpha = false): string
-    {
-        $out = "#" . str_pad($this->getHexString(), 6, "0", STR_PAD_LEFT);
-        if ($withAlpha) {
-            $out .= str_pad($this->getHexAlpha(), 2, "0", STR_PAD_LEFT);
-        }
-        return $out;
-    }
-
-    /*
-    ╔═╗┌─┐┌┐┌┬  ┬┌─┐┬─┐┌┬┐┌─┐┬─┐┌─┐
-    ║  │ ││││└┐┌┘├┤ ├┬┘ │ ├┤ ├┬┘└─┐
-    ╚═╝└─┘┘└┘ └┘ └─┘┴└─ ┴ └─┘┴└─└─┘
-    */
-
-
-    /**
-     * @param int $red
-     * @param int $green
-     * @param int $blue
-     * @return int
-     */
-    #[Pure] public static function rgbToInt(int $red, int $green, int $blue): int
-    {
-        return 0xFFFF * Math::rangeInt($red, 0, 255) + 0xFF * Math::rangeInt($green, 0, 255) + Math::rangeInt(
-                $blue,
-                0,
-                255
-            );
-    }
-
-    /**
-     * @param int $color
-     * @return array
-     */
-    public static function intToRgb(int $color): array
-    {
-        [$r, $g, $b] = sscanf(str_pad(dechex($color), 6, "0", STR_PAD_LEFT), "%02x%02x%02x");
-        return [$r, $g, $b];
-    }
-
-    /**
-     * Hex color to RGB color
-     *
-     * @param $hexCode : Hexadecimal color code
-     * @return int: The RGB color value
-     */
-    public static function colorHexToInt(string $hexCode): int
-    {
-        $hexCode = substr(self::colorSanitizeHexString($hexCode), 1);
-
-        if (strlen($hexCode) === 3) {
-            $hexCode = $hexCode[0] . $hexCode[0] . $hexCode[1] . $hexCode[1] . $hexCode[2] . $hexCode[2];
-        }
-
-        $r = hexdec($hexCode[0] . $hexCode[1]);
-        $g = hexdec($hexCode[2] . $hexCode[3]);
-        $b = hexdec($hexCode[4] . $hexCode[5]);
-
-        return (int)$b + ($g << 0x8) + ($r << 0x10);
     }
 
     /**
@@ -363,6 +95,56 @@ class Color
     }
 
     /**
+     * Hex color to RGB color
+     *
+     * @param $hexCode : Hexadecimal color code
+     * @return int: The RGB color value
+     */
+    public static function colorHexToInt(string $hexCode): int
+    {
+        $hexCode = substr(self::colorSanitizeHexString($hexCode), 1);
+
+        if (strlen($hexCode) === 3) {
+            $hexCode = $hexCode[0] . $hexCode[0] . $hexCode[1] . $hexCode[1] . $hexCode[2] . $hexCode[2];
+        }
+
+        $r = hexdec($hexCode[0] . $hexCode[1]);
+        $g = hexdec($hexCode[2] . $hexCode[3]);
+        $b = hexdec($hexCode[4] . $hexCode[5]);
+
+        return (int)$b + ($g << 0x8) + ($r << 0x10);
+    }
+
+    /**
+     * Takes a color string which is expected to be a hex color (with or without hashtag) and returns
+     * a valid hex color with 6 digits and prefixed with hashtag.
+     *
+     * @param string $color : The color to sanitize in hex notation
+     * @param string $default : Default color to return if color is not useable
+     * @return string: A hex color prefixed with hashtag (e.g. #ffffff)
+     */
+    public static function colorSanitizeHexString(string $color, string $default = "#ffffff"): string
+    {
+        $color = trim($color);
+        $regex = '|^#([A-Fa-f0-9]{3}){1,2}$|';
+
+        if ($color && $color[0] !== "#") {
+            $color = "#" . $color;
+        }
+
+        // 3 or 6 hex digits, or the empty string.
+        if (preg_match($regex, $color)) {
+            return $color;
+        }
+
+        if (preg_match($regex, $default)) {
+            return $default;
+        }
+
+        return '#ffffff';
+    }
+
+    /**
      * @param string $hexCode
      * @return float
      */
@@ -377,6 +159,60 @@ class Color
         return Math::rangeInt(hexdec($hexCode), 0, 100) / 100.00;
     }
 
+    /**
+     * @param int $red
+     * @param int $green
+     * @param int $blue
+     * @param float $alpha
+     */
+    public function setRgba(int $red, int $green, int $blue, float $alpha = 1.0): void
+    {
+        $this->color = self::rgbToInt($red, $green, $blue);
+        $this->setAlpha($alpha);
+    }
+
+    /**
+     * @param int $red
+     * @param int $green
+     * @param int $blue
+     * @return int
+     */
+    #[Pure] public static function rgbToInt(int $red, int $green, int $blue): int
+    {
+        return 0xFFFF * Math::rangeInt($red, 0, 255) + 0xFF * Math::rangeInt($green, 0, 255) + Math::rangeInt(
+                $blue,
+                0,
+                255
+            );
+    }
+
+    /**
+     * @param float $alpha
+     */
+    public function setAlpha(float $alpha = 1.0): void
+    {
+        $this->alpha = Math::rangeFloat($alpha, 0.0, 1.0);
+    }
+
+    /**
+     * @param $hue
+     * @param $saturation
+     * @param $lightness
+     * @param float $alpha
+     */
+    public function setHsla($hue, $saturation, $lightness, float $alpha = 1.0): void
+    {
+        $rgb = self::hslToRgb($hue, $saturation, $lightness);
+        $this->color = self::rgbToInt($rgb[0], $rgb[1], $rgb[2]);
+        $this->setAlpha($alpha);
+    }
+
+
+    /*
+    ╔═╗┌─┐┌┬┐┌┬┐┌─┐┬─┐┌─┐
+    ║ ╦├┤  │  │ ├┤ ├┬┘└─┐
+    ╚═╝└─┘ ┴  ┴ └─┘┴└─└─┘
+    */
 
     /**
      * @param int $h
@@ -415,6 +251,18 @@ class Color
             $b = $x;
         }
         return [floor(($r + $m) * 255), floor(($g + $m) * 255), floor(($b + $m) * 255)];
+    }
+
+    /**
+     * @param $hue
+     * @param $saturation
+     * @param $brightness
+     */
+    public function setHsv($hue, $saturation, $brightness): void
+    {
+        $rgb = self::hsvToRgb($hue, $saturation, $brightness);
+        $this->color = self::rgbToInt($rgb[0], $rgb[1], $rgb[2]);
+        $this->alpha = 1.0;
     }
 
     /**
@@ -477,6 +325,19 @@ class Color
     }
 
     /**
+     * @param $cyan
+     * @param $magenta
+     * @param $yellow
+     * @param $key
+     */
+    public function setCmyk($cyan, $magenta, $yellow, $key): void
+    {
+        $rgb = self::cmykToRgb($cyan, $magenta, $yellow, $key);
+        $this->color = self::rgbToInt($rgb[0], $rgb[1], $rgb[2]);
+        $this->alpha = 1.0;
+    }
+
+    /**
      * @param $c
      * @param $m
      * @param $y
@@ -504,6 +365,141 @@ class Color
         $b = round($b * 255);
 
         return [$r, $g, $b];
+    }
+
+    /**
+     * @param int $red
+     */
+    public function setR(int $red): void
+    {
+        $rgb = $this->getRgb();
+        $this->color = self::rgbToInt(Math::rangeInt($red, 0, 255), $rgb[1], $rgb[2]);
+    }
+
+    /**
+     * @return array
+     */
+    public function getRgb(): array
+    {
+        return self::intToRgb($this->color);
+    }
+
+    /**
+     * @param int $color
+     * @return array
+     */
+    public static function intToRgb(int $color): array
+    {
+        [$r, $g, $b] = sscanf(str_pad(dechex($color), 6, "0", STR_PAD_LEFT), "%02x%02x%02x");
+        return [$r, $g, $b];
+    }
+
+    /**
+     * @param int $green
+     */
+    public function setG(int $green): void
+    {
+        $rgb = $this->getRgb();
+        $this->color = self::rgbToInt($rgb[0], Math::rangeInt($green, 0, 255), $rgb[2]);
+    }
+
+    /**
+     * @param int $blue
+     */
+    public function setB(int $blue): void
+    {
+        $rgb = $this->getRgb();
+        $this->color = self::rgbToInt($rgb[0], $rgb[1], Math::rangeInt($blue, 0, 255));
+    }
+
+    /**
+     * @return int
+     */
+    public function getInt(): int
+    {
+        return $this->color;
+    }
+
+    /**
+     * @return int
+     */
+    public function getR(): int
+    {
+        return $this->getRgb()[0];
+    }
+
+    /**
+     * @return int
+     */
+    public function getG(): int
+    {
+        return $this->getRgb()[1];
+    }
+
+    /**
+     * @return int
+     */
+    public function getB(): int
+    {
+        return $this->getRgb()[2];
+    }
+
+    /*
+    ╔═╗┌─┐┌┐┌┬  ┬┌─┐┬─┐┌┬┐┌─┐┬─┐┌─┐
+    ║  │ ││││└┐┌┘├┤ ├┬┘ │ ├┤ ├┬┘└─┐
+    ╚═╝└─┘┘└┘ └┘ └─┘┴└─ ┴ └─┘┴└─└─┘
+    */
+
+    /**
+     * @return array
+     */
+    public function getCmyk(): array
+    {
+        $rgb = self::intToRgb($this->color);
+        return self::rgbToCmyk($rgb[0], $rgb[1], $rgb[2]);
+    }
+
+    /**
+     * @param float|int $r
+     * @param float|int $g
+     * @param float|int $b
+     * @return array
+     */
+    #[ArrayShape(['c' => "float|int", 'm' => "float|int", 'y' => "float|int", 'k' => "float|int"])]
+    public static function rgbToCmyk(
+        int|float $r,
+        int|float $g,
+        int|float $b
+    ): array {
+        $c = (255 - $r) / 255.0 * 100;
+        $m = (255 - $g) / 255.0 * 100;
+        $y = (255 - $b) / 255.0 * 100;
+
+        $b = min([$c, $m, $y]);
+        $c -= $b;
+        $m -= $b;
+        $y -= $b;
+
+        return ['c' => $c, 'm' => $m, 'y' => $y, 'k' => $b];
+    }
+
+    /**
+     * @return array
+     */
+    public function getRgba(): array
+    {
+        $rgb = self::intToRgb($this->color);
+        $rgb[] = $this->alpha;
+        return $rgb;
+    }
+
+    /**
+     * @return array
+     */
+    public function getHsl(): array
+    {
+        $rgb = self::intToRgb($this->color);
+        return self::rgbToHsl($rgb[0], $rgb[1], $rgb[2]);
     }
 
     /**
@@ -540,6 +536,26 @@ class Color
             }
         }
         return [round($h), round($s * 100), round($l * 100)];
+    }
+
+    /**
+     * @return array
+     */
+    public function getHsla(): array
+    {
+        $rgb = self::intToRgb($this->color);
+        $hsl = self::rgbToHsl($rgb[0], $rgb[1], $rgb[2]);
+        $hsl[] = $this->alpha;
+        return $hsl;
+    }
+
+    /**
+     * @return array
+     */
+    public function getHsv(): array
+    {
+        $rgb = self::intToRgb($this->color);
+        return self::rgbToHsv($rgb[0], $rgb[1], $rgb[2]);
     }
 
     /**
@@ -586,24 +602,33 @@ class Color
     }
 
     /**
-     * @param float|int $r
-     * @param float|int $g
-     * @param float|int $b
-     * @return array
+     * @return string
      */
-    #[ArrayShape(['c' => "float|int", 'm' => "float|int", 'y' => "float|int", 'k' => "float|int"])]
-    public static function rgbToCmyk(int|float $r,int|float $g,int|float $b): array
+    public function getCssRgba(): string
     {
-        $c = (255 - $r) / 255.0 * 100;
-        $m = (255 - $g) / 255.0 * 100;
-        $y = (255 - $b) / 255.0 * 100;
+        $rgb = self::intToRgb($this->color);
+        return "rgba(" . $rgb[0] . "," . $rgb[1] . "," . $rgb[2] . "," . $this->alpha . ")";
+    }
 
-        $b = min([$c, $m, $y]);
-        $c -= $b;
-        $m -= $b;
-        $y -= $b;
+    /**
+     * @param bool $withAlpha
+     * @return string
+     */
+    #[Pure] public function getHexRgba(bool $withAlpha = false): string
+    {
+        $out = "#" . str_pad($this->getHexString(), 6, "0", STR_PAD_LEFT);
+        if ($withAlpha) {
+            $out .= str_pad($this->getHexAlpha(), 2, "0", STR_PAD_LEFT);
+        }
+        return $out;
+    }
 
-        return ['c' => $c, 'm' => $m, 'y' => $y, 'k' => $b];
+    /**
+     * @return string
+     */
+    #[Pure] public function getHexString(): string
+    {
+        return dechex($this->color);
     }
 
 
@@ -612,6 +637,20 @@ class Color
     ╚═╗ │ ├─┤ │ ├┤   ││││├┤ │ │
     ╚═╝ ┴ ┴ ┴ ┴ └─┘  ┴┘└┘└  └─┘
     */
+
+    /**
+     * @return string
+     */
+    #[Pure] public function getHexAlpha(): string
+    {
+        return dechex((int)($this->alpha * 100));
+    }
+
+    /*
+    ╦ ╦┌─┐┬  ┌─┐┌─┐┬─┐┌─┐
+    ╠═╣├┤ │  ├─┘├┤ ├┬┘└─┐
+    ╩ ╩└─┘┴─┘┴  └─┘┴└─└─┘
+     */
 
     /**
      * @param float $threshold
@@ -625,41 +664,6 @@ class Color
         $rgb = self::intToRgb($this->color);
         $hsl = self::rgbToHsl($rgb[0], $rgb[1], $rgb[2]);
         return !($hsl[2] > $trel);
-    }
-
-    /*
-    ╦ ╦┌─┐┬  ┌─┐┌─┐┬─┐┌─┐
-    ╠═╣├┤ │  ├─┘├┤ ├┬┘└─┐
-    ╩ ╩└─┘┴─┘┴  └─┘┴└─└─┘
-     */
-
-    /**
-     * Takes a color string which is expected to be a hex color (with or without hashtag) and returns
-     * a valid hex color with 6 digits and prefixed with hashtag.
-     *
-     * @param string $color : The color to sanitize in hex notation
-     * @param string $default : Default color to return if color is not useable
-     * @return string: A hex color prefixed with hashtag (e.g. #ffffff)
-     */
-    public static function colorSanitizeHexString(string $color, string $default = "#ffffff"): string
-    {
-        $color = trim($color);
-        $regex = '|^#([A-Fa-f0-9]{3}){1,2}$|';
-
-        if ($color && $color[0] !== "#") {
-            $color = "#" . $color;
-        }
-
-        // 3 or 6 hex digits, or the empty string.
-        if (preg_match($regex, $color)) {
-            return $color;
-        }
-
-        if (preg_match($regex, $default)) {
-            return $default;
-        }
-
-        return '#ffffff';
     }
 
 }

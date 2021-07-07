@@ -2,10 +2,15 @@
 
 namespace CisTools;
 
+use CisTools\Attribute\Author;
+use CisTools\Attribute\ClassInfo;
+
 /**
- * Class File: For operation on files.
+ * Class File
  * @package CisTools
  */
+#[ClassInfo(summary: "For operations with files")]
+#[Author(name: "David Stöckl", url: "https://www.blackbam.at")]
 class File
 {
 

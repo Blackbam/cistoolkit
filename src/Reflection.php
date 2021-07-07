@@ -2,6 +2,8 @@
 
 namespace CisTools;
 
+use CisTools\Attribute\Author;
+use CisTools\Attribute\ClassInfo;
 use CisTools\Exception\NonSanitizeableException;
 use Closure;
 use JetBrains\PhpStorm\Pure;
@@ -10,6 +12,12 @@ use ReflectionFunction;
 use ReflectionFunctionAbstract;
 use ReflectionMethod;
 
+/**
+ * Class Reflection
+ * @package CisTools
+ */
+#[ClassInfo(summary: "Reflection related helper functions")]
+#[Author(name: "David Stöckl", url: "https://www.blackbam.at")]
 class Reflection
 {
 
@@ -41,8 +49,9 @@ class Reflection
      * @return bool: True if the passed variable is an anonymous function
      */
     #[Pure]
-    public static function isClosure(mixed $t): bool
-    {
+    public static function isClosure(
+        mixed $t
+    ): bool {
         return is_object($t) && ($t instanceof Closure);
     }
 

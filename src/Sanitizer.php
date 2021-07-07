@@ -2,8 +2,16 @@
 
 namespace CisTools;
 
+use CisTools\Attribute\Author;
+use CisTools\Attribute\ClassInfo;
 use CisTools\Enum\Primitive;
 
+/**
+ * Class Sanitizer
+ * @package CisTools
+ */
+#[ClassInfo(summary: "Helper functions for the sanitation of values")]
+#[Author(name: "David Stöckl", url: "https://www.blackbam.at")]
 class Sanitizer
 {
 

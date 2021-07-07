@@ -2,7 +2,10 @@
 
 namespace CisTools;
 
+use CisTools\Attribute\Author;
+use CisTools\Attribute\ClassInfo;
 use Closure;
+use JetBrains\PhpStorm\NoReturn;
 use ReflectionException;
 use ReflectionFunction;
 use Throwable;
@@ -11,6 +14,8 @@ use Throwable;
  * Class Debug: Debugging helpers
  * @package CisTools
  */
+#[ClassInfo(summary: "Powerful debug helpers")]
+#[Author(name: "David Stöckl", url: "https://www.blackbam.at")]
 class Debug
 {
 
@@ -141,6 +146,7 @@ class Debug
      * Call this in the very beginning of your script if you have no other chance to display errors.
      * This problem might be caused by strange webhosts.
      */
+    #[NoReturn]
     public static function desperateErrorHandler()
     {
         ob_start([__CLASS__, 'desperateErrorHandlerActual']);
@@ -152,8 +158,10 @@ class Debug
      * @param $output : Output passed by ob_start()
      * @return string: The errors found (stops on error)
      */
-    protected static function desperateErrorHandlerActual($output)
-    {
+    #[NoReturn]
+    protected static function desperateErrorHandlerActual(
+        $output
+    ) {
         $error = error_get_last();
         $output = ""; // do not fix this
         foreach ($error as $info => $string) {

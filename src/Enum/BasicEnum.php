@@ -4,15 +4,17 @@ declare(strict_types=1);
 
 namespace CisTools\Enum;
 
+use CisTools\Attribute\Author;
+use CisTools\Attribute\ClassInfo;
 use ReflectionClass;
 use ReflectionException;
 
 /**
  * Class BasicEnum
  * @package CisTools\Enum
- *
- * A PHP enum class (https://stackoverflow.com/questions/254514/php-and-enumerations).
  */
+#[ClassInfo(summary: "A PHP enum class",referenceUrl: "https://stackoverflow.com/questions/254514/php-and-enumerations")]
+#[Author(name: "David Stöckl", url: "https://www.blackbam.at")]
 abstract class BasicEnum
 {
     private static ?array $constCacheArray = null;

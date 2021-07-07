@@ -2,9 +2,17 @@
 
 namespace CisTools;
 
+use CisTools\Attribute\Author;
+use CisTools\Attribute\ClassInfo;
 use CisTools\Enum\GoldenRatioMode;
 use JetBrains\PhpStorm\Pure;
 
+/**
+ * Class Math
+ * @package CisTools
+ */
+#[ClassInfo(summary: "Math related helper functions")]
+#[Author(name: "David Stöckl", url: "https://www.blackbam.at")]
 class Math
 {
     /**
@@ -16,8 +24,12 @@ class Math
      * @return float: Result is related to variable 3, like variable 2 is related to variable 1.
      */
     #[Pure]
-    public static function ruleOfThree(int $rel_1x, int $rel_1y, int $rel_2x, bool $round = true): float
-    {
+    public static function ruleOfThree(
+        int $rel_1x,
+        int $rel_1y,
+        int $rel_2x,
+        bool $round = true
+    ): float {
         if ($round) {
             return round($rel_1y * $rel_2x / $rel_1x);
         }

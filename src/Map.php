@@ -2,10 +2,15 @@
 
 namespace CisTools;
 
+use CisTools\Attribute\Author;
+use CisTools\Attribute\ClassInfo;
+
 /**
- * Class Map: For advanced mapping functions
+ * Class Map
  * @package CisTools
  */
+#[ClassInfo(summary: "For advanced mapping functions")]
+#[Author(name: "David Stöckl", url: "https://www.blackbam.at")]
 class Map
 {
     /**

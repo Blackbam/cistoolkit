@@ -2,13 +2,17 @@
 
 namespace CisTools\Exception;
 
+use CisTools\Attribute\Author;
+use CisTools\Attribute\ClassInfo;
 use Exception;
 use JetBrains\PhpStorm\Pure;
 
 /**
- * Class NotImplementedException
- * @description To be used for not yet implemented functionality
+ * Class NonSanitizeableException
+ * @package CisTools\Exception
  */
+#[ClassInfo(summary: "Thrown is something can not be sanitized")]
+#[Author(name: "David Stöckl", url: "https://www.blackbam.at")]
 class NonSanitizeableException extends Exception
 {
 
@@ -17,8 +21,11 @@ class NonSanitizeableException extends Exception
      * @inheritdoc
      */
     #[Pure]
-    public function __construct($message, $code = 0, Exception $previous = null)
-    {
+    public function __construct(
+        $message,
+        $code = 0,
+        Exception $previous = null
+    ) {
         $message = "Non-sanitizeable value: " . $message;
         parent::__construct($message, $code, $previous);
     }

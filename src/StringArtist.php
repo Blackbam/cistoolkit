@@ -2,9 +2,17 @@
 
 namespace CisTools;
 
+use CisTools\Attribute\Author;
+use CisTools\Attribute\ClassInfo;
 use Exception;
 use JetBrains\PhpStorm\Pure;
 
+/**
+ * Class StringArtist
+ * @package CisTools
+ */
+#[ClassInfo(summary: "String related helper functions")]
+#[Author(name: "David Stöckl", url: "https://www.blackbam.at")]
 class StringArtist
 {
 
@@ -89,8 +97,9 @@ class StringArtist
      * @return false|string|null: Date in the format YYYY-MM-DD
      */
     #[Pure]
-    public static function sanitizeDateInput($val): bool|string|null
-    {
+    public static function sanitizeDateInput(
+        $val
+    ): bool|string|null {
         $timestamp = strtotime($val);
         if ($timestamp < 100) {
             return null;
@@ -103,7 +112,7 @@ class StringArtist
      */
     public static function startsWith(string $haystack, string $needle): bool
     {
-        return str_starts_with($haystack,$needle);
+        return str_starts_with($haystack, $needle);
     }
 
     /**
@@ -111,7 +120,7 @@ class StringArtist
      */
     public static function endsWith(string $haystack, string $needle): bool
     {
-        return str_ends_with($haystack,$needle);
+        return str_ends_with($haystack, $needle);
     }
 
     /**
@@ -235,8 +244,10 @@ class StringArtist
      * @return array: $array[0] is the first part of the splitted string, $array[1] the second
      */
     #[Pure]
-    public static function splitAt(string $string, int $num): array
-    {
+    public static function splitAt(
+        string $string,
+        int $num
+    ): array {
         $num = Math::rangeInt($num, 1);
         $length = strlen($string);
         $output[0] = substr($string, 0, $num);

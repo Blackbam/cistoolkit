@@ -1,36 +1,36 @@
 {
-    "name": "blackbam/cistoolkit",
-    "type": "library",
-    "description": "A generic toolkit containing a lot of very useful PHP classes",
-    "keywords": [
-        "templating",
-        "debugging",
-        "math",
-        "url"
-    ],
-    "homepage": "https://www.blackbam.at/",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "David St\u00f6ckl",
-            "email": "admin@blackbam.at",
-            "homepage": "https://www.blackbam.at/"
-        }
-    ],
-    "require": {
-        "php": ">=8.0",
-        "ext-curl": "*",
-        "ext-iconv": "*",
-        "ext-mbstring": "*"
-    },
-    "autoload": {
-        "psr-4": {
-            "CisTools\\": "src/"
-        }
-    },
-    "require-dev": {
-        "codeception/codeception": "^4.1",
-        "codeception/module-phpbrowser": "^1.0.0",
-        "codeception/module-asserts": "^1.3"
+  "name": "blackbam/cistoolkit",
+  "type": "library",
+  "description": "A generic toolkit containing a lot of very useful PHP classes",
+  "keywords": [
+    "templating",
+    "debugging",
+    "math",
+    "url"
+  ],
+  "homepage": "https://www.blackbam.at/",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "David St\u00f6ckl",
+      "email": "admin@blackbam.at",
+      "homepage": "https://www.blackbam.at/"
     }
+  ],
+  "require": {
+    "php": ">=8.0",
+    "ext-curl": "*",
+    "ext-iconv": "*",
+    "ext-mbstring": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "CisTools\\": "src/"
+    }
+  },
+  "require-dev": {
+    "codeception/codeception": "^4.1",
+    "codeception/module-phpbrowser": "^1.0.0",
+    "codeception/module-asserts": "^1.3"
+  }
 }

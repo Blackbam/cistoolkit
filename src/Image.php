@@ -2,13 +2,17 @@
 
 namespace CisTools;
 
+use CisTools\Attribute\Author;
+use CisTools\Attribute\ClassInfo;
 use CisTools\Exception\InvalidParameterException;
 use JetBrains\PhpStorm\Pure;
 
 /**
- * Class Image: Intended to work with e.g. the Gregwar Image library
+ * Class Image
  * @package CisTools
  */
+#[ClassInfo(summary: "Image related functionalities",description: "Can e.g. be used with Gregwars image library.")]
+#[Author(name: "David Stöckl", url: "https://www.blackbam.at")]
 class Image
 {
 
@@ -17,6 +21,7 @@ class Image
     /**
      * Image constructor.
      * @param string $imageserverUrl
+     * @throws InvalidParameterException
      */
     public function __construct(string $imageserverUrl)
     {
@@ -223,8 +228,13 @@ class Image
      * @return string: The URL
      */
     #[Pure]
-    public function generateUrl(string $src, int $w = -1, int $h = -1, int $q = 80, int $zc = 1): string
-    {
+    public function generateUrl(
+        string $src,
+        int $w = -1,
+        int $h = -1,
+        int $q = 80,
+        int $zc = 1
+    ): string {
         $src = trim($src);
         if (substr($src, -4) === ".svg") {
             return $src;

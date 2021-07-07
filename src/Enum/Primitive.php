@@ -2,9 +2,15 @@
 
 namespace CisTools\Enum;
 
+use CisTools\Attribute\Author;
+use CisTools\Attribute\ClassInfo;
+
 /**
- * Constants representing the PHP primitive types.
+ * Class Primitive
+ * @package CisTools\Enum
  */
+#[ClassInfo(summary: "Helper enum for PHP primitive types")]
+#[Author(name: "David Stöckl", url: "https://www.blackbam.at")]
 abstract class Primitive extends BasicEnum
 {
     public const NONE = -1;

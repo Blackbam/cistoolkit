@@ -2,12 +2,16 @@
 
 namespace CisTools;
 
+use CisTools\Attribute\Author;
+use CisTools\Attribute\ClassInfo;
 use JetBrains\PhpStorm\Pure;
 
 /**
- * Class Url: For URL processing and remote requests
+ * Class Url
  * @package CisTools
  */
+#[ClassInfo(summary: "For URL processing and remote requests")]
+#[Author(name: "David Stöckl", url: "https://www.blackbam.at")]
 class Url
 {
 
@@ -75,6 +79,50 @@ class Url
     }
 
     /**
+     * Update or add a GET-Parameter (key value pair) to an already prepared URL (with or without existing query string).
+     *
+     * @param string $url
+     * @param string $key
+     * @param $value
+     * @return string
+     */
+    public static function updateParam(string $url, string $key, $value): string
+    {
+        $parsed = self::parseDeep($url);
+        $parsed["query"][$key] = $value;
+        return self::buildDeep($parsed);
+    }
+
+    /**
+     * Better URL parsing: Splits an URL into all its parts
+     *
+     * @param string $url : The URL to parse
+     * @return array|bool: False if not parseable. Otherwise it returns an array containing:
+     * scheme (string)
+     * host (string)
+     * port (if available)
+     * path (array, if available)
+     * query (array, associative, if available)
+     */
+    public static function parseDeep(string $url)
+    {
+        $parsed = parse_url($url);
+
+        if (isset($parsed["path"])) {
+            $parsed["path"] = array_filter(explode("/", rtrim(ltrim($parsed["path"], "/"), "/")));
+        } else {
+            $parsed["path"] = [];
+        }
+
+        if (isset($parsed["query"])) {
+            parse_str($parsed["query"], $parsed['query']);
+        } else {
+            $parsed["query"] = [];
+        }
+        return $parsed;
+    }
+
+    /**
      * The exact opposite of parseDeep. Builds an URL from the single components passed as described below:
      *
      * @param $parsed : An array containing all parameters to build the URL from:
@@ -114,21 +162,6 @@ class Url
             $url .= "?" . http_build_query($parsed["query"], null, '&', PHP_QUERY_RFC3986);
         }
         return $url;
-    }
-
-    /**
-     * Update or add a GET-Parameter (key value pair) to an already prepared URL (with or without existing query string).
-     *
-     * @param string $url
-     * @param string $key
-     * @param $value
-     * @return string
-     */
-    public static function updateParam(string $url, string $key, $value): string
-    {
-        $parsed = self::parseDeep($url);
-        $parsed["query"][$key] = $value;
-        return self::buildDeep($parsed);
     }
 
     /**
@@ -209,35 +242,6 @@ class Url
             }
         }
         return "";
-    }
-
-    /**
-     * Better URL parsing: Splits an URL into all its parts
-     *
-     * @param string $url : The URL to parse
-     * @return array|bool: False if not parseable. Otherwise it returns an array containing:
-     * scheme (string)
-     * host (string)
-     * port (if available)
-     * path (array, if available)
-     * query (array, associative, if available)
-     */
-    public static function parseDeep(string $url)
-    {
-        $parsed = parse_url($url);
-
-        if (isset($parsed["path"])) {
-            $parsed["path"] = array_filter(explode("/", rtrim(ltrim($parsed["path"], "/"), "/")));
-        } else {
-            $parsed["path"] = [];
-        }
-
-        if (isset($parsed["query"])) {
-            parse_str($parsed["query"], $parsed['query']);
-        } else {
-            $parsed["query"] = [];
-        }
-        return $parsed;
     }
 
 
