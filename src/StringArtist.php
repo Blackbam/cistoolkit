@@ -3,53 +3,11 @@
 namespace CisTools;
 
 use Exception;
+use CisTools\Exception\InvalidParameterException;
 use JetBrains\PhpStorm\Pure;
 
 class StringArtist
 {
-
-    /**
-     * Returns a randum alphanumeric string.
-     *
-     * @param int $length : The desired length.
-     * @param bool $with_numbers : If true, the string does only contain lowercase characters - no numbers.
-     * @return string: The alpha(numeric) string
-     * @throws Exception
-     */
-    public static function getRandomAlnumString(int $length = 8, bool $with_numbers = false): string
-    {
-        $characters = "abcdefghijklmnopqrstuvwxyz";
-        if ($with_numbers) {
-            $characters = "0123456789";
-        }
-        $string = '';
-
-        for ($i = 0; $i < $length; $i++) {
-            $string .= $characters[random_int(0, strlen($characters) - 1)];
-        }
-
-        return $string;
-    }
-
-    /**
-     * Returns a random URL-valid string (with any common possible characters mixed).
-     *
-     * @param int $length : The desired length.
-     * @return string: The randum URL-valid string.
-     * @throws Exception
-     */
-    public static function getRandomUrlValidString(int $length = 8): string
-    {
-        $characters = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ$-_'.+!*(),";
-        $string = '';
-
-        for ($i = 0; $i < $length; $i++) {
-            $string .= $characters[random_int(0, strlen($characters) - 1)];
-        }
-
-        return $string;
-    }
-
     /**
      * Takes any text and creates a slug with only alnum, lowercase characters and minus from it.
      *
@@ -300,5 +258,22 @@ class StringArtist
             return ucfirst($text);
         }
         return lcfirst($text);
+    }
+
+    /**
+     * @throws InvalidParameterException
+     * @deprecated Please use StringGenerator::generateSecureRandomString();
+     */
+    public static function getRandomAlnumString(int $length = 8, bool $with_numbers = false): string
+    {
+        return StringGenerator::generateSecureRandomString($length,($with_numbers) ? StringGenerator::LOWERCASE | StringGenerator::NUMBERS : StringGenerator::LOWERCASE);
+    }
+
+    /**
+     * @deprecated Please use StringGenerator::getRandumUrlValidString();
+     */
+    public static function getRandomUrlValidString(int $length = 8): string
+    {
+        return StringGenerator::getRandomUrlValidString($length);
     }
 }

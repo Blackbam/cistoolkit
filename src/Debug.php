@@ -38,7 +38,7 @@ class Debug
      * 
      * @param mixed $var variable to be dumped
      * @param int $depth maximum depth that the dumper should go into the variable. Defaults to 10.
-     * @param bool $highlight wether to highlight th resulting string
+     * @param bool $highlight weather to highlight th resulting string
      * @return string the string representation of the variable
      */
     public static function dumpComplex(mixed $var, int $depth = 10, bool $highlight = false): string

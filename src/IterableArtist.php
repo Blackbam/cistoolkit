@@ -27,7 +27,7 @@ class IterableArtist
      */
     public static function flatUpShift(
         iterable $iterable,
-        $key = 0,
+        mixed $key = 0,
         string $callbackMethod = "",
         ...$callbackArguments
     ): array {

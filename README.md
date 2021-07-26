@@ -2,6 +2,7 @@
 A generic toolkit containing a lot of very useful PHP classes:
 
  - String Toolkit
+ - String Generator Toolkit
  - Color Toolkit
  - Api Toolkit
  - Debug Toolkit
