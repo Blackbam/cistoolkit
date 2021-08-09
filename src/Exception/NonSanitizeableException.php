@@ -17,8 +17,11 @@ class NonSanitizeableException extends Exception
      * @inheritdoc
      */
     #[Pure]
-    public function __construct($message, $code = 0, Exception $previous = null)
-    {
+    public function __construct(
+        $message,
+        $code = 0,
+        Exception $previous = null
+    ) {
         $message = "Non-sanitizeable value: " . $message;
         parent::__construct($message, $code, $previous);
     }

@@ -2,7 +2,6 @@
 
 namespace CisTools;
 
-use Exception;
 use CisTools\Exception\InvalidParameterException;
 use JetBrains\PhpStorm\Pure;
 
@@ -47,8 +46,9 @@ class StringArtist
      * @return false|string|null: Date in the format YYYY-MM-DD
      */
     #[Pure]
-    public static function sanitizeDateInput($val): bool|string|null
-    {
+    public static function sanitizeDateInput(
+        $val
+    ): bool|string|null {
         $timestamp = strtotime($val);
         if ($timestamp < 100) {
             return null;
@@ -61,7 +61,7 @@ class StringArtist
      */
     public static function startsWith(string $haystack, string $needle): bool
     {
-        return str_starts_with($haystack,$needle);
+        return str_starts_with($haystack, $needle);
     }
 
     /**
@@ -69,7 +69,7 @@ class StringArtist
      */
     public static function endsWith(string $haystack, string $needle): bool
     {
-        return str_ends_with($haystack,$needle);
+        return str_ends_with($haystack, $needle);
     }
 
     /**
@@ -193,8 +193,10 @@ class StringArtist
      * @return array: $array[0] is the first part of the splitted string, $array[1] the second
      */
     #[Pure]
-    public static function splitAt(string $string, int $num): array
-    {
+    public static function splitAt(
+        string $string,
+        int $num
+    ): array {
         $num = Math::rangeInt($num, 1);
         $length = strlen($string);
         $output[0] = substr($string, 0, $num);
@@ -237,6 +239,26 @@ class StringArtist
     }
 
     /**
+     * @throws InvalidParameterException
+     * @deprecated Please use StringGenerator::generateSecureRandomString();
+     */
+    public static function getRandomAlnumString(int $length = 8, bool $with_numbers = false): string
+    {
+        return StringGenerator::generateSecureRandomString(
+            $length,
+            ($with_numbers) ? StringGenerator::LOWERCASE | StringGenerator::NUMBERS : StringGenerator::LOWERCASE
+        );
+    }
+
+    /**
+     * @deprecated Please use StringGenerator::getRandumUrlValidString();
+     */
+    public static function getRandomUrlValidString(int $length = 8): string
+    {
+        return StringGenerator::getRandomUrlValidString($length);
+    }
+
+    /**
      * Takes a string and turns it into a "code-friendly" value
      * E.g "I am aweseome" will become "IAmAwesome"
      *
@@ -258,22 +280,5 @@ class StringArtist
             return ucfirst($text);
         }
         return lcfirst($text);
-    }
-
-    /**
-     * @throws InvalidParameterException
-     * @deprecated Please use StringGenerator::generateSecureRandomString();
-     */
-    public static function getRandomAlnumString(int $length = 8, bool $with_numbers = false): string
-    {
-        return StringGenerator::generateSecureRandomString($length,($with_numbers) ? StringGenerator::LOWERCASE | StringGenerator::NUMBERS : StringGenerator::LOWERCASE);
-    }
-
-    /**
-     * @deprecated Please use StringGenerator::getRandumUrlValidString();
-     */
-    public static function getRandomUrlValidString(int $length = 8): string
-    {
-        return StringGenerator::getRandomUrlValidString($length);
     }
 }

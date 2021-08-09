@@ -95,8 +95,9 @@ class IterableArtist
      * @return array
      */
     #[Pure]
-    public static function fusion(array ...$arrays): array
-    {
+    public static function fusion(
+        array ...$arrays
+    ): array {
         return array_unique(array_merge(...$arrays), SORT_REGULAR);
     }
 
@@ -120,8 +121,9 @@ class IterableArtist
      * @return array
      */
     #[Pure]
-    public static function getDuplicates(array $array): array
-    {
+    public static function getDuplicates(
+        array $array
+    ): array {
         return array_unique(array_diff_assoc($array, array_unique($array)));
     }
 

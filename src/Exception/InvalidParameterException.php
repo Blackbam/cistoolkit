@@ -17,8 +17,11 @@ class InvalidParameterException extends Exception
      * @inheritdoc
      */
     #[Pure]
-    public function __construct($message, $code = 0, Exception $previous = null)
-    {
+    public function __construct(
+        $message,
+        $code = 0,
+        Exception $previous = null
+    ) {
         $message = "Invalid parmeter: " . $message;
         parent::__construct($message, $code, $previous);
     }

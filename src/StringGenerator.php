@@ -52,29 +52,33 @@ class StringGenerator
         ])] array $minRequiredByFlag = []
     ): string {
         $length = Math::rangeInt($length, 0);
-        
-        foreach($minRequiredByFlag as $key => $mr) {
-            if(!($flags & $key)) {
+
+        foreach ($minRequiredByFlag as $key => $mr) {
+            if (!($flags & $key)) {
                 unset($minRequiredByFlag[$key]);
             }
         }
 
-        if(array_sum($minRequiredByFlag) > $length) {
-            throw new InvalidParameterException("String generator failed to generate random string: Your required types of characters are higher than the required length of the string.");
+        if (array_sum($minRequiredByFlag) > $length) {
+            throw new InvalidParameterException(
+                "String generator failed to generate random string: Your required types of characters are higher than the required length of the string."
+            );
         }
 
         $randStr = "";
-        foreach($minRequiredByFlag as $key => $mr) {
-            for($i = 0; $i < $mr; $i++) {
-                $randStr .= self::getRandomCharacter($key,$allowedNonAlnumChars);
+        foreach ($minRequiredByFlag as $key => $mr) {
+            for ($i = 0; $i < $mr; $i++) {
+                $randStr .= self::getRandomCharacter($key, $allowedNonAlnumChars);
             }
         }
-        
+
         for ($i = strlen($randStr); $i < $length; $i++) {
-            $randStr .= self::getRandomCharacter($flags,$allowedNonAlnumChars);
+            $randStr .= self::getRandomCharacter($flags, $allowedNonAlnumChars);
         }
         return str_shuffle($randStr);
     }
+
+    ### Specific functions ###
 
     /**
      * @param int $flags
@@ -84,7 +88,6 @@ class StringGenerator
      */
     public static function getRandomCharacter(int $flags = self::ALL, string $allowedNonAlnumChars = ""): string
     {
-
         $set = '';
         if ($flags & self::LOWERCASE) {
             $set .= self::CHARSET_LOWERCASE;
@@ -98,25 +101,12 @@ class StringGenerator
         if ($flags & self::SPECIAL) {
             $set .= preg_replace('/[a-zA-Z0-9]+/Ui', '', $allowedNonAlnumChars);
         }
-        $set = count_chars( $set, 3);
-        if($set === '') {
+        $set = count_chars($set, 3);
+        if ($set === '') {
             throw new InvalidParameterException("Can not get random character for an empty set of characters.");
         }
         $max = strlen($set) - 1;
         return $set[random_int(0, $max)];
-    }
-
-    ### Specific functions ###
-
-    /**
-     * Returns a random URL-valid string (with any common possible characters mixed).
-     * @param int $length
-     * @return string
-     * @throws InvalidParameterException
-     */
-    public static function getRandomUrlValidString(int $length = 8): string
-    {
-        return self::generateSecureRandomString($length,self::ALL,self::CHARSET_SPECIAL_URL);
     }
 
     /**
@@ -126,6 +116,17 @@ class StringGenerator
      */
     public static function getSecureRandomPassword(int $length = 10): string
     {
-        return self::generateSecureRandomString($length,self::ALL,self::CHARSET_SPECIAL_PASSWORD);
+        return self::generateSecureRandomString($length, self::ALL, self::CHARSET_SPECIAL_PASSWORD);
+    }
+
+    /**
+     * Returns a random URL-valid string (with any common possible characters mixed).
+     * @param int $length
+     * @return string
+     * @throws InvalidParameterException
+     */
+    public static function getRandomUrlValidString(int $length = 8): string
+    {
+        return self::generateSecureRandomString($length, self::ALL, self::CHARSET_SPECIAL_URL);
     }
 }

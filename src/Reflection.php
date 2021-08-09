@@ -41,8 +41,9 @@ class Reflection
      * @return bool: True if the passed variable is an anonymous function
      */
     #[Pure]
-    public static function isClosure(mixed $t): bool
-    {
+    public static function isClosure(
+        mixed $t
+    ): bool {
         return is_object($t) && ($t instanceof Closure);
     }
 

@@ -35,7 +35,7 @@ class Debug
      * but is more robust when handling complex objects such as PRADO controls.
      *
      * Original source: https://github.com/pradosoft/prado/blob/master/framework/Util/TVarDumper.php
-     * 
+     *
      * @param mixed $var variable to be dumped
      * @param int $depth maximum depth that the dumper should go into the variable. Defaults to 10.
      * @param bool $highlight weather to highlight th resulting string

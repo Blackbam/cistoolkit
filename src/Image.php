@@ -223,8 +223,13 @@ class Image
      * @return string: The URL
      */
     #[Pure]
-    public function generateUrl(string $src, int $w = -1, int $h = -1, int $q = 80, int $zc = 1): string
-    {
+    public function generateUrl(
+        string $src,
+        int $w = -1,
+        int $h = -1,
+        int $q = 80,
+        int $zc = 1
+    ): string {
         $src = trim($src);
         if (substr($src, -4) === ".svg") {
             return $src;
