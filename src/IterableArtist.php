@@ -162,4 +162,23 @@ class IterableArtist
     }
 
 
+    /**
+     * Creates an HTML table from a two-dimensional array.
+     *
+     * @param array $twoDim: The two dimensional array.
+     * @param array $head: The head for the table (optional one dimensional array).
+     * @return string: The ready table HTML.
+     */
+    public function toHtmlTable(array $twoDim, array $head = []): string
+    {
+        $thead = !empty($head) ? '<tr><th>' . implode('</th><th>', $head) . '</th></tr>' : '';
+
+        $tbody = array_reduce($twoDim, static function ($a, $b) {
+            $b = array_map('htmlentities', $b);
+            return $a . '<tr><td>' . implode('</td><td>', $b) . '</td></tr>';
+        });
+
+        return '<table>' . $thead . $tbody . '</table>';
+    }
+
 }
