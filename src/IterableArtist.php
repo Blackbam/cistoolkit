@@ -169,7 +169,7 @@ class IterableArtist
      * @param array $head: The head for the table (optional one dimensional array).
      * @return string: The ready table HTML.
      */
-    public function toHtmlTable(array $twoDim, array $head = []): string
+    public static function toHtmlTable(array $twoDim, array $head = []): string
     {
         $thead = !empty($head) ? '<tr><th>' . implode('</th><th>', $head) . '</th></tr>' : '';
 
