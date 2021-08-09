@@ -161,21 +161,24 @@ class IterableArtist
         $cursor = $val;
     }
 
-
     /**
      * Creates an HTML table from a two-dimensional array.
      *
      * @param array $twoDim: The two dimensional array.
      * @param array $head: The head for the table (optional one dimensional array).
-     * @return string: The ready table HTML.
+     * @param bool $useRowKeyVerticalHead: The ready table HTML.
+     * @return string
      */
-    public static function toHtmlTable(array $twoDim, array $head = []): string
+    public static function toHtmlTable(array $twoDim, array $head = [], bool $useRowKeyVerticalHead = false): string
     {
         $thead = !empty($head) ? '<tr><th>' . implode('</th><th>', $head) . '</th></tr>' : '';
 
-        $tbody = array_reduce($twoDim, static function ($a, $b) {
-            $b = array_map('htmlentities', $b);
-            return $a . '<tr><td>' . implode('</td><td>', $b) . '</td></tr>';
+        $tbody = "";
+
+        array_walk($twoDim, static function($val, $key) use(&$tbody,$useRowKeyVerticalHead) {
+            $safeVal = array_map('htmlentities', $val);
+            $rowHead = ($useRowKeyVerticalHead) ? '<th>' . htmlentities($key) . '</th>' : '';
+            $tbody .= '<tr>' . $rowHead . '<td>' . implode('</td><td>', $safeVal) . '</td></tr>';
         });
 
         return '<table>' . $thead . $tbody . '</table>';
