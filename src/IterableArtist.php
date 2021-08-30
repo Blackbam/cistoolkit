@@ -70,6 +70,18 @@ class IterableArtist
     }
 
     /**
+     * Takes an arbitrary amount of arrays and merges them in a "vertical order". That means the order in the new
+     * array starts with the first value of each array, then comes the second value of each array and so on.
+     *
+     * @param ...$arrays: The arrays to be zipped together into a new array.
+     * @return array: The resulting array after zipping.
+     */
+    public static function zip(...$arrays): array
+    {
+        return array_merge(...array_map(null, ...$arrays));
+    }
+
+    /**
      * Check if all values within an array are increasing (e.g. -1,1,2,4,19,18 returns true, but 1,4,2 returns false).
      *
      * @param $array : Input array.
