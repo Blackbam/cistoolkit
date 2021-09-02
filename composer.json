@@ -21,7 +21,8 @@
     "php": ">=8.0",
     "ext-curl": "*",
     "ext-iconv": "*",
-    "ext-mbstring": "*"
+    "ext-mbstring": "*",
+    "ext-spl": "*"
   },
   "autoload": {
     "psr-4": {

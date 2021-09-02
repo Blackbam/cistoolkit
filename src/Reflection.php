@@ -2,6 +2,7 @@
 
 namespace CisTools;
 
+use CisTools\Exception\InvalidParameterException;
 use CisTools\Exception\NonSanitizeableException;
 use Closure;
 use JetBrains\PhpStorm\Pure;
@@ -90,5 +91,28 @@ class Reflection
     public static function getClassShortName(object $object): string
     {
         return basename(str_replace('\\', '/', get_class($object)));
+    }
+
+    /**
+     * @param object|string $objectOrClass
+     * @param string $nameOfTrait
+     * @param bool $autoload: Used like in class_uses()
+     * @return bool
+     * @throws InvalidParameterException If the class you pass does not exist this exception is thrown.
+     */
+    public static function usesTrait(object|string $objectOrClass,string $nameOfTrait,bool $autoload = true): bool
+    {
+        if(is_object($objectOrClass)) {
+            $class = $objectOrClass::class;
+        } else {
+            $class = $objectOrClass;
+        }
+
+        if(!class_exists($class)) {
+            throw new InvalidParameterException("The class " . $class . " passed to the usesTrait function does not exist. Please check your dependencies.");
+        }
+
+        $traits = class_uses($class,$autoload);
+        return in_array($nameOfTrait, $traits, true);
     }
 }
