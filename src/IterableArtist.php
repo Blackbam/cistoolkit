@@ -140,7 +140,7 @@ class IterableArtist
     }
 
     /**
-     * Remove duplicate elements from an array by callback.
+     * Remove duplicate elements from an array by comparison callback.
      *
      * @param array $array : An array to eliminate duplicates by callback
      * @param callable $callback : Callback accepting an array element returning the value to compare.

@@ -45,7 +45,7 @@ class Image
     public function generateSrcset(
         string $src,
         float $wh_relation = -1,
-        $step = 2048,
+        int|array $step = 2048,
         bool $device_pixel_mode = false,
         int $q = 80,
         int $zc = 1,
@@ -106,7 +106,7 @@ class Image
     public function generateSrcsetValue(
         string $src,
         int $wh_relation = -1,
-        $step = 2048,
+        int|array $step = 2048,
         bool $device_pixel_mode = false,
         bool $imageset = false,
         int $q = 80,

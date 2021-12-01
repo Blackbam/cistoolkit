@@ -59,16 +59,16 @@ class Sanitizer
             }
         } elseif (is_array($var)) {
             if (is_array($key)) {
-                $tpar = $var;
+                $tempArray = $var;
                 $dimensions = count($key);
 
                 for ($i = 0; $i < $dimensions; $i++) {
-                    if (array_key_exists($key[$i], $tpar)) {
+                    if (array_key_exists($key[$i], $tempArray)) {
                         if ($i === $dimensions - 1) {
-                            return $tcast($tpar[$key[$i]], $primitive);
+                            return $tcast($tempArray[$key[$i]], $primitive);
                         }
 
-                        $tpar = $tpar[$key[$i]];
+                        $tempArray = $tempArray[$key[$i]];
                     } else {
                         return $tcast($empty, $primitive);
                     }

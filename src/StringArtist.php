@@ -5,6 +5,9 @@ namespace CisTools;
 use CisTools\Exception\InvalidParameterException;
 use JetBrains\PhpStorm\Pure;
 
+define("CIS_STR_LEFT", 0x1);
+define("CIS_STR_RIGHT", 0x2);
+
 class StringArtist
 {
     /**
@@ -266,7 +269,7 @@ class StringArtist
      * @param bool $capitalizeFirstLetter (optional) if set to `false` the first letter will be lower case
      * @return string: A nice class name or method name (if not empty after sanitation)
      */
-    public function textToCodeName(string $text, bool $capitalizeFirstLetter = false): string
+    public static function textToCodeName(string $text, bool $capitalizeFirstLetter = false): string
     {
         $text = ltrim(
             iconv(
@@ -280,5 +283,29 @@ class StringArtist
             return ucfirst($text);
         }
         return lcfirst($text);
+    }
+
+    /**
+     * @param string $subject: The subject to be trimmed / wrapped.
+     * @param string $wrap: The characters to trim from the string / wrap the string with.
+     * @param int $times: The amount of time the wrap shall be repeated - use 0 for trimming only.
+     * @param int $mode: A flag to indicate if you want to trim / wrap only the left / right side of the string, default is both sides of the string.
+     * @return string: The trimmed / wrapped string.
+     */
+    public static function charTrimWrap(string $subject, string $wrap, int $times = 0, int $mode = CIS_STR_LEFT | CIS_STR_RIGHT): string
+    {
+        $times = Math::rangeInt($times,0);
+        $preparedWrap = str_repeat($wrap,$times);
+        if(!$mode || $mode > 3) {
+            trigger_error("The function CisTools\StringArtist::charTrimWrap was called without a valid mode and will not do anything.",E_USER_WARNING);
+            return $subject;
+        }
+        if($mode === 1) {
+            return $preparedWrap.ltrim($subject,$wrap);
+        }
+        if($mode === 2) {
+            return rtrim($subject,$wrap).$preparedWrap;
+        }
+        return $preparedWrap.trim($subject,$wrap).$preparedWrap;
     }
 }

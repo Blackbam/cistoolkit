@@ -20,7 +20,7 @@ class Reflection
      * @return ReflectionFunctionAbstract
      * @throws ReflectionException
      */
-    public static function reflectionOf(callable $callable): ReflectionFunctionAbstract
+    public static function reflectionOf(mixed $callable): ReflectionFunctionAbstract
     {
         if ($callable instanceof Closure) {
             return new ReflectionFunction($callable);
@@ -36,16 +36,12 @@ class Reflection
     }
 
     /**
-     * Check if a variable is an anonymous function.
-     *
-     * @param mixed $t : Variable to test
-     * @return bool: True if the passed variable is an anonymous function
+     * @deprecated This can be simply checked by instanceof Closure.
      */
-    #[Pure]
     public static function isClosure(
         mixed $t
     ): bool {
-        return is_object($t) && ($t instanceof Closure);
+        return $t instanceof Closure;
     }
 
     /**

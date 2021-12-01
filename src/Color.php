@@ -660,7 +660,7 @@ class Color
         $trel = $threshold * 100.0 / 256.0;
         $rgb = self::intToRgb($this->color);
         $hsl = self::rgbToHsl($rgb[0], $rgb[1], $rgb[2]);
-        return !($hsl[2] > $trel);
+        return $hsl[2] <= $trel;
     }
 
 }

@@ -2,6 +2,7 @@
 
 namespace CisTools;
 
+use CurlHandle;
 use JetBrains\PhpStorm\Pure;
 
 /**
@@ -100,7 +101,7 @@ class Url
      * path (array, if available)
      * query (array, associative, if available)
      */
-    public static function parseDeep(string $url)
+    public static function parseDeep(string $url): bool|array
     {
         $parsed = parse_url($url);
 
@@ -253,7 +254,7 @@ class Url
      * @return bool|string: The result of the curl request.
      */
     public static function curlExecDebug(
-        $curlHandle,
+        CurlHandle $curlHandle,
         string $log_folder_path,
         string $log_file_name = "cis-curl-errorlog.txt"
     ): bool|string {
@@ -272,18 +273,13 @@ class Url
      * @param string $log_folder_path : The path to log to
      * @param string $log_file_name : The name of the logfile to be written.
      *
-     * @return mixed: The log file resource.
+     * @return mixed: The log file resource or false.
      */
     public static function curlAddDebug(
-        $curlHandle,
+        CurlHandle $curlHandle,
         string $log_folder_path,
         string $log_file_name = "cis-curl-errorlog.txt"
-    ) {
-        if (!is_resource($curlHandle)) {
-            trigger_error("Incorrect call to the curlAddDebug function: Expected curl handle.", E_USER_WARNING);
-            return false;
-        }
-
+    ): mixed {
         $fp = fopen($log_folder_path . DIRECTORY_SEPARATOR . $log_file_name, 'wb');
         curl_setopt($curlHandle, CURLOPT_VERBOSE, 1);
         curl_setopt($curlHandle, CURLOPT_STDERR, $fp);
