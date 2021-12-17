@@ -22,7 +22,8 @@
     "ext-curl": "*",
     "ext-iconv": "*",
     "ext-mbstring": "*",
-    "ext-spl": "*"
+    "ext-spl": "*",
+    "ext-openssl": "*"
   },
   "autoload": {
     "psr-4": {
