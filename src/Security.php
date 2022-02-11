@@ -11,7 +11,7 @@ class Security
      * Encrypts / decrypts a value using symmetric encryption. You could e.g. share secret parameters along multiple requests.
      *
      * @param string $secretKey : A secure secret key
-     * @param string $secretIv : A secure secret IV
+     * @param string $secretIv : A secure secret IV: You can provide an empty string, but then identical messages always look the same.
      * @param string $subject : A subject to encrypt / decrypt
      * @param bool $decrypt : Set to true if you want the value to be decrypted instead of encrypted.
      * @return string|false: Encrypted / decrypted subject
