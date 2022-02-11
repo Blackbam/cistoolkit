@@ -19,7 +19,7 @@ class Security
      */
     public static function symmetricCipher(string $secretKey, string $secretIv, string $subject, bool $decrypt = false): string|false
     {
-        if (strlen($secretKey) < 10 || strlen($secretIv) < 6) {
+        if (strlen($secretKey) < 10) {
             throw new InvalidParameterException("Your secret parameters for the cipher have to be longer.");
         }
 
