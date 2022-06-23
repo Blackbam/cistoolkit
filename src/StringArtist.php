@@ -308,4 +308,19 @@ class StringArtist
         }
         return $preparedWrap.trim($subject,$wrap).$preparedWrap;
     }
+
+
+    /**
+     * Split a text string into its single lines.
+     *
+     * @param string $subject: A text with multiple lines (e.g. a validation file).
+     * @return array: The lines as array without line delimiter characters \r and \n
+     */
+    public static function stringToLines(string $subject): array
+    {
+        return array_map(static function ($line) {
+            return preg_replace("/[\r\n]/", "", $line);
+        }, explode(PHP_EOL, $subject));
+    }
+
 }

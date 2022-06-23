@@ -61,7 +61,7 @@ class IterableArtist
         $result = [];
         foreach ($array as $key => $value) {
             if (is_array($value) && $maxDepth !== 0) {
-                $result = array_merge(...[$result, self::flatten($value, ($maxDepth > 0) ? $maxDepth - 1 : -1)]);
+                $result = [...$result, ...self::flatten($value, ($maxDepth > 0) ? $maxDepth - 1 : -1)];
             } else {
                 $result[$key] = $value;
             }
@@ -196,4 +196,34 @@ class IterableArtist
         return '<table>' . $thead . $tbody . '</table>';
     }
 
+    /**
+     * Counts no matter what.
+     *
+     * @param mixed $whatever
+     * @return int: 0 if false, null or empty countable, 1 if whatever non countable item or if exactly one item, number of items in countable otherwise.
+     */
+    public static function realCount(mixed $whatever): int
+    {
+        if ($whatever === false || is_null($whatever)){
+            return 0;
+        }
+        return is_countable($whatever) ? count($whatever) : 1;
+    }
+
+    /**
+     * Converts an object to a multidimensional array recursively. For non-array/non-object inputs simply the same value is returned.
+     *
+     * @param mixed $subject
+     * @return array
+     */
+    public static function objectToArrayRecursive(mixed $subject): mixed
+    {
+        if(is_object($subject)) {
+            $subject = get_object_vars($subject);
+        }
+        if(is_array($subject)) {
+            return array_map([__CLASS__,__FUNCTION__],$subject);
+        }
+        return $subject;
+    }
 }
