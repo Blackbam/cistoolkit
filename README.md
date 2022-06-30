@@ -16,3 +16,5 @@ A generic toolkit containing a lot of very useful PHP classes:
 - Sanitizer Toolkit (for variable sanitation)
 - StringArtist Toolkit (for operations on strings)
 - Url Toolkit
+- Enum Toolkit
+- Internet address Toolkit
