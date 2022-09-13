@@ -2,7 +2,7 @@
 
 namespace CisTools;
 
-use CisTools\Exception\InvalidParameterException;
+use CisTools\Exception\InvalidArgumentException;
 use JetBrains\PhpStorm\Pure;
 
 define("CIS_STR_LEFT", 0x1);
@@ -242,7 +242,7 @@ class StringArtist
     }
 
     /**
-     * @throws InvalidParameterException
+     * @throws InvalidArgumentException
      * @deprecated Please use StringGenerator::generateSecureRandomString();
      */
     public static function getRandomAlnumString(int $length = 8, bool $with_numbers = false): string

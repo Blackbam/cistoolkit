@@ -2,7 +2,7 @@
 
 namespace CisTools;
 
-use CisTools\Exception\InvalidParameterException;
+use CisTools\Exception\InvalidArgumentException;
 
 class Security
 {
@@ -15,12 +15,12 @@ class Security
      * @param string $subject : A subject to encrypt / decrypt
      * @param bool $decrypt : Set to true if you want the value to be decrypted instead of encrypted.
      * @return string|false: Encrypted / decrypted subject
-     * @throws InvalidParameterException
+     * @throws InvalidArgumentException
      */
     public static function symmetricCipher(string $secretKey, string $secretIv, string $subject, bool $decrypt = false): string|false
     {
         if (strlen($secretKey) < 10) {
-            throw new InvalidParameterException("Your secret parameters for the cipher have to be longer.");
+            throw new InvalidArgumentException("Your secret parameters for the cipher have to be longer.");
         }
 
         $key = hash('sha256', $secretKey);

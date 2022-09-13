@@ -2,7 +2,7 @@
 
 namespace CisTools;
 
-use CisTools\Exception\InvalidParameterException;
+use CisTools\Exception\InvalidArgumentException;
 use Exception;
 use JetBrains\PhpStorm\ArrayShape;
 
@@ -37,7 +37,7 @@ class StringGenerator
      * @param string $allowedNonAlnumChars
      * @param array $minRequiredByFlag
      * @return string
-     * @throws InvalidParameterException
+     * @throws InvalidArgumentException
      * @throws Exception
      */
     public static function generateSecureRandomString(
@@ -60,7 +60,7 @@ class StringGenerator
         }
 
         if (array_sum($minRequiredByFlag) > $length) {
-            throw new InvalidParameterException(
+            throw new InvalidArgumentException(
                 "String generator failed to generate random string: Your required types of characters are higher than the required length of the string."
             );
         }
@@ -103,7 +103,7 @@ class StringGenerator
         }
         $set = count_chars($set, 3);
         if ($set === '') {
-            throw new InvalidParameterException("Can not get random character for an empty set of characters.");
+            throw new InvalidArgumentException("Can not get random character for an empty set of characters.");
         }
         $max = strlen($set) - 1;
         return $set[random_int(0, $max)];
@@ -112,7 +112,7 @@ class StringGenerator
     /**
      * @param int $length
      * @return string
-     * @throws InvalidParameterException
+     * @throws InvalidArgumentException
      */
     public static function getSecureRandomPassword(int $length = 10): string
     {
@@ -123,7 +123,7 @@ class StringGenerator
      * Returns a random URL-valid string (with any common possible characters mixed).
      * @param int $length
      * @return string
-     * @throws InvalidParameterException
+     * @throws InvalidArgumentException
      */
     public static function getRandomUrlValidString(int $length = 8): string
     {

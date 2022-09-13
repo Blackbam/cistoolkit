@@ -6,10 +6,10 @@ use Exception;
 use JetBrains\PhpStorm\Pure;
 
 /**
- * Class InvalidParameterException
+ * Class InvalidArgumentException
  * @description Usually thrown in constructors of classes which can not be used without valid constructor parameters
  */
-class InvalidParameterException extends Exception
+class InvalidArgumentException extends Exception
 {
 
     /**
@@ -22,7 +22,7 @@ class InvalidParameterException extends Exception
         $code = 0,
         Exception $previous = null
     ) {
-        $message = "Invalid parmeter: " . $message;
+        $message = "Invalid argument: " . $message;
         parent::__construct($message, $code, $previous);
     }
 

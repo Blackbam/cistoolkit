@@ -2,10 +2,9 @@
 
 namespace CisTools;
 
-use CisTools\Exception\InvalidParameterException;
+use CisTools\Exception\InvalidArgumentException;
 use CisTools\Exception\NonSanitizeableException;
 use Closure;
-use JetBrains\PhpStorm\Pure;
 use ReflectionException;
 use ReflectionFunction;
 use ReflectionFunctionAbstract;
@@ -94,7 +93,7 @@ class Reflection
      * @param string $nameOfTrait
      * @param bool $autoload: Used like in class_uses()
      * @return bool
-     * @throws InvalidParameterException If the class you pass does not exist this exception is thrown.
+     * @throws InvalidArgumentException If the class you pass does not exist this exception is thrown.
      */
     public static function usesTrait(object|string $objectOrClass,string $nameOfTrait,bool $autoload = true): bool
     {
@@ -105,7 +104,7 @@ class Reflection
         }
 
         if(!class_exists($class)) {
-            throw new InvalidParameterException("The class " . $class . " passed to the usesTrait function does not exist. Please check your dependencies.");
+            throw new InvalidArgumentException("The class " . $class . " passed to the usesTrait function does not exist. Please check your dependencies.");
         }
 
         $traits = class_uses($class,$autoload);
