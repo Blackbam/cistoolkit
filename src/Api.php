@@ -2,6 +2,10 @@
 
 namespace CisTools;
 
+use CisTools\Exception\XMLCreationException;
+use Exception;
+use SimpleXMLElement;
+
 /**
  * Class Api: Helpers for API communication
  * @package CisTools
@@ -17,7 +21,7 @@ class Api
      * @param bool $head : Use the array keys as column headings.
      * @param string $delimiter : The optional delimiter parameter sets the field delimiter (one character only). Default is "," but e.g. MS Excel may require ";"
      * @param string $enclosure : The optional enclosure parameter sets the field enclosure (one character only).
-     * @param string $escape_char : The optional escape_char parameter sets the escape character (at most one character). An empty string ("") disables the proprietary escape mechanism.
+     * @param string $escapeChar : The optional escape_char parameter sets the escape character (at most one character). An empty string ("") disables the proprietary escape mechanism.
      * @return string: The CSV string.
      */
     public static function array2Csv(
@@ -25,7 +29,7 @@ class Api
         bool $head = true,
         string $delimiter = ",",
         string $enclosure = '"',
-        string $escape_char = "\\"
+        string $escapeChar = "\\"
     ): string {
         if (empty($array)) {
             return "";
@@ -33,10 +37,10 @@ class Api
         ob_start();
         $df = fopen("php://output", 'wb');
         if ($head) {
-            fputcsv($df, array_keys(reset($array)), $delimiter, $enclosure, $escape_char);
+            fputcsv($df, array_keys(reset($array)), $delimiter, $enclosure, $escapeChar);
         }
         foreach ($array as $row) {
-            fputcsv($df, $row, $delimiter, $enclosure, $escape_char);
+            fputcsv($df, $row, $delimiter, $enclosure, $escapeChar);
         }
         fclose($df);
         return ob_get_clean();
@@ -56,5 +60,68 @@ class Api
         }
 
         return array_search(max($delimiters), $delimiters, true);
+    }
+
+
+    /**
+     * Converts an array to XML.
+     *
+     * @param array $data
+     * @param string $rootTag
+     * @return string
+     * @throws XMLCreationException
+     */
+    public static function array2Xml(array $data, string $rootTag): string
+    {
+        $element = self::array2SimpleXMLElement($data, $rootTag);
+        $out = $element->asXML();
+        if (!$out) {
+            throw new XMLCreationException("Unable to create XML from SimpleXmlElement.");
+        }
+        return $out;
+    }
+
+    /**
+     * Converts an array to a SimpleXMLElement object
+     *
+     * @param array $data
+     * @param string $rootTag
+     * @return SimpleXMLElement
+     * @throws XMLCreationException
+     */
+    public static function array2SimpleXMLElement(array $data, string $rootTag): SimpleXMLElement
+    {
+        // creating object of SimpleXMLElement
+        try {
+            $element = new SimpleXMLElement('<?xml version="1.0"?><'.$rootTag.'></'.$rootTag.'>');
+        } catch (Exception $e) {
+            throw new XMLCreationException("Unable to create XML element. Check if your root tag is valid. Details: ".$e->getMessage());
+        }
+        return self::addArray2SimpleXMLElement($data, $element);
+    }
+
+    /**
+     * Adds an array to an existing SimpleXMLElement.
+     *
+     * @param array $data
+     * @param SimpleXMLElement $simpleXMLElement
+     * @return SimpleXMLElement
+     * @throws XMLCreationException
+     */
+    public static function addArray2SimpleXMLElement(array $data, SimpleXMLElement $simpleXMLElement): SimpleXMLElement
+    {
+        foreach ($data as $tag => $tagContent) {
+            if (is_array($tagContent)) {
+                $subnode = $simpleXMLElement->addChild($tag);
+                if (is_null($subnode)) {
+                    throw new XMLCreationException("Unable to add child: '".$tag."'. Maybe invalid XML tag name?");
+                }
+                self::addArray2SimpleXMLElement($tagContent, $subnode);
+            } else {
+                $simpleXMLElement->addChild((string)$tag, htmlspecialchars((string)$tagContent));
+            }
+        }
+
+        return $simpleXMLElement;
     }
 }

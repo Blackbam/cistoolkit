@@ -23,7 +23,8 @@
     "ext-iconv": "*",
     "ext-mbstring": "*",
     "ext-spl": "*",
-    "ext-openssl": "*"
+    "ext-openssl": "*",
+    "ext-simplexml": "*"
   },
   "autoload": {
     "psr-4": {
