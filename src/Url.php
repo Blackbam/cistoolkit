@@ -53,7 +53,7 @@ class Url
     #[Pure]
     public static function getCurrent(): string
     {
-        return self::getHostUrl() . $_SERVER['REQUEST_URI'];
+        return self::getHostUrl() . ($_SERVER['REQUEST_URI'] ?? "");
     }
 
     /**
@@ -62,7 +62,7 @@ class Url
     #[Pure]
     public static function getHostUrl(): string
     {
-        return "http" . (self::isSecure() ? "s" : "") . "://" . $_SERVER['HTTP_HOST'];
+        return "http" . (self::isSecure() ? "s" : "") . "://" . ($_SERVER['HTTP_HOST'] ?? "");
     }
 
     /**
@@ -72,7 +72,7 @@ class Url
      */
     public static function isSecure(): bool
     {
-        return (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] === 443;
+        return (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || (isset($_SERVER["SERVER_PORT"]) && $_SERVER['SERVER_PORT'] === 443);
     }
 
     /**
