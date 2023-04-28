@@ -2,7 +2,7 @@
 
 namespace CisTools;
 
-use Exception;
+use RuntimeException;
 
 class Http
 {
@@ -77,13 +77,13 @@ class Http
      *
      * @param int $statusCode
      * @return string
-     * @throws Exception
+     * @throws RuntimeException
      */
     public static function statusCodeText(int $statusCode): string
     {
         if(array_key_exists($statusCode,self::STATUS_CODES)) {
             return self::STATUS_CODES[$statusCode];
         }
-        throw new Exception("Invalid status code.");
+        throw new RuntimeException("Invalid status code.");
     }
 }
