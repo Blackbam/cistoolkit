@@ -2,6 +2,8 @@
 
 namespace CisTools;
 
+use CisTools\Enum\Type;
+use CisTools\Exception\InvalidArgumentException;
 use CisTools\Exception\XMLCreationException;
 use Exception;
 use SimpleXMLElement;
@@ -123,5 +125,28 @@ class Api
         }
 
         return $simpleXMLElement;
+    }
+
+    /**
+     * Simply cast an input to the expected type.
+     *
+     * @param mixed $var
+     * @param Type $type
+     * @return mixed
+     * @throws InvalidArgumentException
+     */
+    public static function castInput(mixed $var, Type $type): mixed
+    {
+        return match ($type) {
+            Type::STRING => (string)$var,
+            Type::BOOLEAN => $var !== "false" && $var,
+            Type::INTEGER => (int)$var,
+            Type::FLOAT => (float)$var,
+            Type::ARRAY => (array)$var,
+            Type::OBJECT => (object)$var,
+            Type::NULL => null,
+            Type::RESOURCE => throw new InvalidArgumentException("Unable can not cast to resource."),
+            Type::ENUM => throw new InvalidArgumentException("To be implemented")
+        };
     }
 }

@@ -3,7 +3,8 @@
 namespace CisTools;
 
 use CisTools\Enum\GoldenRatioMode;
-use CisTools\Enum\Primitive;
+use CisTools\Enum\Type;
+use CisTools\Exception\NonSanitizeableException;
 use Closure;
 
 /**
@@ -47,7 +48,7 @@ class General
         GoldenRatioMode $mode,
         bool $rounded = false,
         int $max_decimal_places = -1
-    ) {
+    ): array {
         return Math::goldenRatio($length, $mode, $rounded, $max_decimal_places);
     }
 
@@ -55,13 +56,14 @@ class General
     /**
      * @deprecated Use Sanitizer class instead
      */
-    public static function resempty(&$var, $key, $empty = "", Primitive $primitive = null)
+    public static function resempty(&$var, $key, $empty = "", Type|int $type = Type::NULL)
     {
-        return Sanitizer::resempty($var, $key, $empty, $primitive);
+        return Sanitizer::resempty($var, $key, $empty, $type);
     }
 
 
     /**
+     * @throws NonSanitizeableException
      * @deprecated Use Reflection class instead
      */
     public static function classNameSanitize(string $name): string
@@ -81,7 +83,7 @@ class General
     /**
      * @deprecated Use File class instead
      */
-    public static function ripemd320File(string $filepath)
+    public static function ripemd320File(string $filepath): string
     {
         return File::ripemd320File($filepath);
     }
@@ -99,6 +101,6 @@ class General
      */
     public static function isClosure($t): bool
     {
-        return is_object($t) && ($t instanceof Closure);
+        return $t instanceof Closure;
     }
 }

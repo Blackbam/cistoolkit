@@ -24,7 +24,9 @@
     "ext-mbstring": "*",
     "ext-spl": "*",
     "ext-openssl": "*",
-    "ext-simplexml": "*"
+    "ext-simplexml": "*",
+    "ext-ftp": "*",
+    "ext-ssh2": "*"
   },
   "autoload": {
     "psr-4": {

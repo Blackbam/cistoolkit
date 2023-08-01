@@ -2,7 +2,7 @@
 
 namespace CisTools;
 
-use CisTools\Enum\Primitive;
+use CisTools\Enum\Type;
 
 class Sanitizer
 {
@@ -13,7 +13,7 @@ class Sanitizer
      * @param $var array|object: An array or object with the possible key/property
      * @param $key array|string: The key. For a multidimensional associative array, you can pass an array.
      * @param mixed $empty : If the key does not exist, this value is returned.
-     * @param int $primitive : The type of the given variable (-1 for ignoring this feature).
+     * @param Type|int $type : The type of the given variable (-1 for ignoring this feature).
      *
      * @return mixed: The (sanitized) value at the position key or the given default value if nothing found.
      */
@@ -21,14 +21,26 @@ class Sanitizer
         array|object $var,
         array|string $key,
         mixed $empty = "",
-        int $primitive = -1
+        Type|int $type = Type::NULL
     ): mixed {
-        $tcast = static function (mixed $var, int $primitive): mixed {
+
+        // legacy
+        if(is_int($type)) {
+            $type = match(true) {
+                $type === 0 => Type::STRING,
+                $type === 1 => Type::INTEGER,
+                $type === 2 => Type::BOOLEAN,
+                $type === 3 => Type::FLOAT,
+                default => Type::NULL
+            };
+        }
+
+        $tcast = static function (mixed $var, Type $type): mixed {
             return match (true) {
-                $primitive === Primitive::STR => (string)$var,
-                $primitive === Primitive::INT => (int)$var,
-                $primitive === Primitive::BOOL => (bool)$var,
-                $primitive === Primitive::FLOAT => (float)$var,
+                $type === Type::STRING => (string)$var,
+                $type === Type::INTEGER => (int)$var,
+                $type === Type::BOOLEAN => (bool)$var,
+                $type === Type::FLOAT => (float)$var,
                 default => $var
             };
         };
@@ -42,20 +54,20 @@ class Sanitizer
                     if (property_exists($tpclass, $key[$i])) {
                         if ($i === $dimensions - 1) {
                             $obj_key = $key[$i];
-                            return $tcast($tpclass->$obj_key, $primitive);
+                            return $tcast($tpclass->$obj_key, $type);
                         }
 
                         $obj_key = $key[$i];
                         $tpclass = $tpclass->$obj_key;
                     } else {
-                        return $tcast($empty, $primitive);
+                        return $tcast($empty, $type);
                     }
                 }
-                return $tcast($empty, $primitive);
+                return $tcast($empty, $type);
             }
 
             if (property_exists($var, $key)) {
-                return $tcast($var->$key, $primitive);
+                return $tcast($var->$key, $type);
             }
         } elseif (is_array($var)) {
             if (is_array($key)) {
@@ -65,22 +77,22 @@ class Sanitizer
                 for ($i = 0; $i < $dimensions; $i++) {
                     if (array_key_exists($key[$i], $tempArray)) {
                         if ($i === $dimensions - 1) {
-                            return $tcast($tempArray[$key[$i]], $primitive);
+                            return $tcast($tempArray[$key[$i]], $type);
                         }
 
                         $tempArray = $tempArray[$key[$i]];
                     } else {
-                        return $tcast($empty, $primitive);
+                        return $tcast($empty, $type);
                     }
                 }
-                return $tcast($empty, $primitive);
+                return $tcast($empty, $type);
             }
 
             if (array_key_exists($key, $var)) {
-                return $tcast($var[$key], $primitive);
+                return $tcast($var[$key], $type);
             }
         }
-        return $tcast($empty, $primitive);
+        return $tcast($empty, $type);
     }
 
     /**
