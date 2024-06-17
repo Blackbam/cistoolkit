@@ -226,4 +226,16 @@ class IterableArtist
         }
         return $subject;
     }
+
+    /**
+     * Just like array_key_exists, but for multiple keys.
+     *
+     * @param array $array: The array to check.
+     * @param array $keys: The required keys as array (e.g. ["foo","bar","baz"]).
+     * @return bool: True if all keys exist in the array.
+     */
+    public static function arrayKeysExist(array $array, array $keys): bool
+    {
+        return count(array_intersect_key(array_flip($keys), $array)) === count($keys);
+    }
 }

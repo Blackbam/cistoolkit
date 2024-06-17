@@ -9,6 +9,7 @@ A generic toolkit containing a lot of very useful PHP classes:
 - Debug Toolkit
 - File Toolkit
 - HTML Selector Toolkit (for creation of selectors)
+- File Transfer Protocol Toolkit
 - Image Toolkit
 - Map Toolkit (for mapping functions)
 - Math Toolkit (for Math operations)
