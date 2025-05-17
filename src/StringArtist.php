@@ -254,6 +254,15 @@ class StringArtist
     }
 
     /**
+     * @param string $string
+     * @return string: The string with only alphanumeric characters.
+     */
+    public static function removeNonAlnum(string $string): string
+    {
+        return preg_replace('/\W+/', '', $string);
+    }
+
+    /**
      * @deprecated Please use StringGenerator::getRandumUrlValidString();
      */
     public static function getRandomUrlValidString(int $length = 8): string

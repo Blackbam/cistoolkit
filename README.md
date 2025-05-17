@@ -19,3 +19,4 @@ A generic toolkit containing a lot of very useful PHP classes:
 - Url Toolkit
 - Enum Toolkit
 - Internet address Toolkit
+- Simple CSRFProtector
