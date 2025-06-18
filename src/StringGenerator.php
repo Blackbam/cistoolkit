@@ -5,6 +5,7 @@ namespace CisTools;
 use CisTools\Exception\InvalidArgumentException;
 use Exception;
 use JetBrains\PhpStorm\ArrayShape;
+use Random\RandomException;
 
 /**
  * A random string generator which can e.g. be used for generating secure passwords.
@@ -38,7 +39,7 @@ class StringGenerator
      * @param array $minRequiredByFlag
      * @return string
      * @throws InvalidArgumentException
-     * @throws Exception
+     * @throws RandomException
      */
     public static function generateSecureRandomString(
         int $length = 10,
@@ -84,7 +85,7 @@ class StringGenerator
      * @param int $flags
      * @param string $allowedNonAlnumChars
      * @return string
-     * @throws Exception
+     * @throws InvalidArgumentException|RandomException
      */
     public static function getRandomCharacter(int $flags = self::ALL, string $allowedNonAlnumChars = ""): string
     {
